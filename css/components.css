@@ -1,0 +1,452 @@
+/* AUV project platform — components.
+   Order: buttons, status tags + status lens, fact lists, figures, the
+   AUV inspection sheet, depth diagram, sensor layer, workflow stepper,
+   submission-material slots, full-size viewer. */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+.mb-4 { margin-bottom: var(--space-4); }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn--primary { background: var(--deep); border-color: var(--deep); color: #fff; }
+.btn--primary:hover { background: var(--sea); border-color: var(--sea); color: #fff; }
+.btn--small { min-height: 36px; padding: 0 var(--space-4); font-size: var(--text-small); }
+
+/* ---------- Status tags ----------
+   Status is encoded three ways so it never depends on colour alone:
+   a text label, a shape, and a border/fill treatment. */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 10px 1px 7px;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.tag::before {
+  content: "";
+  flex: none;
+  width: 12px;
+  height: 12px;
+  background: center / contain no-repeat;
+}
+
+.tag[data-status="confirmed"] { background: var(--sea); color: #fff; }
+.tag[data-status="confirmed"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='5.5' fill='%23fff'/%3E%3Cpath d='M3.4 6.2 5.2 8l3.4-3.8' fill='none' stroke='%230E5A72' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.tag[data-status="conceptual"] { background: var(--sheet); color: var(--sea); border: 1.5px dashed var(--sea); }
+.tag[data-status="conceptual"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='4.8' fill='none' stroke='%230E5A72' stroke-width='1.4' stroke-dasharray='2.2 1.6'/%3E%3C/svg%3E");
+}
+
+.tag[data-status="planned"] { background: var(--hull-soft); color: var(--hull-ink); border-color: var(--hull); }
+.tag[data-status="planned"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 .9 11.1 6 6 11.1.9 6z' fill='%236F520F'/%3E%3C/svg%3E");
+}
+
+.tag[data-status="placeholder"] { background: transparent; color: var(--ink-soft); border: 1.5px dashed var(--line-strong); }
+.tag[data-status="placeholder"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Crect x='1.2' y='1.2' width='9.6' height='9.6' rx='1.6' fill='none' stroke='%2348606F' stroke-width='1.4' stroke-dasharray='2.2 1.6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Reading guide + status lens ---------- */
+
+.guide {
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-6);
+}
+.guide h2 { font-size: 1.5rem; margin-bottom: var(--space-3); }
+.guide__lead { max-width: 64ch; margin-bottom: var(--space-5); color: var(--ink-soft); }
+
+.lens {
+  display: grid;
+  gap: var(--space-5) var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+.lens__item { display: grid; gap: var(--space-2); align-content: start; }
+.lens__item p { font-size: var(--text-small); color: var(--ink-soft); }
+.lens__item .tag { justify-self: start; }
+.lens__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); margin-top: var(--space-5); }
+
+button.tag { cursor: pointer; font-family: inherit; }
+button.tag[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--sheet), 0 0 0 5px var(--ink); }
+
+[data-item] { transition: opacity 0.2s ease; }
+body[data-lens] [data-item] { opacity: 0.26; }
+body[data-lens="confirmed"] [data-item="confirmed"],
+body[data-lens="conceptual"] [data-item="conceptual"],
+body[data-lens="planned"] [data-item="planned"],
+body[data-lens="placeholder"] [data-item="placeholder"] { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-item] { transition: none; }
+}
+
+/* ---------- Fact lists (definition lists laid out as ruled rows) ---------- */
+
+.facts { border-bottom: 1px solid var(--line); }
+.facts > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1) var(--space-5);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 720px) {
+  .facts > div { grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); }
+}
+.facts dt { font-weight: 650; }
+.facts dd { color: var(--ink); max-width: 64ch; }
+.facts dd .tag { margin-left: var(--space-2); }
+.facts dd p + p { margin-top: var(--space-2); }
+.facts--tight > div { padding-block: var(--space-3); }
+
+/* ---------- Figures ---------- */
+
+.figure { margin-top: var(--space-6); }
+.figure img {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--sheet);
+}
+.figure figcaption {
+  margin-top: var(--space-2);
+  max-width: 78ch;
+  font-size: var(--text-small);
+  color: var(--ink-soft);
+}
+.figure figcaption strong { color: var(--ink); }
+
+.figure-row {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  margin-top: var(--space-6);
+}
+.figure-row .figure { margin-top: 0; }
+
+/* ---------- AUV inspection sheet (Figure 2) ---------- */
+
+.sheet-layout { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+@media (min-width: 900px) {
+  .sheet-layout { grid-template-columns: minmax(0, 1fr) 250px; align-items: start; }
+}
+
+.sheet {
+  position: relative;
+  margin: 0;
+  padding: 10px;
+  background: var(--sheet);
+  border: 1.5px solid var(--ink);
+  transition: box-shadow 0.15s ease;
+}
+.sheet__frame {
+  position: relative;
+  border: 1px solid var(--ink);
+  border-bottom: 0;
+}
+.sheet.is-inspecting { box-shadow: 0 0 0 4px var(--hull); }
+
+.sheet__view {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  line-height: 0;
+}
+.sheet__view img { width: 100%; }
+
+.sheet--live .sheet__view { cursor: crosshair; }
+.sheet--coarse .sheet__view { cursor: zoom-in; }
+.sheet__view:focus-visible { outline: 3px solid var(--sea); outline-offset: -3px; }
+
+.sheet__strip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  border: 1px solid var(--ink);
+  font-size: var(--text-small);
+  line-height: 1.4;
+}
+.sheet__strip > span { padding: var(--space-2) var(--space-3); }
+.sheet__strip > span:first-child { border-right: 1px solid var(--ink); font-weight: 700; }
+
+.sheet__info {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: min(230px, 60%);
+  padding: var(--space-3) var(--space-4);
+  background: rgb(255 255 255 / 0.96);
+  border: 1px solid var(--ink);
+  font-size: var(--text-small);
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.sheet.is-inspecting .sheet__info { opacity: 1; transform: none; }
+.sheet--panel-bl .sheet__info { top: auto; right: auto; bottom: 12px; left: 12px; }
+.sheet__info-title { font-weight: 800; font-size: 1.15rem; line-height: 1.1; }
+.sheet__info-sub { color: var(--ink-soft); margin-bottom: var(--space-2); }
+.sheet__info dl { display: grid; gap: 2px; }
+.sheet__info dl > div { display: flex; justify-content: space-between; gap: var(--space-3); }
+.sheet__info dt { color: var(--ink-soft); }
+.sheet__info dd { font-weight: 650; text-align: right; }
+
+.loupe {
+  position: absolute;
+  z-index: 4;
+  width: 176px;
+  height: 176px;
+  left: 0;
+  top: 0;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgb(10 37 54 / 0.3), inset 0 0 0 3px #fff;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  pointer-events: none;
+  opacity: 0;
+}
+.sheet.is-magnifying .loupe { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet, .sheet__info { transition: none; }
+}
+
+/* The inspection tools need JavaScript; without it the image still shows. */
+html:not(.js) .inspect-tools { display: none; }
+
+.inspect-tools {
+  padding: var(--space-5);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: grid;
+  gap: var(--space-4);
+}
+.inspect-tools h3 { margin: 0; font-size: 1.05rem; }
+.inspect-tools p { font-size: var(--text-small); color: var(--ink-soft); }
+.inspect-tools fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+.inspect-tools legend { padding: 0; font-size: var(--text-small); font-weight: 650; margin-bottom: var(--space-2); }
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.segmented label { position: relative; text-align: center; cursor: pointer; }
+.segmented input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.segmented span { display: block; padding: 8px 0; font-weight: 600; }
+.segmented label + label span { border-left: 1px solid var(--line-strong); }
+.segmented input:checked + span { background: var(--deep); color: #fff; }
+.segmented input:focus-visible + span { outline: 3px solid var(--sea); outline-offset: -3px; }
+
+.sheet-layout--coarse .zoom-only { display: none; }
+.pointer-only-touch { display: none; }
+.sheet-layout--coarse .pointer-only-touch { display: block; }
+.sheet-layout--coarse .pointer-only-fine { display: none; }
+
+/* ---------- Depth scope diagram (Figure 3) ---------- */
+
+.depth svg { width: 100%; max-width: 760px; height: auto; display: block; }
+.depth text { font-family: var(--font-ui); fill: var(--ink); }
+.depth .depth__muted { fill: var(--ink-soft); }
+
+/* ---------- Sensor layer ---------- */
+
+.sensors {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+@media (min-width: 900px) { .sensors { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.sensor { border-top: 3px solid var(--ink); padding-top: var(--space-4); }
+.sensor h3 { margin-bottom: var(--space-3); }
+.sensor p { font-family: var(--font-prose); font-size: 1.05rem; line-height: 1.6; margin-top: var(--space-3); }
+
+.table-scroll { overflow-x: auto; margin-top: var(--space-4); }
+.matrix { width: 100%; min-width: 560px; border-collapse: collapse; font-size: var(--text-ui); }
+.matrix th, .matrix td { padding: var(--space-3) var(--space-4); text-align: left; border-bottom: 1px solid var(--line); }
+.matrix thead th { font-weight: 650; border-bottom: 2px solid var(--ink); }
+.matrix tbody th { font-weight: 600; color: var(--ink); }
+.matrix td { color: var(--ink-soft); }
+
+/* ---------- Software components ---------- */
+
+.callout {
+  max-width: var(--measure);
+  padding: var(--space-4) var(--space-5);
+  border-left: 4px solid var(--hull);
+  background: var(--sheet);
+  font-size: var(--text-ui);
+}
+.callout strong { display: block; margin-bottom: var(--space-1); }
+.callout p + p { margin-top: var(--space-2); }
+
+/* ---------- Workflow stepper (Figure 4) ---------- */
+
+.stepper { margin-top: var(--space-6); display: grid; gap: var(--space-5); }
+
+.steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+@media (min-width: 900px) {
+  .steps { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-2); }
+}
+
+.step { margin: 0; }
+.step-btn {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  border: 0;
+  border-left: 5px solid var(--sea);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+@media (min-width: 900px) {
+  .step-btn { border-left: 0; border-top: 5px solid var(--sea); padding-inline: var(--space-2); }
+}
+.step[data-status="conceptual"] .step-btn { border-style: dashed; border-color: var(--sea); }
+.step[data-status="planned"] .step-btn { border-style: solid; border-color: var(--hull); }
+.step-btn:hover { background: var(--sea-soft); }
+.step-btn[aria-selected="true"] { background: var(--sheet); }
+.step-num { font-size: var(--text-small); color: var(--ink-soft); font-weight: 600; }
+.step-name { font-weight: 650; line-height: 1.25; }
+.step-btn[aria-selected="true"] .step-name { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.step-key { font-size: var(--text-small); color: var(--ink-soft); }
+
+.step-panel {
+  padding: var(--space-5) var(--space-6);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-height: 9.5rem;
+}
+.step-panel h3 { display: inline; margin-right: var(--space-3); }
+.step-panel p { margin-top: var(--space-3); max-width: 64ch; font-family: var(--font-prose); font-size: 1.08rem; line-height: 1.6; }
+
+.step-detail { padding: var(--space-3) var(--space-3) var(--space-4) 0; }
+.js .step-detail { display: none; }
+html:not(.js) .step-panel { display: none; }
+html:not(.js) .step-btn { cursor: default; }
+html:not(.js) .steps { grid-template-columns: minmax(0, 1fr); }
+
+.step-legend { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); font-size: var(--text-small); color: var(--ink-soft); }
+.step-legend span { display: inline-flex; align-items: center; gap: var(--space-2); }
+.step-legend i { display: inline-block; width: 28px; border-top: 4px dashed var(--sea); }
+.step-legend i.is-planned { border-top-style: solid; border-top-color: var(--hull); }
+
+/* ---------- Demonstration placeholder + evidence ---------- */
+
+.slot {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--ink-soft);
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--sheet);
+}
+.slot strong { color: var(--ink); font-size: 1.1rem; line-height: 1.3; }
+.slot--demo { min-height: 320px; }
+
+/* ---------- Project materials ---------- */
+
+.materials { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+@media (min-width: 900px) {
+  .materials {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-areas:
+      "photo poster"
+      "video poster"
+      "drive poster";
+    align-items: start;
+  }
+  .material--poster { grid-area: poster; }
+  .material--photo { grid-area: photo; }
+  .material--video { grid-area: video; }
+  .material--drive { grid-area: drive; }
+}
+.material h3 { margin-bottom: var(--space-1); }
+.material > p { font-size: var(--text-small); color: var(--ink-soft); margin-bottom: var(--space-3); max-width: 60ch; }
+.slot--a0 { aspect-ratio: 841 / 1189; }
+.slot--photo { aspect-ratio: 3 / 2; }
+.slot--video { aspect-ratio: 16 / 9; }
+.slot--drive { min-height: 140px; }
+
+/* ---------- Full-size viewer (dialog) ---------- */
+
+.viewer {
+  width: min(96vw, 1240px);
+  max-width: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--sheet);
+  color: var(--ink);
+}
+.viewer::backdrop { background: rgb(10 37 54 / 0.82); }
+.viewer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+.viewer__bar h2 { margin: 0; font-size: 1.05rem; letter-spacing: 0; }
+.viewer__bar form { margin: 0; }
+.viewer__scroll { max-height: calc(100vh - 190px); overflow: auto; background: #fff; }
+.viewer__scroll img { width: 1600px; max-width: none; border: 0; border-radius: 0; }
+.viewer__note { padding: var(--space-3) var(--space-4); font-size: var(--text-small); color: var(--ink-soft); }

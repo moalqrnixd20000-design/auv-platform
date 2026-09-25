@@ -1,0 +1,5 @@
+# AUV project site. Allow all crawlers.
+# After a custom domain is connected, add a line such as:
+#   Sitemap: https://YOUR-DOMAIN/sitemap.xml
+User-agent: *
+Allow: /

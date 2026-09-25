@@ -1,0 +1,74 @@
+/* AUV project platform — design tokens and fonts.
+   Every colour, size and spacing value used by the other stylesheets comes
+   from here, so the whole look can be changed in one place.
+
+   Colour logic: the accent (hull gold) is sampled from the team's own AUV
+   render; the ink is a deep marine blue. Status colours (see .tag in
+   components.css) are separate from the accent. */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/archivo-var-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("../assets/fonts/source-serif-4-var-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --paper: #f3f6f8;        /* page ground */
+  --sheet: #ffffff;        /* figures, tables, panels */
+  --deep: #0a2536;         /* dark bands */
+
+  /* Text */
+  --ink: #0c2233;          /* primary text */
+  --ink-soft: #48606f;     /* secondary text */
+  --on-deep: #e8f1f5;      /* text on dark bands */
+
+  /* Lines */
+  --line: #d0d9e0;
+  --line-strong: #9fb0bd;
+
+  /* Interactive + status */
+  --sea: #0e5a72;          /* links, focus, "confirmed" */
+  --sea-soft: #e4f0f4;
+  --hull: #c49837;         /* sampled from the AUV render */
+  --hull-soft: #f6ebd0;
+  --hull-ink: #6f520f;     /* gold text that must stay readable */
+
+  /* Type */
+  --font-ui: "Archivo", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-prose: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --text-body: 1.1563rem;  /* ~18.5px, prose */
+  --text-ui: 0.9375rem;    /* 15px */
+  --text-small: 0.8438rem; /* ~13.5px, captions */
+
+  /* Layout */
+  --measure: 68ch;         /* comfortable line length for prose */
+  --gutter: clamp(16px, 4vw, 40px);
+  --shell: 1240px;
+  --header-h: 56px;
+  --radius: 6px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 104px;
+}
