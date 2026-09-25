@@ -1,10 +1,9 @@
-/* AUV project platform — design tokens and fonts.
+/* AUV project site — design tokens and fonts.
    Every colour, size and spacing value used by the other stylesheets comes
    from here, so the whole look can be changed in one place.
 
    Colour logic: the accent (hull gold) is sampled from the team's own AUV
-   render; the ink is a deep marine blue. Status colours (see .tag in
-   components.css) are separate from the accent. */
+   render; the ink is a deep marine blue. */
 
 @font-face {
   font-family: "Archivo";
@@ -41,7 +40,7 @@
   --line-strong: #9fb0bd;
 
   /* Interactive + status */
-  --sea: #0e5a72;          /* links, focus, "confirmed" */
+  --sea: #0e5a72;          /* links, focus, highlights */
   --sea-soft: #e4f0f4;
   --hull: #c49837;         /* sampled from the AUV render */
   --hull-soft: #f6ebd0;
@@ -58,9 +57,11 @@
   /* Layout */
   --measure: 68ch;         /* comfortable line length for prose */
   --gutter: clamp(16px, 4vw, 40px);
-  --shell: 1240px;
-  --header-h: 56px;
-  --radius: 6px;
+    --header-h: 56px;
+  --container: 1120px;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --shadow: 0 1px 2px rgb(10 37 54 / 0.06), 0 8px 24px rgb(10 37 54 / 0.06);
 
   --space-1: 4px;
   --space-2: 8px;

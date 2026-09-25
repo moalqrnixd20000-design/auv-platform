@@ -10,7 +10,7 @@
   "use strict";
 
   var sheet = document.getElementById("auv-sheet");
-  var layout = document.getElementById("sheet-layout");
+  var layout = document.getElementById("design-grid");
   var view = document.getElementById("auv-view");
   var img = document.getElementById("auv-img");
   var loupe = document.getElementById("auv-loupe");
@@ -25,7 +25,7 @@
   function applyPointerMode() {
     sheet.classList.toggle("sheet--live", finePointer.matches);
     sheet.classList.toggle("sheet--coarse", !finePointer.matches);
-    layout.classList.toggle("sheet-layout--coarse", !finePointer.matches);
+    layout.classList.toggle("design-grid--coarse", !finePointer.matches);
   }
   applyPointerMode();
   if (finePointer.addEventListener) finePointer.addEventListener("change", applyPointerMode);
