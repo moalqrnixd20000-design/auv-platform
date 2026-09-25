@@ -30,7 +30,7 @@ Open <http://localhost:8744>.
 | About AUV | What the AUV is, the problem, what the system does, operating environment (1–5 m) |
 | How It Works | The 9-step flow from the underwater environment to the operator; sensing and communication; object recognition and decision support; selected Red Sea fish |
 | AUV Design | The team's design image with a hover magnifier and full-size viewer |
-| Interactive Demo | A scripted mission: scanning, detection, classification, decision support, target marking, inspection |
+| Interactive Demo | A scripted mission that shows the decision process step by step: scanning, detection, object analysis, classification, decision support, target marking, inspection, then a mission summary |
 | Video | The demonstration video |
 | Project Materials | A0 poster, project photo, additional materials (Google Drive) |
 
@@ -72,8 +72,14 @@ Everything is plain HTML in `index.html`.
 | Google Drive link | `#materials`, third card | Add the link. Its sharing setting must be "Anyone with the link can view". |
 | Team, institution, contact | New section or the footer | Add when ready. |
 
+**Recording the demonstration video.** In the Interactive Demo, choose *Full-screen demo* (Esc
+exits). The demo fills the window and the mission runs the same way every time: it is fully
+scripted, with no random targets, and every stage stays on screen long enough to read. Press
+*Start mission* and screen-record it (about 40 seconds). *Pause*, *Resume* and *Reset* work at
+any moment because a single mission clock drives everything.
+
 **Demo content** lives at the top of `js/demo.js` (species, the man-made-object case, the
-mission script and timings). To change what the demo shows, edit those values. The demo
+decision factors, the mission script and timings). To change what the demo shows, edit those values. The demo
 uses no data or model from outside the page.
 
 ## 5. Deploy

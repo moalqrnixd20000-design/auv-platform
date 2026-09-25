@@ -16,3 +16,5 @@ Notes for the team. This folder is not part of the public site.
 | Red Sea fish (lionfish, clownfish, grouper) are presented as selected examples. | The recognition is not a general species classifier. |
 | Fonts are self-hosted. | No third-party requests; works offline at a venue. |
 | Light background, navy accents, hull-gold highlight sampled from the team's render. | Marine technology look; the image sits naturally on a light page. |
+| The demo's decision is a simple weighted rule: each target has weighted factors, the weighted sum is the demo score, and a threshold rule gives the decision. The analysis panel builds up stage by stage. | It shows how an inspection decision can be made and explained. The scores are scripted demo values, not measurements. |
+| The demo runs on one mission clock and is fully deterministic; a full-screen mode is provided for screen recording. | Predictable recordings; Pause and Reset are exact. |

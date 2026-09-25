@@ -299,12 +299,14 @@
           <button class="btn btn--go" type="button" id="demo-start">Start mission</button>
           <button class="btn" type="button" id="demo-pause" disabled>Pause</button>
           <button class="btn" type="button" id="demo-reset">Reset</button>
+          <button class="btn" type="button" id="demo-full" aria-pressed="false">Full-screen demo</button>
         </div>
       </div>
 
       <ol class="demo-stages" id="demo-stages">
         <li data-stage="scanning">Scanning</li>
         <li data-stage="detection">Detection</li>
+        <li data-stage="analysis">Object analysis</li>
         <li data-stage="classification">Classification</li>
         <li data-stage="decision">Decision support</li>
         <li data-stage="marking">Target marking</li>
@@ -312,7 +314,7 @@
       </ol>
 
       <div class="demo__grid">
-        <div class="demo-card">
+        <div class="demo-card" id="card-map">
           <div class="demo-card__head"><h3>Search area</h3><span>Simulated grid</span></div>
           <div class="map-screen">
             <svg id="demo-map" viewBox="0 0 560 460" role="img" aria-label="Spiral search pattern with marked targets">
@@ -334,7 +336,7 @@
         <div class="demo__side">
           <div class="demo-card">
             <div class="demo-card__head"><h3>Camera view</h3><span>Demo scene</span></div>
-            <div class="camera" id="camera">
+            <div class="camera" id="camera"><div class="camera__stage" id="camera-stage">
               <div class="camera__scene is-visible" data-scene="idle">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                   <defs><linearGradient id="c-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14495c"/><stop offset="1" stop-color="#071a26"/></linearGradient></defs>
@@ -381,7 +383,7 @@
               </div>
               <div class="camera__scene" data-scene="object"><img src="assets/images/reference-wreck-propeller.jpg" alt="" width="1000" height="664"></div>
               <div class="det-box" id="det-box" hidden><span class="det-box__label" id="det-label"></span></div>
-              <span class="camera__chip">Camera</span>
+              </div><span class="camera__chip" id="cam-chip">Camera</span>
             </div>
           </div>
 
@@ -392,7 +394,7 @@
         </div>
       </div>
 
-      <div class="demo-card demo-log">
+      <div class="demo-card demo-log" id="card-log">
         <div class="demo-card__head">
           <h3>Target log</h3>
           <div class="demo-log__stats"><span>Targets <strong id="demo-count">0</strong></span><span>Mission time <strong id="demo-time">00:00</strong></span></div>
