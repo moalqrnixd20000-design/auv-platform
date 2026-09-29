@@ -63,7 +63,7 @@
     <div class="container">
       <dl>
         <div><dt>Operating scope</dt><dd>1–5 m below the water surface</dd></div>
-        <div><dt>Sensing</dt><dd>Underwater camera, multibeam echosounder and water-column acoustic data</dd></div>
+        <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data and onboard sensors</dd></div>
         <div><dt>Output</dt><dd>Classified targets, marked for operator inspection</dd></div>
       </dl>
     </div>
@@ -82,11 +82,11 @@
           <h3>The problem</h3>
           <div class="prose">
             <p>Shallow coastal waters hold marine life, natural features and man-made objects side by side. Wrecks, debris and equipment matter for safety and for protecting the marine environment, but they are hard to tell apart from their surroundings.</p>
-            <p>Divers can inspect an area directly, yet their time and reach are limited. Cameras depend on light and water clarity; acoustic sensors work in poor visibility but give less visual detail. No single sensor answers the question “what is this object?” on its own.</p>
+            <p>Divers can inspect an area directly, yet their time and reach are limited. Different sensing methods provide different types of information about underwater targets. Acoustic sensing can remain useful in poor visibility, while target interpretation still requires analysis of multiple characteristics. No single sensing source answers the question “what is this object?” on its own.</p>
           </div>
           <h3>What the system does</h3>
           <div class="prose">
-            <p>The AUV combines acoustic and visual sensing, analyses every detected target, classifies it, and recommends whether it needs inspection. Targets are marked and reported to the operator at the surface.</p>
+            <p>The AUV combines acoustic and onboard sensor data to detect and analyse underwater targets, classify them, and support inspection decisions. Targets are marked and reported to the operator at the surface.</p>
           </div>
         </div>
         <figure class="figure">
@@ -161,7 +161,7 @@
 
       <ol class="flow flow--end">
         <li><h3>Underwater Environment</h3><p>The marine setting the AUV surveys, 1–5 m below the surface.</p></li>
-        <li><h3>Sensor Data</h3><p>Camera imagery, multibeam echosounder data and water-column acoustic data.</p></li>
+        <li><h3>Sensor Data</h3><p>Multibeam echosounder data, water-column acoustic data and onboard sensor data.</p></li>
         <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data.</p></li>
         <li><h3>Object Analysis</h3><p>Shape, geometry, structural appearance and movement are examined.</p></li>
         <li><h3>Classification</h3><p>Each target is classed as marine life, a potential man-made object, or a natural or unidentified object.</p></li>
@@ -174,11 +174,6 @@
       <h3 class="subhead">Sensing and communication</h3>
       <div class="cards-3">
         <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>
-          <h3>Underwater Camera</h3>
-          <p>Visual inspection, and visual confirmation of detected targets.</p>
-        </div>
-        <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 20M12 3l3.5 17M12 3l8 17M12 3 8.5 20M4 20h16"/></svg>
           <h3>Multibeam Echosounder</h3>
           <p>Seafloor mapping, bathymetric information and acoustic target detection.</p>
@@ -188,25 +183,30 @@
           <h3>Water-Column Acoustic Data</h3>
           <p>Acoustic returns within the water column, used to detect potential targets.</p>
         </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.2"/></svg>
+          <h3>Onboard Sensors</h3>
+          <p>Sensor data used to support target detection and analysis. Exact sensor specifications are TBD.</p>
+        </div>
       </div>
       <div class="card mt-card">
         <div class="comm">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
           <div>
             <h3>Signal-Based Communication</h3>
-            <p>Links the AUV with the operator and the surface system. It is separate from the sensing layer: the sensors observe the environment, communication carries the results.</p>
+            <p>Links the AUV with the operator and the surface system. It is separate from the sensing layer: sensors observe the environment, while communication carries the results.</p>
           </div>
         </div>
       </div>
 
       <h3 class="subhead">Object recognition and decision support</h3>
       <div class="prose">
-        <p>Each detected target is analysed using its shape, geometry, structural appearance, movement characteristics, and visual or acoustic characteristics where applicable. The decision engine then classifies the target and suggests what to do with it.</p>
+        <p>Each detected target is analysed using its shape, geometry, structural appearance, movement characteristics, and sensor and acoustic characteristics where applicable. The decision engine then classifies the target and suggests what to do with it.</p>
       </div>
       <div class="cards-3 mt-card">
-        <div class="card"><h3>Marine Life</h3><p>Living organisms, recognised by body shape, pattern and movement.</p></div>
+        <div class="card"><h3>Marine Life</h3><p>Living organisms, recognised using relevant observable characteristics such as body shape, pattern and movement where available in the simulation.</p></div>
         <div class="card"><h3>Potential Man-Made Object</h3><p>Rigid, geometric or non-biological structures such as wreckage, debris or equipment.</p></div>
-        <div class="card"><h3>Natural / Unidentified Object</h3><p>Objects that look natural or cannot be identified with confidence.</p></div>
+        <div class="card"><h3>Natural / Unidentified Object</h3><p>Objects that appear natural or cannot be identified with sufficient confidence.</p></div>
       </div>
       <p class="note-line">Every target receives an inspection decision, such as “Requires Inspection”, and an inspection priority. Potential risk is expressed as a priority for the operator to review; the system does not determine danger with certainty.</p>
 
@@ -251,7 +251,7 @@
                 <p class="sheet__info-sub">Autonomous Underwater Vehicle</p>
                 <dl>
                   <div><dt>Operating depth</dt><dd>1–5 m</dd></div>
-                  <div><dt>Sensing</dt><dd>Camera + acoustic</dd></div>
+                  <div><dt>Sensing</dt><dd>Acoustic + onboard sensors</dd></div>
                 </dl>
               </div>
             </div>
@@ -263,7 +263,7 @@
           <dl class="spec">
             <div><dt>Vehicle</dt><dd>Autonomous Underwater Vehicle</dd></div>
             <div><dt>Operating scope</dt><dd>1–5 m below the water surface</dd></div>
-            <div><dt>Sensing</dt><dd>Underwater camera, multibeam echosounder, water-column acoustic data</dd></div>
+            <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data, onboard sensors</dd></div>
             <div><dt>Communication</dt><dd>Signal-based communication with the surface system</dd></div>
             <div><dt>Recognition</dt><dd>Marine life, potential man-made objects</dd></div>
           </dl>
@@ -335,7 +335,7 @@
 
         <div class="demo__side">
           <div class="demo-card">
-            <div class="demo-card__head"><h3>Camera view</h3><span>Demo scene</span></div>
+            <div class="demo-card__head"><h3>Target Observation</h3><span>Simulation / Reference Imagery</span></div>
             <div class="camera" id="camera"><div class="camera__stage" id="camera-stage">
               <div class="camera__scene is-visible" data-scene="idle">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -383,12 +383,12 @@
               </div>
               <div class="camera__scene" data-scene="object"><img src="assets/images/reference-wreck-propeller.jpg" alt="" width="1000" height="664"></div>
               <div class="det-box" id="det-box" hidden><span class="det-box__label" id="det-label"></span></div>
-              </div><span class="camera__chip" id="cam-chip">Camera</span>
+              </div><span class="camera__chip" id="cam-chip">Simulated Observation</span>
             </div>
           </div>
 
           <div class="demo-card">
-            <div class="demo-card__head"><h3>Analysis</h3><span>Decision support</span></div>
+            <div class="demo-card__head"><h3>Analysis</h3><span>Software simulation</span></div>
             <div class="analysis" id="demo-analysis" aria-live="polite"></div>
           </div>
         </div>
@@ -397,7 +397,7 @@
       <div class="demo-card demo-log" id="card-log">
         <div class="demo-card__head">
           <h3>Target log</h3>
-          <div class="demo-log__stats"><span>Targets <strong id="demo-count">0</strong></span><span>Mission time <strong id="demo-time">00:00</strong></span></div>
+          <div class="demo-log__stats"><span>Demo values</span><span>Targets <strong id="demo-count">0</strong></span><span>Mission time <strong id="demo-time">00:00</strong></span></div>
         </div>
         <div class="log-scroll">
           <table class="log-table">

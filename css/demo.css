@@ -1,6 +1,6 @@
 /* AUV project site — interactive demo.
    A dark marine band holding a small mission dashboard: stage strip,
-   search map, camera view, analysis panel and target log. */
+   search map, target observation view, analysis panel and target log. */
 
 .demo {
   position: relative;
@@ -87,7 +87,7 @@
 .map-legend .k-fish { background: #7fd6e6; border-radius: 50%; }
 .map-legend .k-object { background: var(--hull); border: 2px solid var(--deep); border-radius: 2px; }
 
-/* camera */
+/* target observation view (simulation / reference imagery) */
 .camera { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-radius: var(--radius); background: #071a26; }
 .camera__stage { position: absolute; inset: 0; transition: transform 1.6s ease; }
 .camera__stage.is-closeup { transform: scale(1.45); }
@@ -211,7 +211,9 @@
 
 /* log */
 .demo-log { margin-top: var(--space-5); }
-.demo-log__stats { display: flex; gap: var(--space-5); font-size: var(--text-small); color: var(--ink-soft); }
+.demo-log .demo-card__head { flex-wrap: wrap; row-gap: var(--space-2); }
+.demo-log__stats { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); font-size: var(--text-small); color: var(--ink-soft); }
+.demo-log__stats span { white-space: nowrap; }
 .demo-log__stats strong { color: var(--ink); font-size: 1rem; }
 .log-scroll { overflow-x: auto; }
 .log-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 0.9rem; }

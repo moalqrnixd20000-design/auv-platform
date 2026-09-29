@@ -27,28 +27,28 @@
   /* ================= 1. Content ================= */
 
   /* Decision factors: [label, weight, score]. Weights add up to 1. The demo
-     score is the weighted sum — a simple rule-based / weighted decision. */
+     score is the weighted sum — a simple rule-based / weighted decision.
+     Demo Confidence is the same number shown as a percentage (0.93 → 93%);
+     there is no second, separate confidence value. All values are simulated. */
   var FISH_LABELS = ["Biological body shape", "Recognizable fish morphology", "Movement consistent with marine life"];
   var FISH_WEIGHTS = [0.40, 0.35, 0.25];
 
-  /* box = [left, top, width, height] of the detection frame, in % of the camera view */
+  /* box = [left, top, width, height] of the detection frame, in % of the observation view */
   var SPECIES = {
-    lionfish:  { name: "Lionfish",  scene: "lionfish",  box: [31, 5, 60, 80],  confidence: 87, scores: [0.95, 0.90, 0.85] },
-    clownfish: { name: "Clownfish", scene: "clownfish", box: [37, 29, 42, 36], confidence: 91, scores: [0.97, 0.93, 0.86] },
-    grouper:   { name: "Grouper",   scene: "grouper",   box: [27, 25, 55, 49], confidence: 83, scores: [0.92, 0.82, 0.80] }
+    lionfish:  { name: "Lionfish",  scene: "lionfish",  box: [31, 5, 60, 80],  scores: [0.95, 0.90, 0.85] },
+    clownfish: { name: "Clownfish", scene: "clownfish", box: [37, 29, 42, 36], scores: [0.97, 0.93, 0.86] },
+    grouper:   { name: "Grouper",   scene: "grouper",   box: [27, 25, 55, 49], scores: [0.92, 0.82, 0.80] }
   };
 
   var OBJECT_CASE = {
     name: "Potential Man-Made Object",
     scene: "object",
     box: [34, 36, 47, 56],
-    confidence: 74,
     factors: [
-      ["Non-biological shape detected", 0.30, 0.90],
+      ["Non-biological shape", 0.30, 0.90],
       ["Rigid geometric structure", 0.25, 0.95],
-      ["Unusual structural appearance", 0.20, 0.80],
-      ["Does not match marine-life characteristics", 0.15, 0.75],
-      ["Possible man-made origin", 0.10, 0.70]
+      ["Unusual structural appearance", 0.25, 0.80],
+      ["Does not match expected marine-life characteristics", 0.20, 0.75]
     ]
   };
 
@@ -223,13 +223,13 @@
     el.boxLabel.textContent = t.name + " · " + t.confidence + "%";
   }
 
-  /* Close-range view: the camera view zooms toward the target. */
+  /* Close-range view: the observation view zooms toward the target. */
   function setCloseup(on, t) {
     if (on && t) {
       el.stage.style.transformOrigin = (t.box[0] + t.box[2] / 2) + "% " + (t.box[1] + t.box[3] / 2) + "%";
       el.chip.textContent = "Close-range view";
     } else {
-      el.chip.textContent = "Camera";
+      el.chip.textContent = "Simulated Observation";
     }
     el.stage.classList.toggle("is-closeup", !!on);
   }
@@ -272,11 +272,11 @@
       return section("Decision explanation", '<p class="trail__text">' + t.explanation + "</p>", cls);
     }
     if (key === "mark") {
-      return section("Target marked", kv([["Position", t.position]]) + '<p class="trail__meta">Placed on the search map and added to the target log.</p>', cls);
+      return section("Target marked", kv([["Position", t.position + " (Simulation)"]]) + '<p class="trail__meta">Placed on the search map and added to the target log.</p>', cls);
     }
     var steps = [
       ["AUV approaches the target", 1],
-      ["Close-range camera view", 2],
+      ["Close-range observation (simulated)", 2],
       ["Report to the operator", 3]
     ].map(function (s) {
       var mark_ = s[1] < state.inspectStep ? "is-done" : s[1] === state.inspectStep ? "is-active" : "";
@@ -327,7 +327,7 @@
     var last = state.marked.length - 1;
     el.logBody.innerHTML = state.marked.map(function (t, i) {
       return '<tr class="' + (i === last && state.justMarked ? "is-new" : "") + '"><td>' + t.id + "</td><td>" + t.category + "</td><td>" +
-        (t.kind === "fish" ? t.name : "Object of interest") + "</td><td>" + t.detectedBy + "</td><td>" + t.position + "</td><td>" + t.time +
+        (t.kind === "fish" ? t.name : "Object of Interest") + "</td><td>" + t.detectedBy + "</td><td>" + t.position + "</td><td>" + t.time +
         '</td><td class="' + (t.kind === "object" ? "is-alert" : "") + '">' + t.decision + "</td></tr>";
     }).join("");
   }
@@ -424,16 +424,17 @@
     if (spec.kind === "fish") {
       var sp = SPECIES[spec.key];
       var factors = FISH_LABELS.map(function (label, i) { return [label, FISH_WEIGHTS[i], sp.scores[i]]; });
-      t = { kind: "fish", name: sp.name, scene: sp.scene, box: sp.box, confidence: sp.confidence, factors: factors,
-            rule: FISH_RULE, category: "Marine Life", detectedBy: "Camera", decision: "Log Observation", priority: "Routine",
+      t = { kind: "fish", name: sp.name, scene: sp.scene, box: sp.box, factors: factors,
+            rule: FISH_RULE, category: "Marine Life", detectedBy: "Sensor Data", decision: "Log Observation", priority: "Routine",
             explanation: "The target matches a selected marine species. It is logged as an observation; no inspection is needed." };
     } else {
-      t = { kind: "object", name: OBJECT_CASE.name, scene: OBJECT_CASE.scene, box: OBJECT_CASE.box, confidence: OBJECT_CASE.confidence,
+      t = { kind: "object", name: OBJECT_CASE.name, scene: OBJECT_CASE.scene, box: OBJECT_CASE.box,
             factors: OBJECT_CASE.factors, rule: OBJECT_RULE, category: "Potential Man-Made Object",
-            detectedBy: "Multibeam Echosounder + Camera Confirmation", decision: "Requires Inspection", priority: "Review",
-            explanation: "The detected characteristics indicate a possible man-made structure. The target is marked for operator inspection. The system recommends inspection; it does not determine danger." };
+            detectedBy: "Multibeam Echosounder", decision: "Requires Inspection", priority: "Review",
+            explanation: "Detected characteristics indicate a possible man-made structure and the target has been marked for operator inspection." };
     }
     t.score = score(t.factors);
+    t.confidence = Math.round(t.score * 100);
     t.id = "Target #" + pad(state.counter);
     t.pointIndex = pointIndex(spec.frac);
     t.position = describePosition(points[t.pointIndex]);
