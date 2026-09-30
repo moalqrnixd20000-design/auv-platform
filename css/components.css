@@ -382,6 +382,9 @@ html:not(.js) .inspect-tools { display: none; }
 
 .risk-card { border-top-width: 4px; }
 .risk-card .risk { margin-bottom: var(--space-3); }
+.card .risk--safe { color: var(--risk-safe-ink); }
+.card .risk--hazard { color: var(--risk-hazard-ink); }
+.card .risk--unknown { color: var(--risk-unknown-ink); }
 .risk-card--safe { border-top-color: var(--risk-safe); }
 .risk-card--hazard { border-top-color: var(--risk-hazard); }
 .risk-card--unknown { border-top-color: var(--risk-unknown); }
@@ -463,6 +466,7 @@ html:not(.js) .inspect-tools { display: none; }
 
 /* ---------- AUV design: official design / Saudi-inspired concept ---------- */
 
+html:not(.js) .design-tabs { display: none; }
 .design-tabs {
   display: inline-flex;
   flex-wrap: wrap;

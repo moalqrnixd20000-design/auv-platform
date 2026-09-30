@@ -6,7 +6,7 @@ Notes for the team. This folder is not part of the public site.
 |---|---|
 | One static site: plain HTML, CSS and classic scripts (no modules). | No dependencies; deployable anywhere; `index.html` still works when double-clicked (modules are blocked on `file://`). |
 | Top navigation with seven sections: Home, About AUV, How It Works, AUV Design, Interactive Demo, Video, Project Materials. | A presentation site, not a documentation portal. |
-| No labels, legends or filters that explain project maturity. Details that are not available are simply not shown. One disclaimer, in the footer. | The site should read as a project presentation. |
+| Simulated, conceptual and reference content carries a small label ("Simulation", "Conceptual", "Reference image", "TBD"). The main disclaimer stays in the footer. | The brief asks for a clear line between reference, simulation, concept and future development. |
 | The team's AUV image is used unmodified (`assets/images/auv-team-design.jpg`); the hover tools only change how it is displayed. | The design must not be altered. |
 | No labelled parts on the AUV image. | The team has not said which component is which. |
 | The demo is built into the page (`js/demo.js`) and driven by one mission clock. | Pause, Resume and Reset are exact; no timers to get out of step. |

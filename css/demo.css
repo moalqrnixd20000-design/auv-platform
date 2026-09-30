@@ -1,6 +1,7 @@
 /* AUV project site — interactive demo.
    A dark marine band holding a small mission dashboard: stage strip,
-   search map, target observation view, analysis panel and target log. */
+   grid survey map, coverage, alert, target observation view (reference imagery),
+   analysis panel, detection timeline and target log. */
 
 .demo {
   position: relative;
@@ -132,7 +133,7 @@
 .det-box.is-flip .det-box__label { bottom: auto; top: 100%; margin: 4px 0 0; border-radius: 0 4px 4px 4px; }
 .det-box.is-right .det-box__label { left: auto; right: -2px; border-radius: 4px 4px 0 4px; }
 .det-box[data-level="high"] { border-color: #ef6b5b; }
-.det-box[data-level="high"] .det-box__label { background: #ef6b5b; color: #fff; }
+.det-box[data-level="high"] .det-box__label { background: #ef6b5b; color: var(--deep); }
 .det-box[data-level="unknown"] { border-color: #c9d3dc; }
 .det-box[data-level="unknown"] .det-box__label { background: #c9d3dc; }
 .det-box[data-level="safe"] { border-color: #5fd29a; }
@@ -186,12 +187,6 @@
 .kv dt { color: var(--ink-soft); }
 .kv dd { font-weight: 650; text-align: right; }
 
-.factors { display: grid; gap: var(--space-3); }
-.factors__row { display: flex; justify-content: space-between; gap: var(--space-3); font-size: 0.92rem; }
-.factors__w { flex: none; font-size: 0.78rem; color: var(--ink-soft); }
-.bar { height: 6px; margin-top: 4px; border-radius: 3px; background: var(--line); overflow: hidden; }
-.bar i { display: block; height: 100%; width: var(--w); border-radius: 3px; background: linear-gradient(90deg, var(--sea), #4fb6c9); }
-.is-new .bar i { animation: grow 0.9s ease both; }
 
 .inspect-steps { margin-top: var(--space-3); display: grid; gap: 6px; }
 .inspect-steps li { position: relative; padding-left: 26px; font-size: 0.92rem; color: var(--ink-soft); }
@@ -209,8 +204,6 @@
 .inspect-steps li.is-active::before { border-color: var(--hull); background: var(--hull-soft); }
 .inspect-steps li.is-done { color: var(--ink); }
 .inspect-steps li.is-done::before { border-color: var(--sea); background: var(--sea); }
-.inspect-steps li.is-future { margin-top: 4px; font-style: italic; opacity: 0.75; }
-.inspect-steps li.is-future::before { border-style: dashed; }
 
 .summary { border-left-color: var(--sea); }
 .summary h4 { font-size: 1.05rem; color: var(--ink); }
@@ -220,7 +213,6 @@
 .summary__grid span { font-size: var(--text-small); color: var(--ink-soft); }
 
 @keyframes reveal { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-@keyframes grow { from { width: 0; } to { width: var(--w); } }
 
 /* the marker on the map: highlighted when it is placed and while it is inspected */
 .marker .halo { opacity: 0; transform-box: fill-box; transform-origin: center; }
@@ -233,7 +225,7 @@
 @keyframes card-flash { 0% { box-shadow: 0 0 0 4px var(--hull); } 100% { box-shadow: 0 0 0 0 rgb(196 152 55 / 0); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .trail__block.is-new, .is-new .bar i, .marker .halo, .demo-card.is-flash { animation: none !important; }
+  .trail__block.is-new, .marker .halo, .demo-card.is-flash, .demo-alert.is-flash, .log-table tr.is-new td { animation: none !important; }
   .camera__scene, .camera__stage, .demo-stages li { transition: none; }
 }
 
@@ -344,3 +336,5 @@
 .timeline__mark--high { background: var(--risk-high-soft); color: var(--risk-high-ink); }
 .timeline__mark--unknown { background: var(--risk-unknown-soft); color: var(--risk-unknown-ink); }
 .log-table td { vertical-align: top; }
+.timeline__time { margin-left: 4px; }
+@media (max-width: 599px) { .timeline__time { display: none; } }

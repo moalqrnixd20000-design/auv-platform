@@ -176,7 +176,7 @@
         <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
         <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
         <li><h3>Object Classification</h3><p>Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
-        <li><h3>Risk Assessment</h3><p>Non-hazardous, potential hazard, or unknown and requiring verification.</p></li>
+        <li><h3>Risk Assessment</h3><p>Non-hazardous, potential hazard (or high potential hazard), or unknown and requiring verification.</p></li>
         <li><h3>Risk Type Identification</h3><p>For example navigation / obstruction risk or potential explosive hazard.</p></li>
         <li><h3>Explainable Decision</h3><p>A decision together with the evidence and the rule that led to it.</p></li>
         <li><h3>Target Marking</h3><p>The target is marked at its position on the survey map.</p></li>
@@ -237,15 +237,18 @@
         <table class="explain__table">
           <thead><tr><th scope="col">Feature</th><th scope="col">Evidence</th></tr></thead>
           <tbody>
-            <tr><td>Rigid geometric structure</td><td><span class="ev ev--yes">Detected</span></td></tr>
+            <tr><td>Rigid / geometric structure</td><td><span class="ev ev--yes">Detected</span></td></tr>
+            <tr><td>Non-biological appearance</td><td><span class="ev ev--yes">Detected</span></td></tr>
             <tr><td>Biological morphology</td><td><span class="ev ev--no">Not detected</span></td></tr>
+            <tr><td>Size category</td><td><span class="ev ev--info">Large</span></td></tr>
             <tr><td>Acoustic return differs from surrounding background</td><td><span class="ev ev--yes">Detected</span></td></tr>
           </tbody>
         </table>
         <dl class="explain__result">
-          <div><dt>Result</dt><dd>Potential man-made object</dd></div>
-          <div><dt>Risk</dt><dd>Potential hazard</dd></div>
-          <div><dt>Decision</dt><dd>Requires inspection</dd></div>
+          <div><dt>Classification</dt><dd>Man-Made Structure</dd></div>
+          <div><dt>Risk</dt><dd>Potential Hazard</dd></div>
+          <div><dt>Risk type</dt><dd>Navigation / Obstruction Risk</dd></div>
+          <div><dt>Decision</dt><dd>Requires Inspection</dd></div>
         </dl>
       </figure>
       <p class="note-line">Potential risk is expressed as a priority for the operator to review; the system does not determine danger with certainty. The decision engine in this prototype is rule-based and explainable. Trained recognition models are future development and are not part of it.</p>
@@ -287,7 +290,7 @@
       <div class="cards-2 mt-card">
         <div class="card">
           <h3>Sent first: priority event data</h3>
-          <div class="chips" aria-label="Priority event data">
+          <div class="chips" role="group" aria-label="Priority event data">
             <span class="chip">Target ID</span><span class="chip">Classification</span><span class="chip">Risk</span><span class="chip">Risk type</span><span class="chip">Location</span><span class="chip">Depth</span><span class="chip">Detection time</span><span class="chip">Decision</span><span class="chip">Explanation</span><span class="chip">Alert</span>
           </div>
         </div>
@@ -301,7 +304,7 @@
       <div class="prose">
         <p>Marine-life recognition is shown with selected Red Sea species. It separates marine life from man-made objects and potential hazards; it does not attempt to recognise every species. The demo uses the lionfish as its marine-life example.</p>
       </div>
-      <div class="chips" aria-label="Selected species"><span class="chip">Lionfish</span><span class="chip">Clownfish</span><span class="chip">Grouper</span></div>
+      <div class="chips" role="group" aria-label="Selected species"><span class="chip">Lionfish</span><span class="chip">Clownfish</span><span class="chip">Grouper</span></div>
       <div class="photo-row">
         <figure class="figure">
           <img src="assets/images/reference-lionfish-reef.jpg" width="1824" height="1192" loading="lazy"
@@ -322,7 +325,7 @@
     <div class="container">
       <div class="section__head">
         <h2 id="design-title">AUV design</h2>
-        <p>The AUV is built around the team's own hull design: a streamlined, torpedo-shaped body with tail fins and a propeller. Move over the image to inspect the details.</p>
+        <p>The AUV is built around the team's own hull design: a streamlined, torpedo-shaped body with tail fins and a propeller. In the official view, move over the image to inspect the details.</p>
       </div>
 
       <div class="design-tabs" role="tablist" aria-label="Design view">
@@ -352,7 +355,7 @@
             <figcaption class="sheet__strip"><span>AUV</span><span>Official Team Design</span></figcaption>
           </figure>
 
-          <figure class="concept" id="auv-concept" role="tabpanel" aria-labelledby="tab-concept" hidden>
+          <figure class="concept" id="auv-concept" role="tabpanel" aria-labelledby="tab-concept" tabindex="0" hidden>
             <div class="concept__plate">
               <div class="concept__view">
                 <img src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
@@ -507,7 +510,7 @@
 
           <div class="demo-card">
             <div class="demo-card__head"><h3>Analysis</h3><span>Simulation / concept demonstration</span></div>
-            <div class="analysis" id="demo-analysis" aria-live="polite"></div>
+            <div class="analysis" id="demo-analysis"></div>
           </div>
         </div>
       </div>
@@ -517,7 +520,7 @@
           <h3>Target log</h3>
           <div class="demo-log__stats"><span>Demo values</span><span>Targets <strong id="demo-count">0</strong></span><span>Demo time <strong id="demo-time">00:00</strong></span></div>
         </div>
-        <div class="timeline" id="demo-timeline" aria-label="Detection timeline"><i class="timeline__fill" id="demo-timeline-fill"></i></div>
+        <div class="timeline" id="demo-timeline" role="group" aria-label="Detection timeline"><i class="timeline__fill" id="demo-timeline-fill"></i></div>
         <div class="log-scroll">
           <table class="log-table">
             <thead><tr><th>Target</th><th>Detected</th><th>Identification</th><th>Classification</th><th>Risk</th><th>Decision</th><th>Detected by</th><th>Line, bearing (Sim.)</th><th>Position (Sim.)</th><th>Depth (Sim.)</th></tr></thead>

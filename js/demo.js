@@ -7,8 +7,8 @@
      Scanning > Detection > Analysis > Classification > Risk assessment >
      Decision > Alert & marking > Verification > Mission summary
 
-   Everything is driven by ONE mission clock. Pause stops the clock (and the
-   animations), Reset throws the whole state away, and nothing is scheduled
+   Everything is driven by ONE mission clock. Pause stops the clock and the
+   CSS/SVG animations (a transition already under way finishes), Reset throws the whole state away, and nothing is scheduled
    outside the clock — so no late event can appear after a Reset. The run is
    deterministic: same scenario, same result, every time.
 
@@ -63,7 +63,7 @@
      joined by short turns. Lines sit in the middle of equal strips, so
      lines × line spacing = survey height. */
   function buildSurvey(s) {
-    var lines = Math.round(s.height / LINE_SPACING);
+    var lines = Math.round(s.height / LINE_SPACING);   // height must be a multiple of LINE_SPACING
     var legs = [], d = 0;
     for (var i = 0; i < lines; i++) {
       var y = LINE_SPACING / 2 + i * LINE_SPACING;
@@ -195,7 +195,7 @@
      box = [left, top, width, height] of the detection frame, in % of the view. */
   var TARGETS = [
     {
-      key: "fish", name: "Lionfish", objectType: "Fish", line: 1, fx: 0.40, dy: 16, depth: 9,
+      key: "fish", name: "Lionfish (scenario example)", logName: "Lionfish", objectType: "Fish", line: 1, fx: 0.40, dy: 16, depth: 9,
       source: "Water-Column Acoustic Data", scene: "fish", box: [31, 5, 60, 80],
       evidence: { bio: "Detected", motion: "Detected", rigid: "Not detected", nonbio: "Not detected", size: "Small", background: "Detected" },
       decision: "Continue Survey / Log Observation", logDecision: "Log Observation",
@@ -469,7 +469,7 @@
     el.box.classList.toggle("is-classified", classified);
     el.box.classList.toggle("is-flip", t.box[1] < 14);
     el.box.classList.toggle("is-right", t.box[0] + t.box[2] > 75);
-    el.box.setAttribute("data-level", classified ? t.level : "");
+    el.box.setAttribute("data-level", classified && state.blocks >= 4 ? t.level : "");
     el.boxLabel.textContent = t.group === "mine" ? "Potential Mine — unconfirmed" : t.name;
   }
 
@@ -493,7 +493,9 @@
       el.alertTitle.textContent = state.status === "complete" ? "Mission complete — see the summary and target log"
         : assessing ? "Assessing " + state.current.id + " — alert pending" : "No active alerts";
       el.alertBody.innerHTML = '<div class="demo-alert__idle"><dt class="sr-only">Alerts</dt><dd>' +
-        (assessing ? "An alert is issued once the target's risk has been assessed." : "Simulated alerts appear here when a target has been assessed.") + "</dd></div>";
+        (assessing ? "An alert is issued once the target's risk has been assessed."
+          : state.status === "complete" ? "All simulated alerts are recorded in the target log."
+          : "Simulated alerts appear here when a target has been assessed.") + "</dd></div>";
       return;
     }
     el.alert.setAttribute("data-kind", t.level);
@@ -585,13 +587,14 @@
     var count = function (fn) { return m.filter(fn).length; };
     var byGroup = function (g) { return function (t) { return t.group === g; }; };
     var cov = coverageAt(state.d);
+    var pending = count(function (t) { return t.decision === "Requires Verification"; });
     var tiles = [
       ["Targets detected", m.length],
       ["Marine life", count(byGroup("life"))],
       ["Shipwreck / man-made", count(byGroup("structure"))],
       ["Potential mine", count(byGroup("mine"))],
       ["Unknown", count(byGroup("unknown"))],
-      ["Requires verification", count(function (t) { return t.decision === "Requires Verification"; })]
+      ["Requires verification", pending]
     ].map(function (s) { return "<div><strong>" + s[1] + "</strong><span>" + s[0] + "</span></div>"; }).join("");
     return '<div class="summary trail__block is-new"><h4>Mission complete</h4><div class="summary__grid">' + tiles + "</div>" +
       kv([
@@ -600,7 +603,8 @@
         ["Coverage (Sim.)", cov.pct.toFixed(1) + "%"],
         ["Demo time", formatTime(state.ms)]
       ]) +
-      '<p class="trail__text">Every target has been logged with a risk assessment, a decision and a recommended action. Two targets still need verification.</p>' +
+      '<p class="trail__text">Every target has been logged with a risk assessment, a decision and a recommended action. ' +
+      (pending === 1 ? "One target still needs" : pending + " targets still need") + " verification.</p>" +
       '<p class="trail__meta">Simulated demonstration values, not field results.</p></div>';
   }
 
@@ -659,7 +663,7 @@
       return '<tr class="' + (i === last && state.justMarked ? "is-new" : "") + '">' +
         "<td>" + t.id.replace("Target ", "") + "</td>" +
         "<td>" + t.time + "</td>" +
-        "<td>" + t.name + "</td>" +
+        "<td>" + (t.logName || t.name) + "</td>" +
         "<td>" + t.classification + "</td>" +
         '<td><span class="risk risk--' + t.level + ' risk--small">' + t.risk + "</span></td>" +
         '<td class="' + (t.level === "safe" ? "" : "is-alert") + '">' + (t.logDecision || t.decision) + "</td>" +
@@ -674,7 +678,7 @@
     var mark = document.createElement("span");
     mark.className = "timeline__mark timeline__mark--" + t.level;
     mark.style.left = ((state.ms / plan.total) * 100).toFixed(2) + "%";
-    mark.textContent = t.id.replace("Target ", "") + " " + t.time;
+    mark.innerHTML = t.id.replace("Target ", "") + '<span class="timeline__time">' + t.time + "</span>";
     el.timeline.appendChild(mark);
   }
 
@@ -684,7 +688,7 @@
   }
 
   function updateButtons() {
-    el.start.disabled = state.running && !state.paused;
+    el.start.disabled = state.running;
     el.pause.disabled = !state.running;
     el.pause.textContent = state.paused ? "Resume" : "Pause";
     el.scenario.disabled = state.running;
@@ -791,7 +795,7 @@
     var t = {
       key: key, id: "Target #" + pad3(state.counter), name: spec.name, objectType: spec.objectType,
       line: spec.line, repass: spec.repass, depth: spec.depth, source: spec.source, scene: spec.scene, box: spec.box,
-      evidence: spec.evidence, decision: spec.decision, logDecision: spec.logDecision, explanation: spec.explanation,
+      logName: spec.logName, evidence: spec.evidence, decision: spec.decision, logDecision: spec.logDecision, explanation: spec.explanation,
       action: spec.action, statusNow: spec.status, verify: spec.verify,
       classification: rule.classification, group: rule.group, risk: rule.risk, level: rule.level,
       riskType: rule.riskType, certainty: rule.certainty, ruleText: rule.text,
@@ -833,6 +837,7 @@
     state.blocks = 4;
     setStatus("Risk assessment", "alert");
     setStage("risk");
+    setBox(state.current, true);
     renderAnalysis();
   }
 
@@ -941,7 +946,6 @@
   }
 
   function start() {
-    if (state.running && state.paused) { resume(); return; }
     if (state.running) return;
     reset();
     state.running = true;
@@ -993,7 +997,7 @@
   /* Changing the scenario rebuilds the survey, the target positions and the
      timeline, then resets the mission. */
   function setScenario(key) {
-    scenarioKey = SCENARIOS[key] ? key : "redsea";
+    scenarioKey = Object.prototype.hasOwnProperty.call(SCENARIOS, key) ? key : "redsea";
     sc = SCENARIOS[scenarioKey];
     survey = buildSurvey(sc);
     geo = placeTargets();
