@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AUV — Autonomous Underwater Vehicle</title>
-<meta name="description" content="AUV is an autonomous underwater platform for marine observation, object identification and decision support, operating 1–5 m below the water surface.">
+<meta name="description" content="AUV is an autonomous underwater vehicle concept for underwater object detection, hazard assessment, explainable decision support and inspection prioritization, with a conceptual operating range of 1–30 m.">
 <meta name="theme-color" content="#0a2536">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/tokens.css">
@@ -46,7 +46,7 @@
       <div>
         <h1 id="hero-title">AUV</h1>
         <p class="hero__sub">Autonomous Underwater Vehicle</p>
-        <p class="lead">An autonomous underwater platform designed for marine observation, object identification, and decision support.</p>
+        <p class="lead">An autonomous underwater vehicle concept for underwater object detection, hazard assessment, explainable decision support and inspection prioritization.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#demo">Try the interactive demo</a>
           <a class="btn" href="#about">About the project</a>
@@ -59,12 +59,14 @@
     </div>
   </section>
 
+  <div class="saudi-band" aria-hidden="true"></div>
+
   <div class="facts-strip">
     <div class="container">
       <dl>
-        <div><dt>Operating scope</dt><dd>1–5 m below the water surface</dd></div>
+        <div><dt>Target operating depth</dt><dd>1–30 m below the water surface (concept)</dd></div>
         <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data and onboard sensors</dd></div>
-        <div><dt>Output</dt><dd>Classified targets, marked for operator inspection</dd></div>
+        <div><dt>Output</dt><dd>Risk-assessed targets with an explained decision and a recommended action</dd></div>
       </dl>
     </div>
   </div>
@@ -74,79 +76,88 @@
     <div class="container">
       <div class="section__head">
         <h2 id="about-title">About the AUV</h2>
-        <p>An autonomous underwater vehicle built around the team's own design. It surveys shallow marine environments, detects objects in the water, and helps an operator decide which of them need a closer look.</p>
+        <p>An autonomous underwater vehicle built around the team's own design. It surveys an area underwater, detects objects, assesses whether they may be hazardous, explains each decision and tells the operator which targets to inspect first.</p>
       </div>
 
       <div class="about-grid">
         <div>
           <h3>The problem</h3>
           <div class="prose">
-            <p>Shallow coastal waters hold marine life, natural features and man-made objects side by side. Wrecks, debris and equipment matter for safety and for protecting the marine environment, but they are hard to tell apart from their surroundings.</p>
-            <p>Divers can inspect an area directly, yet their time and reach are limited. Different sensing methods provide different types of information about underwater targets. Acoustic sensing can remain useful in poor visibility, while target interpretation still requires analysis of multiple characteristics. No single sensing source answers the question “what is this object?” on its own.</p>
+            <p>Coastal and offshore waters hold marine life, natural features and man-made objects side by side: shipwrecks, debris, lost equipment and, in some areas, old ordnance. Some of these are hazards to navigation or to people working in the water; most are not.</p>
+            <p>Different sensing methods provide different types of information about underwater targets. Acoustic sensing can remain useful in poor visibility, while target interpretation still requires analysis of multiple characteristics. No single sensing source answers the question “what is this object, and is it a hazard?” on its own.</p>
           </div>
           <h3>What the system does</h3>
           <div class="prose">
-            <p>The AUV combines acoustic and onboard sensor data to detect and analyse underwater targets, classify them, and support inspection decisions. Targets are marked and reported to the operator at the surface.</p>
+            <p>The AUV concept surveys an area in parallel lines and combines acoustic and onboard sensor data to detect underwater targets. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
+            <p>Targets are marked and reported to the operator at the surface.</p>
           </div>
         </div>
         <figure class="figure">
           <img src="assets/images/reference-wreck-propeller.jpg" width="1000" height="664" loading="lazy"
                alt="Underwater photograph of a large ship propeller and hull structure lying on the seabed.">
-          <figcaption>A man-made structure on the seabed: the kind of object the AUV is meant to find and flag.</figcaption>
+          <figcaption>A wreck site on the seabed: the kind of object the AUV is meant to find, assess and flag. Reference photograph.</figcaption>
         </figure>
       </div>
 
       <h3 class="subhead">Operating environment</h3>
       <div class="prose">
-        <p>The AUV operates in a marine environment, 1–5 metres below the water surface.</p>
+        <p>Target operating depth for the concept: 1–30 metres below the water surface. This is a conceptual range; the physical vehicle has not been tested or certified across it.</p>
       </div>
       <figure class="figure depth mt-6">
         <svg viewBox="0 0 760 380" role="img" aria-labelledby="depth-title depth-desc">
-          <title id="depth-title">Operating depth</title>
-          <desc id="depth-desc">A water column diagram. The band from 1 m to 5 m below the surface is highlighted as the AUV's operating range.</desc>
+          <title id="depth-title">Conceptual operating range</title>
+          <desc id="depth-desc">A water column diagram from the surface to 30 m. The band from 1 m to 30 m below the surface is highlighted as the conceptual operating range.</desc>
           <defs>
             <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#e8f4f8"/>
-              <stop offset="1" stop-color="#a9d0dd"/>
+              <stop offset="1" stop-color="#8fbfd0"/>
             </linearGradient>
             <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
               <line x1="0" y1="0" x2="0" y2="10" stroke="#48606f" stroke-width="1" opacity="0.3"/>
             </pattern>
           </defs>
-          <rect x="90" y="50" width="650" height="300" fill="url(#water)"/>
-          <rect x="90" y="94" width="650" height="176" fill="#c49837" fill-opacity="0.3"/>
-          <rect x="90" y="270" width="650" height="80" fill="url(#hatch)"/>
+          <rect x="90" y="50" width="650" height="280" fill="url(#water)"/>
+          <rect x="90" y="59.3" width="650" height="270.7" fill="#c49837" fill-opacity="0.26"/>
+          <rect x="90" y="330" width="650" height="20" fill="url(#hatch)"/>
           <g stroke="#48606f" stroke-width="1" opacity="0.35">
-            <line x1="90" y1="138" x2="740" y2="138"/>
-            <line x1="90" y1="182" x2="740" y2="182"/>
-            <line x1="90" y1="226" x2="740" y2="226"/>
+            <line x1="90" y1="96.7" x2="740" y2="96.7"/>
+            <line x1="90" y1="143.3" x2="740" y2="143.3"/>
+            <line x1="90" y1="190" x2="740" y2="190"/>
+            <line x1="90" y1="236.7" x2="740" y2="236.7"/>
+            <line x1="90" y1="283.3" x2="740" y2="283.3"/>
           </g>
           <g stroke="#8b6816" stroke-width="2.5">
-            <line x1="90" y1="94" x2="740" y2="94"/>
-            <line x1="90" y1="270" x2="740" y2="270"/>
+            <line x1="90" y1="59.3" x2="740" y2="59.3"/>
+            <line x1="90" y1="330" x2="740" y2="330"/>
           </g>
           <path d="M90 50 q16.25 -8 32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0 t32.5 0" fill="none" stroke="#0c2233" stroke-width="2"/>
           <g stroke="#0c2233" stroke-width="1.5">
             <line x1="80" y1="50" x2="90" y2="50"/>
-            <line x1="80" y1="94" x2="90" y2="94"/>
-            <line x1="80" y1="138" x2="90" y2="138"/>
-            <line x1="80" y1="182" x2="90" y2="182"/>
-            <line x1="80" y1="226" x2="90" y2="226"/>
-            <line x1="80" y1="270" x2="90" y2="270"/>
-            <line x1="90" y1="50" x2="90" y2="270"/>
+            <line x1="80" y1="96.7" x2="90" y2="96.7"/>
+            <line x1="80" y1="143.3" x2="90" y2="143.3"/>
+            <line x1="80" y1="190" x2="90" y2="190"/>
+            <line x1="80" y1="236.7" x2="90" y2="236.7"/>
+            <line x1="80" y1="283.3" x2="90" y2="283.3"/>
+            <line x1="80" y1="330" x2="90" y2="330"/>
+            <line x1="90" y1="50" x2="90" y2="330"/>
           </g>
           <g font-size="15" text-anchor="end">
             <text x="72" y="55">0 m</text>
-            <text x="72" y="99">1 m</text>
-            <text x="72" y="143">2 m</text>
-            <text x="72" y="187">3 m</text>
-            <text x="72" y="231">4 m</text>
-            <text x="72" y="275">5 m</text>
+            <text x="72" y="101.7">5 m</text>
+            <text x="72" y="148.3">10 m</text>
+            <text x="72" y="195">15 m</text>
+            <text x="72" y="241.7">20 m</text>
+            <text x="72" y="288.3">25 m</text>
+            <text x="72" y="335">30 m</text>
+          </g>
+          <g font-size="14" font-weight="700" text-anchor="end" class="depth__range">
+            <text x="732" y="77">1 m</text>
+            <text x="732" y="322">30 m</text>
           </g>
           <text x="90" y="30" font-size="15" class="depth__muted">Water surface</text>
-          <text x="415" y="188" font-size="24" font-weight="700" text-anchor="middle">AUV operating range: 1–5 m</text>
+          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual operating range: 1–30 m</text>
         </svg>
-        <figcaption>The AUV's operating range, shown against the water column.</figcaption>
+        <figcaption>The conceptual operating range of the AUV, shown against the water column. A target for the concept, not a tested rating.</figcaption>
       </figure>
     </div>
   </section>
@@ -156,19 +167,22 @@
     <div class="container">
       <div class="section__head">
         <h2 id="how-title">How it works</h2>
-        <p>From the water to the operator: the AUV senses its surroundings, finds targets, analyses and classifies them, and supports the inspection decision.</p>
+        <p>From the water to the operator: the AUV senses its surroundings, detects targets, classifies them, assesses their potential risk, explains each decision and recommends an action.</p>
       </div>
 
       <ol class="flow flow--end">
-        <li><h3>Underwater Environment</h3><p>The marine setting the AUV surveys, 1–5 m below the surface.</p></li>
-        <li><h3>Sensor Data</h3><p>Multibeam echosounder data, water-column acoustic data and onboard sensor data.</p></li>
-        <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data.</p></li>
-        <li><h3>Object Analysis</h3><p>Shape, geometry, structural appearance and movement are examined.</p></li>
-        <li><h3>Classification</h3><p>Each target is classed as marine life, a potential man-made object, or a natural or unidentified object.</p></li>
-        <li><h3>Decision Support</h3><p>An inspection decision and an inspection priority are suggested.</p></li>
-        <li><h3>Target Marking</h3><p>The target is given an ID and marked at its position.</p></li>
-        <li><h3>Inspection</h3><p>Marked targets are inspected.</p></li>
-        <li><h3>Operator / Surface System</h3><p>Results reach the operator at the surface.</p></li>
+        <li><h3>Underwater Environment</h3><p>The survey area, 1–30 m below the surface (concept).</p></li>
+        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam echosounder data, water-column acoustic data and onboard sensor data.</p></li>
+        <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
+        <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
+        <li><h3>Object Classification</h3><p>Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
+        <li><h3>Risk Assessment</h3><p>Non-hazardous, potential hazard, or unknown and requiring verification.</p></li>
+        <li><h3>Risk Type Identification</h3><p>For example navigation / obstruction risk or potential explosive hazard.</p></li>
+        <li><h3>Explainable Decision</h3><p>A decision together with the evidence and the rule that led to it.</p></li>
+        <li><h3>Target Marking</h3><p>The target is marked at its position on the survey map.</p></li>
+        <li><h3>Recommended Action</h3><p>Continue the survey, inspect the target, or verify it.</p></li>
+        <li><h3>Local Data Storage</h3><p>Target records and raw sensor data are stored on board.</p></li>
+        <li><h3>Data Transfer / Operator System</h3><p>Priority target records reach the operator at the surface.</p></li>
       </ol>
 
       <h3 class="subhead">Sensing and communication</h3>
@@ -193,38 +207,111 @@
         <div class="comm">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
           <div>
-            <h3>Signal-Based Communication</h3>
-            <p>Links the AUV with the operator and the surface system. It is separate from the sensing layer: sensors observe the environment, while communication carries the results.</p>
+            <h3>Underwater Acoustic Communication <span class="tag tag--concept">Conceptual</span></h3>
+            <p>Links the AUV with the operator and the surface system. It is separate from the sensing layer: sensors observe the environment, while communication carries the results. Communication specifications: TBD.</p>
           </div>
         </div>
       </div>
 
-      <h3 class="subhead">Object recognition and decision support</h3>
+      <h3 class="subhead">Classification, risk and decision</h3>
       <div class="prose">
-        <p>Each detected target is analysed using its shape, geometry, structural appearance, movement characteristics, and sensor and acoustic characteristics where applicable. The decision engine then classifies the target and suggests what to do with it.</p>
+        <p>Each target is analysed from its shape, geometry, structure, size category, movement where applicable, acoustic characteristics and difference from the surrounding background. The classification, the risk assessment and the recommended action are kept as three separate results.</p>
       </div>
-      <div class="cards-3 mt-card">
-        <div class="card"><h3>Marine Life</h3><p>Living organisms, recognised using relevant observable characteristics such as body shape, pattern and movement where available in the simulation.</p></div>
-        <div class="card"><h3>Potential Man-Made Object</h3><p>Rigid, geometric or non-biological structures such as wreckage, debris or equipment.</p></div>
-        <div class="card"><h3>Natural / Unidentified Object</h3><p>Objects that appear natural or cannot be identified with sufficient confidence.</p></div>
+      <div class="cards-3 mt-card risk-cards">
+        <div class="card risk-card risk-card--safe">
+          <p class="risk risk--safe">Non-Hazardous</p>
+          <p>Marine life, and objects with no immediate hazard. Decision: continue survey / log observation.</p>
+        </div>
+        <div class="card risk-card risk-card--hazard">
+          <p class="risk risk--hazard">Potential Hazard</p>
+          <p>Wrecks, obstructions and other man-made structures. Decision: requires inspection. A potential mine is a <em>high</em> potential hazard; it always requires verification and is never reported as confirmed.</p>
+        </div>
+        <div class="card risk-card risk-card--unknown">
+          <p class="risk risk--unknown">Unknown — Requires Verification</p>
+          <p>Objects without enough evidence for a reliable class. The system says “unknown” instead of guessing. Decision: requires verification.</p>
+        </div>
       </div>
-      <p class="note-line">Every target receives an inspection decision, such as “Requires Inspection”, and an inspection priority. Potential risk is expressed as a priority for the operator to review; the system does not determine danger with certainty.</p>
+
+      <figure class="explain mt-card">
+        <figcaption><strong>How a decision is explained</strong> <span class="tag tag--sim">Simulation example</span></figcaption>
+        <table class="explain__table">
+          <thead><tr><th scope="col">Feature</th><th scope="col">Evidence</th></tr></thead>
+          <tbody>
+            <tr><td>Rigid geometric structure</td><td><span class="ev ev--yes">Detected</span></td></tr>
+            <tr><td>Biological morphology</td><td><span class="ev ev--no">Not detected</span></td></tr>
+            <tr><td>Acoustic return differs from surrounding background</td><td><span class="ev ev--yes">Detected</span></td></tr>
+          </tbody>
+        </table>
+        <dl class="explain__result">
+          <div><dt>Result</dt><dd>Potential man-made object</dd></div>
+          <div><dt>Risk</dt><dd>Potential hazard</dd></div>
+          <div><dt>Decision</dt><dd>Requires inspection</dd></div>
+        </dl>
+      </figure>
+      <p class="note-line">Potential risk is expressed as a priority for the operator to review; the system does not determine danger with certainty. The decision engine in this prototype is rule-based and explainable. Trained recognition models are future development and are not part of it.</p>
+
+      <h3 class="subhead">Verification and background comparison</h3>
+      <div class="cards-2">
+        <div class="card">
+          <h3>Multi-pass verification <span class="tag tag--concept">Conceptual</span></h3>
+          <ol class="mini-flow">
+            <li>First pass</li>
+            <li>Target detected</li>
+            <li>Additional pass, from another angle</li>
+            <li>Evidence comparison</li>
+            <li>Decision update</li>
+          </ol>
+          <p>A suspicious target is passed again from the neighbouring survey line, so it is seen from another angle. The two observations are compared before the decision is updated. In the demo this appears as a conceptual multi-angle consensus; no trained model is involved.</p>
+        </div>
+        <div class="card">
+          <h3>Environmental / acoustic background <span class="tag tag--concept">Conceptual</span></h3>
+          <p>A detected return is compared with the surrounding seafloor and water column. A return that stands out from its background is stronger evidence that an object is present. In the demo this comparison is a simulated evidence item; no trained anomaly-detection model is claimed.</p>
+        </div>
+      </div>
+
+      <h3 class="subhead">Data transfer <span class="tag tag--concept">Conceptual</span></h3>
+      <div class="prose">
+        <p>Underwater links carry little data, so the concept keeps large raw sensor data on board and sends compact target records first.</p>
+      </div>
+      <ol class="pipeline mt-card">
+        <li>Sensors</li>
+        <li>Onboard Processing</li>
+        <li>Target Detection</li>
+        <li>Target Analysis</li>
+        <li>Target Record</li>
+        <li>Local Storage</li>
+        <li>Data Prioritization / Compression</li>
+        <li>Underwater Acoustic Communication</li>
+        <li>Surface / Operator System</li>
+      </ol>
+      <div class="cards-2 mt-card">
+        <div class="card">
+          <h3>Sent first: priority event data</h3>
+          <div class="chips" aria-label="Priority event data">
+            <span class="chip">Target ID</span><span class="chip">Classification</span><span class="chip">Risk</span><span class="chip">Risk type</span><span class="chip">Location</span><span class="chip">Depth</span><span class="chip">Detection time</span><span class="chip">Decision</span><span class="chip">Explanation</span><span class="chip">Alert</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Kept on board</h3>
+          <p>Raw and large sensor datasets stay in onboard storage for later retrieval. Communication specifications (range, bandwidth, modem, protocol): TBD.</p>
+        </div>
+      </div>
 
       <h3 class="subhead">Selected Red Sea fish</h3>
       <div class="prose">
-        <p>Fish recognition is demonstrated on selected Red Sea species. It supports the survey by separating marine life from man-made objects; it does not attempt to recognise every species.</p>
+        <p>Marine-life recognition is shown with selected Red Sea species. It separates marine life from man-made objects and potential hazards; it does not attempt to recognise every species. The demo uses the lionfish as its marine-life example.</p>
       </div>
       <div class="chips" aria-label="Selected species"><span class="chip">Lionfish</span><span class="chip">Clownfish</span><span class="chip">Grouper</span></div>
       <div class="photo-row">
         <figure class="figure">
           <img src="assets/images/reference-lionfish-reef.jpg" width="1824" height="1192" loading="lazy"
                alt="Underwater photograph of a red-and-white striped lionfish with long fan-like fins among corals.">
-          <figcaption>A lionfish on a reef.</figcaption>
+          <figcaption>A lionfish on a reef. Reference photograph.</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/images/reference-lionfish-wreck.jpg" width="1740" height="1180" loading="lazy"
                alt="Underwater photograph of several lionfish swimming around a rusted, coral-covered metal structure.">
-          <figcaption>Lionfish around a submerged structure: marine life and man-made objects share the same scene.</figcaption>
+          <figcaption>Lionfish around a submerged structure: marine life and man-made objects share the same scene. Reference photograph.</figcaption>
         </figure>
       </div>
     </div>
@@ -238,36 +325,62 @@
         <p>The AUV is built around the team's own hull design: a streamlined, torpedo-shaped body with tail fins and a propeller. Move over the image to inspect the details.</p>
       </div>
 
+      <div class="design-tabs" role="tablist" aria-label="Design view">
+        <button type="button" role="tab" id="tab-official" aria-controls="auv-sheet" aria-selected="true">Official Team Design</button>
+        <button type="button" role="tab" id="tab-concept" aria-controls="auv-concept" aria-selected="false" tabindex="-1">Saudi-Inspired Concept Visualization</button>
+      </div>
+
       <div class="design-grid" id="design-grid">
-        <figure class="sheet" id="auv-sheet">
-          <div class="sheet__frame">
-            <div class="sheet__view" id="auv-view" tabindex="0" role="button" aria-describedby="sheet-hint"
-                 aria-label="AUV design. Open the full-size view.">
-              <img id="auv-img" src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
-                   alt="The AUV: a gold, torpedo-shaped hull with a propeller and tail fins at one end.">
-              <div class="loupe" id="auv-loupe" aria-hidden="true"></div>
-              <div class="sheet__info" aria-hidden="true">
-                <p class="sheet__info-title">AUV</p>
-                <p class="sheet__info-sub">Autonomous Underwater Vehicle</p>
-                <dl>
-                  <div><dt>Operating depth</dt><dd>1–5 m</dd></div>
-                  <div><dt>Sensing</dt><dd>Acoustic + onboard sensors</dd></div>
-                </dl>
+        <div class="design-views">
+          <figure class="sheet" id="auv-sheet" role="tabpanel" aria-labelledby="tab-official">
+            <div class="sheet__frame">
+              <div class="sheet__view" id="auv-view" tabindex="0" role="button" aria-describedby="sheet-hint"
+                   aria-label="AUV design. Open the full-size view.">
+                <img id="auv-img" src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
+                     alt="The AUV: a gold, torpedo-shaped hull with a propeller and tail fins at one end.">
+                <div class="loupe" id="auv-loupe" aria-hidden="true"></div>
+                <div class="sheet__info" aria-hidden="true">
+                  <p class="sheet__info-title">AUV</p>
+                  <p class="sheet__info-sub">Autonomous Underwater Vehicle</p>
+                  <dl>
+                    <div><dt>Operating depth</dt><dd>1–30 m (concept)</dd></div>
+                    <div><dt>Sensing</dt><dd>Acoustic + onboard sensors</dd></div>
+                  </dl>
+                </div>
               </div>
             </div>
-          </div>
-          <figcaption class="sheet__strip"><span>AUV</span><span>Official design</span></figcaption>
-        </figure>
+            <figcaption class="sheet__strip"><span>AUV</span><span>Official Team Design</span></figcaption>
+          </figure>
+
+          <figure class="concept" id="auv-concept" role="tabpanel" aria-labelledby="tab-concept" hidden>
+            <div class="concept__plate">
+              <div class="concept__view">
+                <img src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
+                     alt="The official AUV design, unchanged, presented on a Saudi-inspired concept plate.">
+              </div>
+              <ul class="concept__palette" aria-label="Proposed accent colours">
+                <li><i style="--swatch:#006c35"></i><span><strong>Saudi green</strong>Primary accent</span></li>
+                <li><i style="--swatch:#ffffff"></i><span><strong>White</strong>Hull and markings</span></li>
+                <li><i style="--swatch:#c49837"></i><span><strong>Restrained gold</strong>Detail lines</span></li>
+              </ul>
+            </div>
+            <figcaption class="sheet__strip"><span>AUV</span><span>Saudi-Inspired Concept Visualization</span></figcaption>
+          </figure>
+        </div>
 
         <div class="design-side">
           <dl class="spec">
-            <div><dt>Vehicle</dt><dd>Autonomous Underwater Vehicle</dd></div>
-            <div><dt>Operating scope</dt><dd>1–5 m below the water surface</dd></div>
+            <div><dt>Platform</dt><dd>Autonomous Underwater Vehicle</dd></div>
+            <div><dt>Target operating depth</dt><dd>1–30 m — concept</dd></div>
             <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data, onboard sensors</dd></div>
-            <div><dt>Communication</dt><dd>Signal-based communication with the surface system</dd></div>
-            <div><dt>Recognition</dt><dd>Marine life, potential man-made objects</dd></div>
+            <div><dt>Processing</dt><dd>Onboard data processing — concept</dd></div>
+            <div><dt>Communication</dt><dd>Underwater acoustic communication — concept; specifications TBD</dd></div>
+            <div><dt>Detection</dt><dd>Underwater object detection</dd></div>
+            <div><dt>Decision</dt><dd>Explainable risk assessment</dd></div>
+            <div><dt>Survey</dt><dd>Grid / parallel-line survey</dd></div>
           </dl>
-          <aside class="inspect-tools" aria-labelledby="inspect-title">
+          <p class="concept-note" id="concept-note" hidden>The concept visualization keeps the official geometry and image unchanged. It proposes a Saudi-inspired identity around the vehicle: green and white accents, restrained gold detailing and a geometric pattern drawn from Saudi visual heritage. It is a presentation concept, not a new vehicle design.</p>
+          <aside class="inspect-tools" id="inspect-tools" aria-labelledby="inspect-title">
             <h3 id="inspect-title">Inspect the design</h3>
             <p class="pointer-only-fine" id="sheet-hint">Move the pointer over the vehicle to magnify it. Click, or press Enter, for the full-size view.</p>
             <p class="pointer-only-touch">Tap the image to open the full-size view, then pinch to zoom.</p>
@@ -292,9 +405,15 @@
       <div class="demo__head">
         <div>
           <h2 id="demo-title">Interactive demo</h2>
-          <p>Interactive software prototype demonstrating the proposed AUV mission workflow.</p>
+          <p>Software simulation of the proposed AUV mission: a grid survey that detects underwater objects, assesses their potential risk and explains every decision.</p>
         </div>
         <div class="demo__controls">
+          <label class="scenario"><span>Scenario</span>
+            <select id="demo-scenario">
+              <option value="redsea">Red Sea coastal segment</option>
+              <option value="hormuz">Strait of Hormuz — simulated</option>
+            </select>
+          </label>
           <span class="demo-status" id="demo-status" data-state="idle" role="status"><i></i><span id="demo-status-label">Ready</span></span>
           <button class="btn btn--go" type="button" id="demo-start">Start mission</button>
           <button class="btn" type="button" id="demo-pause" disabled>Pause</button>
@@ -306,36 +425,64 @@
       <ol class="demo-stages" id="demo-stages">
         <li data-stage="scanning">Scanning</li>
         <li data-stage="detection">Detection</li>
-        <li data-stage="analysis">Object analysis</li>
+        <li data-stage="analysis">Analysis</li>
         <li data-stage="classification">Classification</li>
-        <li data-stage="decision">Decision support</li>
-        <li data-stage="marking">Target marking</li>
-        <li data-stage="inspection">Inspection</li>
+        <li data-stage="risk">Risk assessment</li>
+        <li data-stage="decision">Decision</li>
+        <li data-stage="alert">Alert &amp; marking</li>
+        <li data-stage="verification">Verification</li>
       </ol>
 
+      <div class="demo-alert" id="demo-alert" data-kind="idle" aria-live="polite">
+        <div class="demo-alert__head"><strong id="demo-alert-title">No active alerts</strong><span class="tag tag--sim">Simulation alert</span></div>
+        <dl class="demo-alert__body" id="demo-alert-body"></dl>
+      </div>
+
       <div class="demo__grid">
-        <div class="demo-card" id="card-map">
-          <div class="demo-card__head"><h3>Search area</h3><span>Simulated grid</span></div>
-          <div class="map-screen">
-            <svg id="demo-map" viewBox="0 0 560 460" role="img" aria-label="Spiral search pattern with marked targets">
-              <g id="demo-rings" fill="none" stroke="#ffffff" stroke-dasharray="4 4"></g>
-              <circle cx="280" cy="230" r="205" fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="1.5"/>
-              <g id="demo-ticks" font-family="Archivo, sans-serif" font-size="10" fill="#7f9bab"></g>
-              <path id="demo-path" fill="none" stroke="#7fd6e6" stroke-width="1.8" stroke-dasharray="5 4" opacity="0.9"/>
-              <g id="demo-markers"></g>
-              <g id="demo-auv"><polygon points="0,-9 7,8 0,4 -7,8" fill="#c49837" stroke="#071a26" stroke-width="1"/></g>
-            </svg>
+        <div class="demo__main">
+          <div class="demo-card" id="card-map">
+            <div class="demo-card__head"><h3>Survey area — grid</h3><span>Simulated navigation data</span></div>
+            <div class="map-screen">
+              <svg id="demo-map" viewBox="0 0 560 400" role="img" aria-label="Grid survey: parallel survey lines, the AUV position and marked targets">
+                <rect id="demo-bounds" fill="rgb(127 214 230 / 0.04)" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.5"/>
+                <g id="demo-cover" fill="#7fd6e6" fill-opacity="0.16"></g>
+                <path id="demo-plan" fill="none" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.2" stroke-dasharray="4 5"/>
+                <polyline id="demo-track" fill="none" stroke="#7fd6e6" stroke-width="2.4" stroke-linejoin="round"/>
+                <path id="demo-current" fill="none" stroke="#c49837" stroke-width="1.6" stroke-dasharray="6 4"/>
+                <g id="demo-ticks" font-family="Archivo, sans-serif" font-size="10" fill="#9fb6c4" stroke="#9fb6c4"></g>
+                <g id="demo-markers"></g>
+                <g id="demo-auv"><polygon points="0,-9 7,8 0,4 -7,8" fill="#c49837" stroke="#071a26" stroke-width="1"/></g>
+              </svg>
+            </div>
+            <div class="map-legend">
+              <span><i class="k-auv"></i>AUV</span>
+              <span><i class="k-track"></i>Completed track</span>
+              <span><i class="k-cover"></i>Covered area</span>
+              <span><i class="k-safe"></i>Non-hazardous</span>
+              <span><i class="k-hazard"></i>Potential hazard</span>
+              <span><i class="k-high"></i>High potential hazard</span>
+              <span><i class="k-unknown"></i>Unknown</span>
+            </div>
+            <p class="map-note" id="demo-scenario-note"></p>
           </div>
-          <div class="map-legend">
-            <span><i class="k-auv"></i>AUV</span>
-            <span><i class="k-fish"></i>Marine life</span>
-            <span><i class="k-object"></i>Potential man-made object</span>
+
+          <div class="demo-card" id="card-coverage">
+            <div class="demo-card__head"><h3>Survey coverage</h3><span>Simulation estimate</span></div>
+            <dl class="coverage__info" id="cov-info"></dl>
+            <div class="coverage__live">
+              <div><span>Distance covered</span><strong id="cov-distance">0 m</strong></div>
+              <div><span>Area covered</span><strong id="cov-area">0 m²</strong></div>
+              <div><span>Coverage</span><strong id="cov-pct">0.0%</strong></div>
+              <div><span>Remaining area</span><strong id="cov-remaining">0 m²</strong></div>
+            </div>
+            <div class="coverage__bar" aria-hidden="true"><i id="cov-bar"></i></div>
+            <p class="trail__meta">Coverage values are simulated estimates and not validated physical performance. Area covered = distance along survey lines × the smaller of swath and line spacing; turns add no new area. Demo time is compressed and does not represent vehicle speed.</p>
           </div>
         </div>
 
         <div class="demo__side">
           <div class="demo-card">
-            <div class="demo-card__head"><h3>Target Observation</h3><span>Simulation / Reference Imagery</span></div>
+            <div class="demo-card__head"><h3>Target Observation</h3><span>Reference image — not a live feed</span></div>
             <div class="camera" id="camera"><div class="camera__stage" id="camera-stage">
               <div class="camera__scene is-visible" data-scene="idle">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -348,47 +495,18 @@
                   </g>
                 </svg>
               </div>
-              <div class="camera__scene" data-scene="lionfish"><img src="assets/images/reference-lionfish-reef.jpg" alt="" width="1824" height="1192"></div>
-              <div class="camera__scene" data-scene="clownfish">
-                <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <defs><clipPath id="c-clown"><ellipse rx="42" ry="24"/></clipPath><linearGradient id="c-water2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b6a7c"/><stop offset="1" stop-color="#0a2a3a"/></linearGradient></defs>
-                  <rect width="300" height="200" fill="url(#c-water2)"/>
-                  <g opacity="0.55"><path d="M40,200 Q52,150 38,110 Q66,150 76,200Z" fill="#8a5a4a"/><path d="M84,200 Q92,160 80,126 Q104,160 112,200Z" fill="#8a5a4a"/></g>
-                  <g transform="translate(160,100)">
-                    <path d="M42,0 L70,-16 L70,16Z" fill="#e2652f" stroke="#c94a20" stroke-width="1.5"/>
-                    <path d="M-6,-24 Q4,-38 16,-24Z" fill="#e2652f" stroke="#c94a20" stroke-width="1"/>
-                    <g clip-path="url(#c-clown)"><ellipse rx="42" ry="24" fill="#f0602e"/><g fill="#f5f2ea" stroke="#2a1a12" stroke-width="1"><rect x="-30" y="-30" width="11" height="60"/><rect x="-6" y="-30" width="11" height="60"/><rect x="18" y="-30" width="10" height="60"/></g></g>
-                    <ellipse rx="42" ry="24" fill="none" stroke="#c94a20" stroke-width="1.5"/>
-                    <circle cx="-34" cy="-6" r="3.2" fill="#1a1a1a"/>
-                  </g>
-                </svg>
-              </div>
-              <div class="camera__scene" data-scene="grouper">
-                <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                  <defs><linearGradient id="c-water3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#17586b"/><stop offset="1" stop-color="#08202d"/></linearGradient></defs>
-                  <rect width="300" height="200" fill="url(#c-water3)"/>
-                  <path d="M0,200 L0,168 Q40,150 80,170 T170,166 T300,172 L300,200Z" fill="#33413f" opacity="0.7"/>
-                  <g transform="translate(150,100)">
-                    <path d="M58,0 L92,-26 Q84,0 92,26Z" fill="#7b5a3f"/>
-                    <path d="M-34,-32 Q-14,-48 12,-42 Q34,-38 42,-26 L20,-30Z" fill="#6e4f37"/>
-                    <path d="M-26,32 Q-6,46 20,38 L4,28Z" fill="#6e4f37"/>
-                    <ellipse rx="66" ry="34" fill="#8a6a4c"/>
-                    <g fill="#5e4230" opacity="0.85"><circle cx="-8" cy="-14" r="6"/><circle cx="16" cy="-4" r="7"/><circle cx="34" cy="-16" r="5"/><circle cx="4" cy="14" r="6"/><circle cx="30" cy="14" r="5"/><circle cx="-24" cy="6" r="4"/></g>
-                    <g fill="#b39270" opacity="0.7"><circle cx="-16" cy="-4" r="4"/><circle cx="24" cy="-24" r="3"/><circle cx="12" cy="24" r="3"/><circle cx="44" cy="2" r="3"/></g>
-                    <path d="M-66,4 Q-52,16 -38,10" fill="none" stroke="#3b271a" stroke-width="2.2" stroke-linecap="round"/>
-                    <circle cx="-46" cy="-8" r="5.5" fill="#f3e9d8"/><circle cx="-46" cy="-8" r="2.8" fill="#151515"/>
-                    <path d="M-20,8 Q-2,26 14,10Z" fill="#7b5a3f"/>
-                  </g>
-                </svg>
-              </div>
-              <div class="camera__scene" data-scene="object"><img src="assets/images/reference-wreck-propeller.jpg" alt="" width="1000" height="664"></div>
+              <div class="camera__scene" data-scene="fish"><img src="assets/images/reference-lionfish-reef.jpg" alt="" width="1824" height="1192"></div>
+              <div class="camera__scene camera__scene--contain" data-scene="wreck"><img src="assets/images/reference-shipwreck-sonar.jpg" alt="" width="1500" height="772"></div>
+              <div class="camera__scene" data-scene="mine"><img src="assets/images/reference-wreck-propeller.jpg" alt="" width="1000" height="664"></div>
+              <div class="camera__scene" data-scene="unknown"><img src="assets/images/reference-lionfish-wreck.jpg" alt="" width="1740" height="1180"></div>
               <div class="det-box" id="det-box" hidden><span class="det-box__label" id="det-label"></span></div>
-              </div><span class="camera__chip" id="cam-chip">Simulated Observation</span>
+              </div><span class="camera__chip" id="cam-chip">Reference image</span>
             </div>
+            <p class="obs-credit" id="obs-credit"></p>
           </div>
 
           <div class="demo-card">
-            <div class="demo-card__head"><h3>Analysis</h3><span>Software simulation</span></div>
+            <div class="demo-card__head"><h3>Analysis</h3><span>Simulation / concept demonstration</span></div>
             <div class="analysis" id="demo-analysis" aria-live="polite"></div>
           </div>
         </div>
@@ -397,11 +515,12 @@
       <div class="demo-card demo-log" id="card-log">
         <div class="demo-card__head">
           <h3>Target log</h3>
-          <div class="demo-log__stats"><span>Demo values</span><span>Targets <strong id="demo-count">0</strong></span><span>Mission time <strong id="demo-time">00:00</strong></span></div>
+          <div class="demo-log__stats"><span>Demo values</span><span>Targets <strong id="demo-count">0</strong></span><span>Demo time <strong id="demo-time">00:00</strong></span></div>
         </div>
+        <div class="timeline" id="demo-timeline" aria-label="Detection timeline"><i class="timeline__fill" id="demo-timeline-fill"></i></div>
         <div class="log-scroll">
           <table class="log-table">
-            <thead><tr><th>Target</th><th>Category</th><th>Identification</th><th>Detected by</th><th>Position</th><th>Time</th><th>Decision</th></tr></thead>
+            <thead><tr><th>Target</th><th>Detected</th><th>Identification</th><th>Classification</th><th>Risk</th><th>Decision</th><th>Detected by</th><th>Line, bearing (Sim.)</th><th>Position (Sim.)</th><th>Depth (Sim.)</th></tr></thead>
             <tbody id="log-body"></tbody>
           </table>
         </div>
@@ -450,10 +569,11 @@
 </main>
 
 <footer class="site-footer">
+  <div class="saudi-band saudi-band--footer" aria-hidden="true"></div>
   <div class="container">
     <div class="site-footer__brand"><span class="brand__mark">AUV</span><span>Autonomous Underwater Vehicle</span></div>
     <p>Current demonstrations represent a software prototype of the proposed AUV workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
-    <p class="site-footer__small">Reference photographs were supplied by the team. <a href="#home">Back to top</a></p>
+    <p class="site-footer__small">Simulation values are not field measurements. Reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
   </div>
 </footer>
 

@@ -29,6 +29,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
+[hidden] { display: none !important; }
 
 a { color: var(--sea); text-underline-offset: 3px; }
 a:hover { color: var(--deep); }

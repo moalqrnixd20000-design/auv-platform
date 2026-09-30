@@ -1,9 +1,10 @@
 # AUV — Autonomous Underwater Vehicle
 
-An autonomous underwater platform designed for marine observation, object identification,
-and decision support. This repository is the project website: project information, the
-team's AUV design, an interactive software demo of the proposed mission workflow, a
-demonstration video section, and supporting materials.
+An autonomous underwater vehicle concept for underwater object detection, hazard assessment,
+explainable decision support and inspection prioritization (conceptual operating range 1–30 m).
+This repository is the project website: project information, the team's AUV design, an
+interactive software simulation of a grid survey mission, a demonstration video section, and
+supporting materials. All demo values are simulated.
 
 **Live website:** https://moalqrnixd20000-design.github.io/auv-platform/
 

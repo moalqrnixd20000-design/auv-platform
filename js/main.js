@@ -46,4 +46,32 @@
     }, { rootMargin: "-15% 0px -70% 0px" });
     sections.forEach(function (section) { observer.observe(section); });
   }
+
+  /* AUV Design: switch between the official team design and the
+     Saudi-inspired concept visualization (tabs, arrow keys supported). */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.design-tabs [role="tab"]'));
+  var conceptExtras = [document.getElementById("concept-note")];
+  var officialExtras = [document.getElementById("inspect-tools")];
+
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    var concept = tab.id === "tab-concept";
+    conceptExtras.forEach(function (n) { if (n) n.hidden = !concept; });
+    officialExtras.forEach(function (n) { if (n) n.hidden = concept; });
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { selectTab(tab); });
+    tab.addEventListener("keydown", function (event) {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      var next = tabs[(i + (event.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      selectTab(next);
+      next.focus();
+    });
+  });
 })();

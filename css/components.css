@@ -341,3 +341,169 @@ html:not(.js) .inspect-tools { display: none; }
 .viewer__bar form { margin: 0; }
 .viewer__scroll { max-height: calc(100vh - 150px); overflow: auto; background: #fff; }
 .viewer__scroll img { width: 1600px; max-width: none; border: 0; border-radius: 0; }
+
+/* ---------- Saudi-inspired identity ----------
+   A thin band of green triangles on white with a restrained gold line,
+   after the geometric borders of Saudi (Sadu) weaving. Used sparingly. */
+
+.saudi-band {
+  height: 12px;
+  background:
+    linear-gradient(var(--hull), var(--hull)) left bottom / 100% 1.5px no-repeat,
+    conic-gradient(from 135deg at 50% 0, var(--green) 90deg, transparent 0) 0 0 / 24px 12px repeat-x,
+    #fff;
+}
+.saudi-band--footer { margin: calc(-1 * var(--space-7)) 0 var(--space-7); }
+
+/* ---------- Labels: simulation / conceptual / reference ---------- */
+
+.tag {
+  display: inline-block;
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.6;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.tag--concept { background: var(--green-soft); color: var(--green-ink); }
+.tag--sim { background: var(--sea-soft); color: var(--sea); }
+
+/* ---------- Risk states ---------- */
+
+.risk { display: inline-block; padding: 4px 12px; border-radius: 999px; font-weight: 700; line-height: 1.35; }
+.risk--safe { background: var(--risk-safe-soft); color: var(--risk-safe-ink); }
+.risk--hazard { background: var(--risk-hazard-soft); color: var(--risk-hazard-ink); box-shadow: inset 0 0 0 1.5px var(--risk-hazard); }
+.risk--high { background: var(--risk-high-soft); color: var(--risk-high-ink); box-shadow: inset 0 0 0 1.5px var(--risk-high); }
+.risk--unknown { background: var(--risk-unknown-soft); color: var(--risk-unknown-ink); box-shadow: inset 0 0 0 1.5px var(--risk-unknown); }
+.risk--small { padding: 2px 9px; font-size: 0.82rem; white-space: nowrap; }
+
+.risk-card { border-top-width: 4px; }
+.risk-card .risk { margin-bottom: var(--space-3); }
+.risk-card--safe { border-top-color: var(--risk-safe); }
+.risk-card--hazard { border-top-color: var(--risk-hazard); }
+.risk-card--unknown { border-top-color: var(--risk-unknown); }
+
+/* evidence pills (shared by the explanation example and the demo) */
+.ev { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 650; white-space: nowrap; }
+.ev--yes { background: var(--sea-soft); color: var(--sea); }
+.ev--no { background: var(--paper); color: var(--ink-soft); box-shadow: inset 0 0 0 1px var(--line); }
+.ev--maybe { background: var(--risk-hazard-soft); color: var(--risk-hazard-ink); }
+.ev--info { background: var(--sheet); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
+
+/* "How a decision is explained" example */
+.explain {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+@media (min-width: 860px) { .explain { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; } .explain figcaption { grid-column: 1 / -1; } }
+.explain__table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.explain__table th, .explain__table td { padding: 8px 12px 8px 0; text-align: left; border-bottom: 1px solid var(--line); }
+.explain__table th { font-size: var(--text-small); font-weight: 650; color: var(--ink-soft); }
+.explain__result { display: grid; gap: var(--space-2); }
+.explain__result > div { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-2) var(--space-3); background: var(--sheet); border: 1px solid var(--line); border-radius: var(--radius); }
+.explain__result dt { color: var(--ink-soft); font-size: var(--text-small); }
+.explain__result dd { font-weight: 700; text-align: right; }
+
+/* small step list inside a card */
+.mini-flow { display: grid; gap: 6px; margin: var(--space-2) 0 var(--space-4); counter-reset: mini; }
+.mini-flow li { counter-increment: mini; display: flex; align-items: center; gap: var(--space-2); font-weight: 600; font-size: 0.95rem; }
+.mini-flow li::before {
+  content: counter(mini);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green-ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* data-transfer pipeline */
+.pipeline { display: grid; gap: var(--space-2); counter-reset: pipe; }
+@media (min-width: 640px) { .pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.pipeline li {
+  counter-increment: pipe;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.pipeline li::before {
+  content: counter(pipe);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--deep);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.pipeline li:nth-child(8) { border-color: var(--green); background: var(--green-soft); }
+.pipeline li:nth-child(8)::before { background: var(--green); }
+.pipeline li:last-child { border-color: var(--hull); background: var(--hull-soft); }
+.pipeline li:last-child::before { background: var(--hull-ink); }
+
+/* ---------- AUV design: official design / Saudi-inspired concept ---------- */
+
+.design-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--sheet);
+}
+.design-tabs button {
+  min-height: 42px;
+  padding: 0 var(--space-4);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+.design-tabs button + button { border-left: 1.5px solid var(--ink); }
+.design-tabs button[aria-selected="true"] { background: var(--deep); color: #fff; }
+.design-tabs button#tab-concept[aria-selected="true"] { background: var(--green); }
+.design-tabs button:focus-visible { outline: 3px solid var(--sea); outline-offset: -3px; }
+
+.design-views { min-width: 0; }
+
+.concept { margin: 0; padding: 10px; background: var(--sheet); border: 1.5px solid var(--ink); }
+.concept__plate {
+  padding: clamp(14px, 3vw, 26px);
+  background:
+    repeating-conic-gradient(from 45deg, rgb(255 255 255 / 0.07) 0 25%, transparent 0 50%) 0 0 / 22px 22px,
+    var(--green);
+  border: 1px solid var(--ink);
+  border-bottom: 0;
+}
+.concept__view { padding: 6px; background: #fff; box-shadow: 0 0 0 1.5px var(--hull); }
+.concept__view img { width: 100%; }
+.concept__palette { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); margin-top: clamp(12px, 2.4vw, 20px); padding: 10px 14px; background: #fff; box-shadow: 0 0 0 1.5px var(--hull); color: var(--ink); font-size: var(--text-small); line-height: 1.3; }
+.concept__palette li { display: flex; align-items: center; gap: var(--space-2); }
+.concept__palette i { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--swatch); box-shadow: 0 0 0 1px var(--line-strong); }
+.concept__palette span { color: var(--ink-soft); }
+.concept__palette strong { color: var(--ink); }
+.concept__palette strong { display: block; }
+.concept-note { padding: var(--space-4); background: var(--green-soft); border-left: 4px solid var(--green); color: var(--green-ink); font-size: 0.95rem; line-height: 1.55; }
