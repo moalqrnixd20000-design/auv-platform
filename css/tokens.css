@@ -46,11 +46,6 @@
   --hull-soft: #f6ebd0;
   --hull-ink: #6f520f;     /* gold text that must stay readable */
 
-  /* Saudi-inspired identity: green and white with restrained gold */
-  --green: #006c35;
-  --green-soft: #e2f1e8;
-  --green-ink: #00552a;
-
   /* Risk states (demo and risk cards) */
   --risk-safe: #1f8a57;    --risk-safe-soft: #e2f3ea;    --risk-safe-ink: #13613c;
   --risk-hazard: #c49837;  --risk-hazard-soft: #f6ebd0;  --risk-hazard-ink: #6f520f;

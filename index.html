@@ -59,8 +59,6 @@
     </div>
   </section>
 
-  <div class="saudi-band" aria-hidden="true"></div>
-
   <div class="facts-strip">
     <div class="container">
       <dl>
@@ -325,17 +323,12 @@
     <div class="container">
       <div class="section__head">
         <h2 id="design-title">AUV design</h2>
-        <p>The AUV is built around the team's own hull design: a streamlined, torpedo-shaped body with tail fins and a propeller. In the official view, move over the image to inspect the details.</p>
-      </div>
-
-      <div class="design-tabs" role="tablist" aria-label="Design view">
-        <button type="button" role="tab" id="tab-official" aria-controls="auv-sheet" aria-selected="true">Official Team Design</button>
-        <button type="button" role="tab" id="tab-concept" aria-controls="auv-concept" aria-selected="false" tabindex="-1">Saudi-Inspired Concept Visualization</button>
+        <p>The AUV is built around the team's own hull design: a streamlined, torpedo-shaped body with tail fins and a propeller. Move over the image to inspect the details.</p>
       </div>
 
       <div class="design-grid" id="design-grid">
         <div class="design-views">
-          <figure class="sheet" id="auv-sheet" role="tabpanel" aria-labelledby="tab-official">
+          <figure class="sheet" id="auv-sheet">
             <div class="sheet__frame">
               <div class="sheet__view" id="auv-view" tabindex="0" role="button" aria-describedby="sheet-hint"
                    aria-label="AUV design. Open the full-size view.">
@@ -354,21 +347,6 @@
             </div>
             <figcaption class="sheet__strip"><span>AUV</span><span>Official Team Design</span></figcaption>
           </figure>
-
-          <figure class="concept" id="auv-concept" role="tabpanel" aria-labelledby="tab-concept" tabindex="0" hidden>
-            <div class="concept__plate">
-              <div class="concept__view">
-                <img src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
-                     alt="The official AUV design, unchanged, presented on a Saudi-inspired concept plate.">
-              </div>
-              <ul class="concept__palette" aria-label="Proposed accent colours">
-                <li><i style="--swatch:#006c35"></i><span><strong>Saudi green</strong>Primary accent</span></li>
-                <li><i style="--swatch:#ffffff"></i><span><strong>White</strong>Hull and markings</span></li>
-                <li><i style="--swatch:#c49837"></i><span><strong>Restrained gold</strong>Detail lines</span></li>
-              </ul>
-            </div>
-            <figcaption class="sheet__strip"><span>AUV</span><span>Saudi-Inspired Concept Visualization</span></figcaption>
-          </figure>
         </div>
 
         <div class="design-side">
@@ -382,7 +360,6 @@
             <div><dt>Decision</dt><dd>Explainable risk assessment</dd></div>
             <div><dt>Survey</dt><dd>Grid / parallel-line survey</dd></div>
           </dl>
-          <p class="concept-note" id="concept-note" hidden>The concept visualization keeps the official geometry and image unchanged. It proposes a Saudi-inspired identity around the vehicle: green and white accents, restrained gold detailing and a geometric pattern drawn from Saudi visual heritage. It is a presentation concept, not a new vehicle design.</p>
           <aside class="inspect-tools" id="inspect-tools" aria-labelledby="inspect-title">
             <h3 id="inspect-title">Inspect the design</h3>
             <p class="pointer-only-fine" id="sheet-hint">Move the pointer over the vehicle to magnify it. Click, or press Enter, for the full-size view.</p>
@@ -572,7 +549,6 @@
 </main>
 
 <footer class="site-footer">
-  <div class="saudi-band saudi-band--footer" aria-hidden="true"></div>
   <div class="container">
     <div class="site-footer__brand"><span class="brand__mark">AUV</span><span>Autonomous Underwater Vehicle</span></div>
     <p>Current demonstrations represent a software prototype of the proposed AUV workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
