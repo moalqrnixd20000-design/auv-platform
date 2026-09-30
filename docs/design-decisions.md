@@ -10,16 +10,13 @@ Notes for the team. This folder is not part of the public site.
 | The team's AUV image is used unmodified (`assets/images/auv-team-design.jpg`); the hover tools only change how it is displayed. | The design must not be altered. |
 | No labelled parts on the AUV image. | The team has not said which component is which. |
 | The demo is built into the page (`js/demo.js`) and driven by one mission clock. | Pause, Resume and Reset are exact; no timers to get out of step. |
-| Demo values (confidence, priority, positions) are scripted and labelled "Demo Confidence" where shown. | They are not measurements. |
-| The man-made-object case uses the wreck photograph; the lionfish uses the lionfish photograph; clownfish and grouper are simple illustrations. | Only two suitable photographs were supplied. |
-| Communication is described only as "Signal-Based Communication" and kept separate from the sensing layer. | No specification has been given. |
+| Demo values (positions, depths, times, coverage) are simulated and labelled "Sim." or "Simulation" where shown. | They are not measurements. |
+| Communication is described as "Underwater Acoustic Communication" (concept) and kept separate from the sensing layer. Specifications: TBD. | No specification has been given. |
 | Red Sea fish (lionfish, clownfish, grouper) are presented as selected examples. | The recognition is not a general species classifier. |
 | Fonts are self-hosted. | No third-party requests; works offline at a venue. |
 | Light background, navy accents, hull-gold highlight sampled from the team's render. | Marine technology look; the image sits naturally on a light page. |
-| The demo's decision is a simple weighted rule: each target has weighted factors, the weighted sum is the demo score, and a threshold rule gives the decision. The analysis panel builds up stage by stage. | It shows how an inspection decision can be made and explained. The scores are scripted demo values, not measurements. |
 | The demo runs on one mission clock and is fully deterministic; a full-screen mode is provided for screen recording. | Predictable recordings; Pause and Reset are exact. |
-| No camera is described as AUV hardware. Sensing is multibeam echosounder, water-column acoustic data and onboard sensors (specifications TBD). Demo photographs are labelled "Simulated Observation" / "Reference Imagery"; fish targets are "Detected by Sensor Data", the object by "Multibeam Echosounder". | The official AUV design does not show a camera. |
-| Demo Confidence is the demo score shown as a percentage (0.93 → 93%). | One simulated value, not two numbers that disagree. |
+| No camera is described as AUV hardware. Sensing is multibeam echosounder, water-column acoustic data and onboard sensors (specifications TBD). Demo images are labelled "Reference image — not a live feed"; detection sources are sensor names, never a camera. | The official AUV design does not show a camera. |
 | Project direction: underwater object detection, hazard assessment, explainable decision support and inspection prioritization. Conceptual operating range 1–30 m (a target for the concept, not a tested rating). | Brief from the team. |
 | The demo is a grid (parallel-line) survey. Survey area, line spacing (40 m) and estimated swath (50 m) are simulation parameters; track distance, area covered and coverage are calculated from them (area covered = along-line distance × min(swath, spacing)). | Numbers that agree with each other, no hard-coded coverage. |
 | Decisions come from explainable rules over simulated evidence (biological morphology, rigid structure, size category, background difference). The last rule is "Unknown — requires verification"; the system never forces a class. No numeric confidence is shown; certainty is qualitative and labelled as simulation. | No fabricated AI metrics. |
