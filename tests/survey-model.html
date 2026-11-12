@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Survey model tests — AUV</title>
+<style>
+  body { margin: 0; padding: 24px; background: #f3f6f8; color: #0c2233; font: 15px/1.5 system-ui, "Segoe UI", Arial, sans-serif; }
+  h1 { font-size: 1.3rem; margin: 0 0 4px; }
+  p { margin: 0 0 16px; color: #48606f; }
+  li { margin: 2px 0; }
+  .pass { color: #1d7a4f; }
+  .fail { color: #b3261e; font-weight: 700; }
+  #summary { font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>Survey model tests</h1>
+<p>Lightweight checks of <code>js/survey-model.js</code> (two-pass crosshatch survey). Simulation logic only.</p>
+<p id="summary">Running…</p>
+<ol id="results"></ol>
+<script src="../js/survey-model.js"></script>
+<script>
+(function () {
+  "use strict";
+  var S = window.AUVSurvey, results = [], fails = 0;
+  function check(name, ok, detail) {
+    results.push({ name: name, ok: !!ok, detail: detail });
+    if (!ok) fails += 1;
+  }
+  function near(a, b, tol) { return Math.abs(a - b) <= (tol || 1e-6); }
+
+  var CFG = { lineSpacing: 40, swath: 50 };
+  var SCENARIOS = {
+    redsea: { width: 400, height: 240, targets: { fish: [160, 36], wreck: [248, 44], mine: [232, 160], unknown: [320, 200] } },
+    hormuz: { width: 600, height: 240, targets: { fish: [240, 36], wreck: [372, 44], mine: [348, 160], unknown: [480, 200] } }
+  };
+
+  /* 1. line generation */
+  var la = S.lineSet(240, 40), lb = S.lineSet(400, 40);
+  check("Red Sea Pass A: 6 horizontal lines", la.count === 6, la.count);
+  check("Pass A line positions y = 20 … 220", la.positions.join(",") === "20,60,100,140,180,220", la.positions.join(","));
+  check("Red Sea Pass B: 10 vertical lines", lb.count === 10, lb.count);
+  check("Pass B line positions x = 20 … 380", lb.positions.join(",") === "20,60,100,140,180,220,260,300,340,380", lb.positions.join(","));
+  var odd = S.lineSet(250, 40);
+  check("Non-multiple extent: ceil(250/40) = 7 lines, spacing ≤ requested", odd.count === 7 && odd.spacing <= 40 && near(odd.positions[0], odd.spacing / 2), odd.count + " / " + odd.spacing);
+
+  Object.keys(SCENARIOS).forEach(function (key) {
+    var sc = SCENARIOS[key], area = { width: sc.width, height: sc.height };
+    var r = S.buildRoute(area, CFG), segs = r.segments, L = r.lengths;
+    var A = segs.filter(function (s) { return s.pass === "A"; });
+    var B = segs.filter(function (s) { return s.pass === "B"; });
+    var legsA = A.filter(function (s) { return s.type === "survey"; });
+    var legsB = B.filter(function (s) { return s.type === "survey"; });
+    var p = key + ": ";
+
+    check(p + "line counts come from the geometry", legsA.length === Math.ceil(sc.height / 40) && legsB.length === Math.ceil(sc.width / 40), legsA.length + " A, " + legsB.length + " B");
+
+    /* orientation */
+    check(p + "every Pass A leg is horizontal and spans the full width", legsA.every(function (s) { return s.y0 === s.y1 && Math.abs(s.x1 - s.x0) === sc.width; }));
+    check(p + "every Pass B leg is vertical and spans the full height", legsB.every(function (s) { return s.x0 === s.x1 && Math.abs(s.y1 - s.y0) === sc.height; }));
+    check(p + "Pass A legs alternate east / west", legsA.every(function (s, i) { return s.heading === (i % 2 === 0 ? 90 : 270); }), legsA.map(function (s) { return s.heading; }).join(","));
+    check(p + "Pass B legs alternate north / south", legsB.every(function (s, i) { return i === 0 || Math.abs(s.heading - legsB[i - 1].heading) === 180; }), legsB.map(function (s) { return s.heading; }).join(","));
+
+    /* order: all of A, then the transition, then all of B */
+    var order = segs.map(function (s) { return s.pass; }).join("");
+    check(p + "Pass A completes before the transition and Pass B", /^A+TB+$/.test(order), order);
+
+    /* continuity (no teleporting) */
+    var gaps = 0;
+    for (var i = 1; i < segs.length; i++) if (Math.hypot(segs[i].x0 - segs[i - 1].x1, segs[i].y0 - segs[i - 1].y1) > 1e-6) gaps += 1;
+    check(p + "route is continuous (no jumps between segments)", gaps === 0, gaps + " gaps");
+
+    /* distances */
+    var sum = segs.reduce(function (a, s) { return a + S.polylineLength(s.points); }, 0);
+    check(p + "total = sum of generated segment lengths", near(sum, L.total, 1e-6), sum.toFixed(3) + " vs " + L.total.toFixed(3));
+    check(p + "total = Pass A + transition + Pass B", near(L.A + L.T + L.B, L.total, 1e-6));
+    check(p + "survey legs: A = lines × width, B = lines × height", L.legsA === legsA.length * sc.width && L.legsB === legsB.length * sc.height, L.legsA + " / " + L.legsB);
+    if (key === "redsea") {
+      check(p + "straight-connector reference: A 2600 m, B 2760 m, 5360 m", L.straightA === 2600 && L.straightB === 2760 && L.straightA + L.straightB === 5360, L.straightA + " + " + L.straightB);
+      check(p + "Pass A ends at the west end of the last line (0, 220)", near(r.endA[0], 0) && near(r.endA[1], 220), r.endA.join(","));
+    }
+
+    /* Pass B entry: closest of the four candidates */
+    var gapsB = r.passB.candidates.map(function (c) { return c.gap; });
+    check(p + "Pass B starts at the candidate closest to the end of Pass A", near(r.passB.gap, Math.min.apply(null, gapsB)), r.passB.variant + " " + r.passB.gap.toFixed(1) + " m");
+    check(p + "Pass B first waypoint = selected entry", near(legsB[0].x0, r.passB.entry[0]) && near(legsB[0].y0, r.passB.entry[1]));
+
+    /* position sampling */
+    var steps = 4000, prev = S.positionAt(r, 0), maxJump = 0;
+    for (var k = 1; k <= steps; k++) {
+      var q = S.positionAt(r, (L.total * k) / steps);
+      maxJump = Math.max(maxJump, Math.hypot(q.x - prev.x, q.y - prev.y));
+      prev = q;
+    }
+    check(p + "sampled AUV position never jumps further than the distance step", maxJump <= L.total / steps + 1e-6, maxJump.toFixed(3) + " m per " + (L.total / steps).toFixed(3) + " m");
+    var end = S.positionAt(r, L.total);
+    check(p + "AUV ends at the last Pass B waypoint", near(end.x, segs[segs.length - 1].x1) && near(end.y, segs[segs.length - 1].y1));
+
+    /* targets: two observations, fixed position, perpendicular headings */
+    Object.keys(sc.targets).forEach(function (tk) {
+      var t = { x: sc.targets[tk][0], y: sc.targets[tk][1] };
+      var obs = S.observationsFor(r, t);
+      check(p + tk + " observed once on Pass A and once on Pass B", obs.length === 2 && obs[0].pass === "A" && obs[1].pass === "B", obs.map(function (o) { return o.pass + ":" + o.lineId; }).join(" "));
+      if (obs.length === 2) {
+        check(p + tk + " Pass A observation before Pass B observation", obs[0].d < r.passStart.B && obs[1].d >= r.passStart.B);
+        check(p + tk + " aspect difference ≈ 90° (mod 180)", near(S.aspectDifference(obs[0].auvHeadingDeg, obs[1].auvHeadingDeg), 90), obs[0].auvHeadingDeg + "° / " + obs[1].auvHeadingDeg + "°");
+        check(p + tk + " within the simulated swath on both passes", obs.every(function (o) { return o.distanceToTargetM <= CFG.swath / 2; }), obs.map(function (o) { return o.distanceToTargetM; }).join(" / "));
+        var atA = S.positionAt(r, obs[0].d), atB = S.positionAt(r, obs[1].d);
+        check(p + tk + " AUV is abeam of the target when it is observed", near(atA.x, obs[0].auv[0], 1e-6) && near(atA.y, obs[0].auv[1], 1e-6) && near(atB.x, obs[1].auv[0], 1e-6) && near(atB.y, obs[1].auv[1], 1e-6));
+      }
+    });
+
+    /* coverage: unique, never above 100 %, no double counting */
+    var grid = new S.CoverageGrid({ width: sc.width, height: sc.height }, 5), last = 0, monotone = true, capped = true;
+    for (var m = 1; m <= 400; m++) {
+      var d1 = (L.total * m) / 400;
+      grid.markRoute(r, last, d1);
+      var st = grid.stats();
+      if (st.uniqueArea + 1e-6 < (grid._prev || 0)) monotone = false;
+      if (st.uniquePct > 100 + 1e-9 || st.uniqueArea > sc.width * sc.height + 1e-6) capped = false;
+      grid._prev = st.uniqueArea;
+      last = d1;
+    }
+    var fin = grid.stats();
+    check(p + "unique coverage never exceeds 100 % and never decreases", capped && monotone);
+    check(p + "final unique coverage = 100 % (swath 50 m ≥ spacing 40 m)", near(fin.uniquePct, 100, 1e-9), fin.uniquePct.toFixed(2) + "%");
+    check(p + "unique area is the survey area, not the sum of both passes", near(fin.uniqueArea, sc.width * sc.height, 1e-6) && grid.passArea.A + grid.passArea.B > fin.uniqueArea, fin.uniqueArea + " m² unique, " + (grid.passArea.A + grid.passArea.B) + " m² summed over passes");
+
+    var gA = new S.CoverageGrid({ width: sc.width, height: sc.height }, 5);
+    gA.markRoute(r, 0, r.passStart.T);
+    check(p + "Pass A alone already covers the whole area in this simulation", near(gA.stats().uniquePct, 100, 1e-9), gA.stats().uniquePct.toFixed(2) + "%");
+    gA.markRoute(r, r.passStart.T, L.total);
+    check(p + "Pass B adds no unique area, only overlap (area seen on both headings = 100 %)", near(gA.stats().uniqueArea, sc.width * sc.height, 1e-6) && near(gA.stats().bothPct, 100, 1e-9), gA.stats().bothPct.toFixed(2) + "%");
+
+    grid.reset();
+    check(p + "grid reset clears coverage", grid.stats().uniqueArea === 0 && grid.stats().bothArea === 0);
+  });
+
+  /* narrow swath: coverage below 100 % and still never above */
+  var rn = S.buildRoute({ width: 400, height: 240 }, { lineSpacing: 40, swath: 20 });
+  var gn = new S.CoverageGrid({ width: 400, height: 240 }, 5);
+  gn.markRoute(rn, 0, rn.passStart.T);
+  var aOnly = gn.stats().uniquePct;
+  gn.markRoute(rn, rn.passStart.T, rn.lengths.total);
+  check("Narrow swath (20 m): Pass A < 100 %, crosshatch adds only the uncovered part, total ≤ 100 %", aOnly < 100 && gn.stats().uniquePct > aOnly && gn.stats().uniquePct <= 100, aOnly.toFixed(1) + "% → " + gn.stats().uniquePct.toFixed(1) + "%");
+
+  /* output */
+  var ol = document.getElementById("results");
+  results.forEach(function (r) {
+    var li = document.createElement("li");
+    li.className = r.ok ? "pass" : "fail";
+    li.textContent = (r.ok ? "PASS  " : "FAIL  ") + r.name + (r.detail !== undefined ? "  [" + r.detail + "]" : "");
+    ol.appendChild(li);
+  });
+  document.getElementById("summary").textContent = (results.length - fails) + " / " + results.length + " passed" + (fails ? " — " + fails + " FAILED" : "");
+  document.getElementById("summary").className = fails ? "fail" : "pass";
+  window.__surveyTests = { total: results.length, failed: fails, results: results };
+})();
+</script>
+</body>
+</html>

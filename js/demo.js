@@ -1,23 +1,35 @@
 /* AUV project site — interactive demo (software simulation).
 
-   A fixed, scripted grid survey that shows how the proposed AUV could detect
-   underwater objects, classify them, assess their potential risk, explain the
-   decision and recommend an action:
+   A fixed, scripted two-pass crosshatch survey that shows how the proposed
+   AUV could detect underwater objects, classify them, assess their potential
+   risk, explain the decision and recommend an action — then observe every
+   target a second time from a perpendicular survey heading:
 
-     Scanning > Detection > Analysis > Classification > Risk assessment >
-     Decision > Alert & marking > Verification > Mission summary
+     Pass A  Primary Sweep — horizontal boustrophedon (lawn-mower) pass.
+             Each target: Detection > Analysis > Classification > Risk
+             assessment > Decision > Alert & marking.
+     T       Transition leg to the start of Pass B.
+     Pass B  Orthogonal Crosshatch Sweep — a complete vertical pass over the
+             same area. Each target is observed again (same ID, same position,
+             same marker) and the two observations are compared.
+     Review  Cross-pass verification summary, then Mission complete.
+
+   The route, line counts, distances, coverage and observation times come
+   from js/survey-model.js (window.AUVSurvey) and the scenario parameters;
+   nothing is hard-coded per scenario. A second heading adds an observation;
+   it never turns a potential mine into a confirmed one or forces an unknown
+   object into a class.
 
    Everything is driven by ONE mission clock. Pause stops the clock and the
-   CSS/SVG animations (a transition already under way finishes), Reset throws the whole state away, and nothing is scheduled
-   outside the clock — so no late event can appear after a Reset. The run is
-   deterministic: same scenario, same result, every time.
+   CSS/SVG animations (a transition already under way finishes), Reset throws
+   the whole state away, and nothing is scheduled outside the clock — so no
+   late event can appear after a Reset. The run is deterministic.
 
-   Survey numbers (area, line spacing, swath) are simulation parameters;
-   distance, area covered and coverage are calculated from them. Demo time is
-   compressed for presentation and says nothing about vehicle speed.
+   Survey numbers are simulation parameters, not vehicle or sensor
+   specifications. Demo time is compressed and says nothing about speed.
 
    Sections of this file:
-     1. Survey model – scenarios, grid geometry, coverage maths
+     1. Survey setup – scenarios, simulation parameters, coordinates
      2. Targets      – evidence, decision rules, target content
      3. Views        – map, observation view, alert, analysis, coverage, log
      4. Mission      – event timeline, clock, Start / Pause / Reset, scenario, full screen */
@@ -25,14 +37,16 @@
   "use strict";
 
   var demo = document.getElementById("demo");
-  if (!demo) return;
+  var Survey = window.AUVSurvey;
+  if (!demo || !Survey) return;
 
   var $ = function (id) { return document.getElementById(id); };
   var SVG_NS = "http://www.w3.org/2000/svg";
 
-  /* ================= 1. Survey model ================= */
+  /* ================= 1. Survey setup ================= */
 
   /* origin = [latitude, longitude] of the south-west corner of the survey box.
+     Target positions are plan-view metres from that corner: x east, y north.
      Illustrative positions only. */
   var SCENARIOS = {
     redsea: {
@@ -40,6 +54,7 @@
       origin: [21.62, 39.08],
       width: 400,
       height: 240,
+      targets: { fish: [160, 36], wreck: [248, 44], mine: [232, 160], unknown: [320, 200] },
       note: "Illustrative survey segment off the Red Sea coast. All positions are simulated."
     },
     hormuz: {
@@ -47,71 +62,21 @@
       origin: [26.56, 56.35],
       width: 600,
       height: 240,
+      targets: { fish: [240, 36], wreck: [372, 44], mine: [348, 160], unknown: [480, 200] },
       note: "Illustrative / Simulation: a small survey segment inspired by the Strait of Hormuz. The AUV has not surveyed the strait and is not claimed to cover it."
     }
   };
 
-  var LINE_SPACING = 40;   // m between survey lines — simulation parameter
-  var SWATH = 50;          // m, estimated sensor swath — simulation parameter
-  var LEAD = 8;            // m ahead of abeam at which a target is picked up — demo value
+  /* Simulation parameters — not validated hardware specifications. */
+  var CONFIG = {
+    lineSpacing: 40,   // m, requested spacing between survey lines
+    swath: 50,         // m, estimated sensor swath
+    cell: 5            // m, coverage-grid resolution used for unique coverage
+  };
   var M_PER_DEG = 111320;  // metres per degree of latitude (approximation)
 
   var scenarioKey = "redsea";
-  var sc, survey, geo, plan;
-
-  /* Alternating parallel lines (lawn-mower pattern), west-east then east-west,
-     joined by short turns. Lines sit in the middle of equal strips, so
-     lines × line spacing = survey height. */
-  function buildSurvey(s) {
-    var lines = Math.round(s.height / LINE_SPACING);   // height must be a multiple of LINE_SPACING
-    var legs = [], d = 0;
-    for (var i = 0; i < lines; i++) {
-      var y = LINE_SPACING / 2 + i * LINE_SPACING;
-      var east = i % 2 === 0;
-      var x0 = east ? 0 : s.width, x1 = east ? s.width : 0;
-      legs.push({ line: i + 1, along: true, x0: x0, y0: y, x1: x1, y1: y, d0: d, len: s.width });
-      d += s.width;
-      if (i < lines - 1) {
-        legs.push({ line: i + 1, along: false, x0: x1, y0: y, x1: x1, y1: y + LINE_SPACING, d0: d, len: LINE_SPACING });
-        d += LINE_SPACING;
-      }
-    }
-    return {
-      lines: lines,
-      legs: legs,
-      total: d,                                  // planned track distance, m
-      area: s.width * s.height,                  // survey area, m²
-      strip: Math.min(SWATH, LINE_SPACING)       // new width added per line (overlap counted once)
-    };
-  }
-
-  function positionAt(d) {
-    var legs = survey.legs;
-    for (var i = 0; i < legs.length; i++) {
-      var g = legs[i];
-      if (d <= g.d0 + g.len || i === legs.length - 1) {
-        var f = Math.max(0, Math.min(1, (d - g.d0) / g.len));
-        return {
-          x: g.x0 + (g.x1 - g.x0) * f,
-          y: g.y0 + (g.y1 - g.y0) * f,
-          leg: i,
-          heading: g.along ? (g.x1 > g.x0 ? 90 : 270) : 0
-        };
-      }
-    }
-    return null;
-  }
-
-  /* Area covered = distance travelled along survey lines × min(swath, spacing).
-     Turns add no new area. At the end of the survey this equals the survey area. */
-  function coverageAt(d) {
-    var along = 0;
-    survey.legs.forEach(function (g) { if (g.along) along += Math.max(0, Math.min(g.len, d - g.d0)); });
-    var covered = along * survey.strip;
-    return { distance: d, covered: covered, remaining: survey.area - covered, pct: (covered / survey.area) * 100 };
-  }
-
-  function lineLeg(n) { return survey.legs.filter(function (g) { return g.along && g.line === n; })[0]; }
+  var sc, route, grid, observations, plan;
 
   function toLatLon(x, y) {
     var lat = sc.origin[0] + y / M_PER_DEG;
@@ -119,21 +84,18 @@
     return [lat, lon];
   }
 
-  function relative(from, to) {
-    var dx = to.x - from.x, dy = to.y - from.y;
-    return {
-      distance: Math.round(Math.sqrt(dx * dx + dy * dy)),
-      bearing: Math.round(((Math.atan2(dx, dy) * 180) / Math.PI + 360) % 360)
-    };
-  }
-
   function fmtLat(v) { return v.toFixed(5) + "° N"; }
   function fmtLon(v) { return v.toFixed(5) + "° E"; }
   function fmtNum(n) { return Math.round(n).toLocaleString("en-US"); }
+  function fmtDeg(h) { return String(Math.round(h) % 360).padStart(3, "0") + "°"; }
   function pad3(n) { return String(n).padStart(3, "0"); }
   function formatTime(ms) {
     var s = Math.floor(ms / 1000);
     return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+  }
+  function list(values) {
+    if (values.length <= 4) return values.map(fmtNum).join(", ");
+    return fmtNum(values[0]) + ", " + fmtNum(values[1]) + " … " + fmtNum(values[values.length - 1]);
   }
 
   /* ================= 2. Targets and decision rules ================= */
@@ -188,54 +150,65 @@
     unknown: "NOTICE — Unknown Object Requires Verification"
   };
 
-  /* line = survey line on which the target is first detected; fx = position
-     along the line (fraction of the survey width); dy = metres north (+) or
-     south (−) of that line. Targets for re-checking sit between two lines, so
-     the next line passes them again from the other side.
-     box = [left, top, width, height] of the detection frame, in % of the view. */
+  /* Target content. Positions come from the scenario (plan-view x, y);
+     box = [left, top, width, height] of the frame in the reference image, in %.
+     xpass = what the second, perpendicular observation shows. It never
+     resolves an identity the first pass could not confirm. */
   var TARGETS = [
     {
-      key: "fish", name: "Lionfish (scenario example)", logName: "Lionfish", objectType: "Fish", line: 1, fx: 0.40, dy: 16, depth: 9,
+      key: "fish", name: "Lionfish (scenario example)", logName: "Lionfish", objectType: "Fish", depth: 9,
       source: "Water-Column Acoustic Data", scene: "fish", box: [31, 5, 60, 80],
       evidence: { bio: "Detected", motion: "Detected", rigid: "Not detected", nonbio: "Not detected", size: "Small", background: "Detected" },
       decision: "Continue Survey / Log Observation", logDecision: "Log Observation",
       explanation: "Biological morphology and expected marine-life characteristics detected.",
-      action: "Continue the survey and log the observation.", status: "Logged"
+      action: "Continue the survey and log the observation.", status: "Logged",
+      xpass: {
+        compare: "The perpendicular heading also shows biological morphology and movement.",
+        consensus: "Consistent across two orthogonal passes",
+        update: "No change: Marine Life — Non-Hazardous. Continue survey / log observation.",
+        status: "Logged — observed on both headings"
+      }
     },
     {
-      key: "wreck", name: "Shipwreck", objectType: "Large structure on the seafloor", line: 2, fx: 0.62, dy: -16, depth: 26,
+      key: "wreck", name: "Shipwreck", objectType: "Large structure on the seafloor", depth: 26,
       source: "Multibeam Echosounder", scene: "wreck", box: [18, 18, 60, 48],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Detected", nonbio: "Detected", size: "Large", background: "Detected" },
       decision: "Requires Inspection",
       explanation: "Large rigid structure with non-biological geometric characteristics detected on or near the seafloor.",
-      action: "Mark the position and schedule an inspection.", status: "Marked for inspection"
+      action: "Mark the position and schedule an inspection.", status: "Marked for inspection",
+      xpass: {
+        compare: "The perpendicular heading also shows a large, rigid, non-biological structure.",
+        consensus: "Consistent across two orthogonal passes",
+        update: "No change: Man-Made Structure — Potential Hazard — Requires Inspection. A second heading adds an observation; it does not identify the wreck.",
+        status: "Marked for inspection — observed on both headings"
+      }
     },
     {
-      key: "mine", name: "Potential Mine", objectType: "Compact object on the seafloor", line: 4, fx: 0.58, dy: 20, depth: 21,
-      source: "Multibeam Echosounder", scene: "mine", box: [89, 53, 10.5, 11.5], repass: 5,
+      key: "mine", name: "Potential Mine", objectType: "Compact object on the seafloor", depth: 21,
+      source: "Multibeam Echosounder", scene: "mine", box: [89, 53, 10.5, 11.5],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Detected", nonbio: "Detected", size: "Compact", background: "Detected" },
       decision: "Requires Verification",
       explanation: "Detected characteristics are consistent with a potential hazardous man-made object, but the simulation cannot confirm the object's identity.",
       action: "Do not treat as confirmed. Request further inspection / verification.", status: "Awaiting verification",
-      verify: {
-        compare: "Both passes show a compact, rigid, non-biological return.",
-        consensus: "Consistent across 2 passes",
-        update: "Still Requires Verification. The identity is not confirmed; additional evidence is required.",
+      xpass: {
+        compare: "Both headings show a compact, rigid, non-biological return.",
+        consensus: "Consistent across two orthogonal passes — identity not confirmed",
+        update: "Still High Potential Hazard — Requires Verification. The identity is not confirmed; the second pass adds an observation, not certainty.",
         status: "Verification required"
       }
     },
     {
-      key: "unknown", name: "Unknown Object", objectType: "Unresolved object", line: 5, fx: 0.80, dy: 20, depth: 28,
-      source: "Multibeam Echosounder", scene: "unknown", box: [13, 33, 72, 24], repass: 6,
+      key: "unknown", name: "Unknown Object", objectType: "Unresolved object", depth: 28,
+      source: "Multibeam Echosounder", scene: "unknown", box: [13, 33, 72, 24],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Inconclusive", nonbio: "Inconclusive", size: "Medium", background: "Detected" },
       decision: "Requires Verification",
       explanation: "Detected object contains insufficient evidence for reliable classification.",
       action: "Additional inspection / multi-pass verification.", status: "Awaiting verification",
-      verify: {
-        compare: "The second pass does not resolve the shape.",
-        consensus: "Inconclusive",
+      xpass: {
+        compare: "The perpendicular heading does not resolve the shape either.",
+        consensus: "Still inconclusive",
         update: "Remains Unknown — Requires Verification.",
-        status: "Remains unknown — verification required"
+        status: "Unknown — Requires Verification"
       }
     }
   ];
@@ -253,31 +226,7 @@
     return RULES[RULES.length - 1];
   }
 
-  /* Where each target sits in the current scenario, and where the AUV is
-     when it picks the target up (and passes it again, for re-checks). */
-  function placeTargets() {
-    var out = {};
-    TARGETS.forEach(function (tg) {
-      var leg = lineLeg(tg.line);
-      var dir = leg.x1 > leg.x0 ? 1 : -1;
-      var pos = { x: tg.fx * sc.width, y: leg.y0 + tg.dy };
-      var xd = pos.x - dir * LEAD;
-      var g = {
-        x: pos.x, y: pos.y, latlon: toLatLon(pos.x, pos.y),
-        detectD: leg.d0 + Math.abs(xd - leg.x0),
-        detect: relative({ x: xd, y: leg.y0 }, pos)
-      };
-      if (tg.repass) {
-        var leg2 = lineLeg(tg.repass);
-        var dir2 = leg2.x1 > leg2.x0 ? 1 : -1;
-        var xr = pos.x - dir2 * LEAD;
-        g.repassD = leg2.d0 + Math.abs(xr - leg2.x0);
-        g.repass = relative({ x: xr, y: leg2.y0 }, pos);
-      }
-      out[tg.key] = g;
-    });
-    return out;
-  }
+  function spec(key) { return TARGETS.filter(function (tg) { return tg.key === key; })[0]; }
 
   /* ================= 3. Views ================= */
 
@@ -290,14 +239,18 @@
     full: $("demo-full"),
     scenario: $("demo-scenario"),
     scenarioNote: $("demo-scenario-note"),
+    phases: Array.prototype.slice.call($("demo-phases").children),
     stages: Array.prototype.slice.call($("demo-stages").children),
     alert: $("demo-alert"),
     alertTitle: $("demo-alert-title"),
     alertBody: $("demo-alert-body"),
-    map: $("demo-map"),
+    clipRect: $("demo-clip-rect"),
     bounds: $("demo-bounds"),
-    cover: $("demo-cover"),
-    plan: $("demo-plan"),
+    coverA: $("demo-cover-a"),
+    coverB: $("demo-cover-b"),
+    planA: $("demo-plan-a"),
+    planB: $("demo-plan-b"),
+    planT: $("demo-plan-t"),
     track: $("demo-track"),
     current: $("demo-current"),
     ticks: $("demo-ticks"),
@@ -313,10 +266,17 @@
     analysis: $("demo-analysis"),
     covInfo: $("cov-info"),
     covDistance: $("cov-distance"),
-    covArea: $("cov-area"),
     covPct: $("cov-pct"),
+    covPctB: $("cov-pct-b"),
     covRemain: $("cov-remaining"),
+    covXpass: $("cov-xpass"),
     covBar: $("cov-bar"),
+    covA: $("cov-a"),
+    covABar: $("cov-a-bar"),
+    covB: $("cov-b"),
+    covBBar: $("cov-b-bar"),
+    covBoth: $("cov-both"),
+    covBothBar: $("cov-both-bar"),
     logBody: $("log-body"),
     count: $("demo-count"),
     time: $("demo-time"),
@@ -326,81 +286,92 @@
     cardLog: $("card-log")
   };
 
-  /* ---- survey map ---- */
+  /* ---- survey map (plan view: x east, y north) ---- */
 
-  var MAP = { w: 560, h: 400, left: 82, right: 16, top: 16, bottom: 40 };
-  var proj = { s: 1, ox: 0, oy: 0 };
+  var MAP = { w: 560, h: 400, left: 82, right: 8, top: 8, bottom: 34 };
+  var proj = { s: 1, ox: 0, oy: 0, pad: 0 };
 
   function project() {
+    var pad = Math.max(route.A.spacing, route.B.spacing) / 2 + 6;   // room for the end turns
     var iw = MAP.w - MAP.left - MAP.right, ih = MAP.h - MAP.top - MAP.bottom;
-    var s = Math.min(iw / sc.width, ih / sc.height);
-    proj = { s: s, ox: MAP.left + (iw - sc.width * s) / 2, oy: MAP.top + (ih - sc.height * s) / 2 };
+    var s = Math.min(iw / (sc.width + 2 * pad), ih / (sc.height + 2 * pad));
+    proj = {
+      s: s, pad: pad,
+      ox: MAP.left + (iw - (sc.width + 2 * pad) * s) / 2 + pad * s,
+      oy: MAP.top + (ih - (sc.height + 2 * pad) * s) / 2 + pad * s
+    };
   }
   function px(x) { return proj.ox + x * proj.s; }
   function py(y) { return proj.oy + (sc.height - y) * proj.s; }
   function pt(x, y) { return px(x).toFixed(1) + "," + py(y).toFixed(1); }
+  function pathOf(segs) {
+    return segs.map(function (s, i) {
+      return s.points.map(function (p, k) { return (i === 0 && k === 0 ? "M" : "L") + pt(p[0], p[1]); }).join(" ");
+    }).join(" ");
+  }
+  function setRect(node, x, y, w, h) {
+    node.setAttribute("x", px(x).toFixed(1));
+    node.setAttribute("y", py(y + h).toFixed(1));
+    node.setAttribute("width", Math.max(0, w * proj.s).toFixed(1));
+    node.setAttribute("height", Math.max(0, h * proj.s).toFixed(1));
+  }
 
   function drawMap() {
     project();
-    var W = sc.width, H = sc.height, s = proj.s;
+    var W = sc.width, H = sc.height;
+    setRect(el.bounds, 0, 0, W, H);
+    setRect(el.clipRect, 0, 0, W, H);
 
-    el.bounds.setAttribute("x", px(0).toFixed(1));
-    el.bounds.setAttribute("y", py(H).toFixed(1));
-    el.bounds.setAttribute("width", (W * s).toFixed(1));
-    el.bounds.setAttribute("height", (H * s).toFixed(1));
+    var bySeg = function (pass) { return route.segments.filter(function (s) { return s.pass === pass; }); };
+    el.planA.setAttribute("d", pathOf(bySeg("A")));
+    el.planB.setAttribute("d", pathOf(bySeg("B")));
+    el.planT.setAttribute("d", pathOf(bySeg("T")));
 
-    el.plan.setAttribute("d", survey.legs.map(function (g, i) {
-      return (i === 0 ? "M" + pt(g.x0, g.y0) + " " : "") + "L" + pt(g.x1, g.y1);
-    }).join(" "));
+    /* one swath rectangle per survey leg, grown as the leg is flown */
+    [["A", el.coverA], ["B", el.coverB]].forEach(function (p) {
+      p[1].innerHTML = route.segments.filter(function (s) { return s.pass === p[0] && s.type === "survey"; })
+        .map(function () { return '<rect x="0" y="0" width="0" height="0"/>'; }).join("");
+    });
 
-    el.cover.innerHTML = survey.legs.filter(function (g) { return g.along; }).map(function () {
-      return '<rect y="0" height="0" width="0" x="0"/>';
-    }).join("");
-
-    var ticks = "";
+    var ticks = "", tx = px(-proj.pad), ty = py(-proj.pad);
     [0, H / 2, H].forEach(function (y) {
       var ll = toLatLon(0, y);
-      ticks += '<line x1="' + (px(0) - 5).toFixed(1) + '" x2="' + px(0).toFixed(1) + '" y1="' + py(y).toFixed(1) + '" y2="' + py(y).toFixed(1) + '"/>' +
-        '<text x="' + (px(0) - 9).toFixed(1) + '" y="' + (py(y) + 3.5).toFixed(1) + '" text-anchor="end">' + ll[0].toFixed(4) + "° N</text>";
+      ticks += '<line x1="' + (tx - 5).toFixed(1) + '" x2="' + tx.toFixed(1) + '" y1="' + py(y).toFixed(1) + '" y2="' + py(y).toFixed(1) + '"/>' +
+        '<text x="' + (tx - 9).toFixed(1) + '" y="' + (py(y) + 3.5).toFixed(1) + '" text-anchor="end">' + ll[0].toFixed(4) + "° N</text>";
     });
     [0, W / 2, W].forEach(function (x, i) {
       var ll = toLatLon(x, 0);
-      ticks += '<line x1="' + px(x).toFixed(1) + '" x2="' + px(x).toFixed(1) + '" y1="' + py(0).toFixed(1) + '" y2="' + (py(0) + 5).toFixed(1) + '"/>' +
-        '<text x="' + px(x).toFixed(1) + '" y="' + (py(0) + 18).toFixed(1) + '" text-anchor="' + (i === 2 ? "end" : "middle") + '">' + ll[1].toFixed(4) + "° E</text>";
+      ticks += '<line x1="' + px(x).toFixed(1) + '" x2="' + px(x).toFixed(1) + '" y1="' + ty.toFixed(1) + '" y2="' + (ty + 5).toFixed(1) + '"/>' +
+        '<text x="' + px(x).toFixed(1) + '" y="' + (ty + 17).toFixed(1) + '" text-anchor="' + (i === 2 ? "end" : i === 0 ? "start" : "middle") + '">' + ll[1].toFixed(4) + "° E</text>";
     });
-    var bar = 100 * s, bx = px(W) - bar, by = py(0) + 32;
+    var bar = 100 * proj.s, bx = px(W + proj.pad) - bar, by = ty + 28;
     ticks += '<line class="scale" x1="' + bx.toFixed(1) + '" x2="' + (bx + bar).toFixed(1) + '" y1="' + by.toFixed(1) + '" y2="' + by.toFixed(1) + '"/>' +
       '<text x="' + (bx - 6).toFixed(1) + '" y="' + (by + 3.5).toFixed(1) + '" text-anchor="end">100 m</text>';
     el.ticks.innerHTML = ticks;
   }
 
   function renderTrack() {
-    var d = state.d;
-    var p = positionAt(d);
-    var legs = survey.legs;
+    var d = state.d, p = Survey.positionAt(route, d);
 
-    var rects = el.cover.children, r = 0;
-    legs.forEach(function (g) {
-      if (!g.along) return;
-      var f = Math.max(0, Math.min(1, (d - g.d0) / g.len));
-      var xa = Math.min(g.x0, g.x0 + (g.x1 - g.x0) * f);
-      var rect = rects[r++];
-      rect.setAttribute("x", px(xa).toFixed(1));
-      rect.setAttribute("y", py(g.y0 + survey.strip / 2).toFixed(1));
-      rect.setAttribute("width", (Math.abs(g.x1 - g.x0) * f * proj.s).toFixed(1));
-      rect.setAttribute("height", (survey.strip * proj.s).toFixed(1));
+    [["A", el.coverA], ["B", el.coverB]].forEach(function (pair) {
+      var rects = pair[1].children, r = 0, half = CONFIG.swath / 2;
+      route.segments.forEach(function (s) {
+        if (s.pass !== pair[0] || s.type !== "survey") return;
+        var f = Math.max(0, Math.min(1, (d - s.d0) / s.length)), rect = rects[r++];
+        if (s.axis === "x") {
+          var xa = Math.min(s.x0, s.x0 + (s.x1 - s.x0) * f);
+          setRect(rect, xa, s.y0 - half, Math.abs(s.x1 - s.x0) * f, 2 * half);
+        } else {
+          var ya = Math.min(s.y0, s.y0 + (s.y1 - s.y0) * f);
+          setRect(rect, s.x0 - half, ya, 2 * half, Math.abs(s.y1 - s.y0) * f);
+        }
+      });
     });
 
-    var points = [pt(legs[0].x0, legs[0].y0)];
-    for (var i = 0; i < p.leg; i++) points.push(pt(legs[i].x1, legs[i].y1));
-    points.push(pt(p.x, p.y));
-    el.track.setAttribute("points", points.join(" "));
-
-    var cur = legs[p.leg];
-    var done = state.status === "complete" || d >= survey.total;
-    el.current.setAttribute("d", done ? "" : "M" + pt(p.x, p.y) + " L" + pt(cur.x1, cur.y1));
-
-    el.auv.setAttribute("transform", "translate(" + pt(p.x, p.y) + ") rotate(" + p.heading + ")");
+    el.track.setAttribute("points", Survey.pointsBetween(route, 0, d).map(function (q) { return pt(q[0], q[1]); }).join(" "));
+    var done = state.status === "complete" || state.status === "review" || d >= route.lengths.total;
+    el.current.setAttribute("points", done ? "" : Survey.pointsBetween(route, d, p.segment.d1).map(function (q) { return pt(q[0], q[1]); }).join(" "));
+    el.auv.setAttribute("transform", "translate(" + pt(p.x, p.y) + ") rotate(" + p.heading.toFixed(1) + ")");
   }
 
   var MARKER_SHAPES = {
@@ -410,11 +381,14 @@
     unknown: '<circle r="7.5" fill="#a9b6c2" stroke="#071a26" stroke-width="1.5"/><text y="3.8" text-anchor="middle" font-family="Archivo, sans-serif" font-size="10" font-weight="800" fill="#071a26">?</text>'
   };
 
+  /* One marker per target. The second observation reuses it (adds a ring). */
   function addMarker(t) {
     var g = document.createElementNS(SVG_NS, "g");
     g.setAttribute("class", "marker is-active");
+    g.setAttribute("data-target", t.key);
     g.setAttribute("transform", "translate(" + pt(t.x, t.y) + ")");
-    g.innerHTML = '<circle class="halo" r="17" fill="none" stroke="#ffffff" stroke-width="2"/>' + MARKER_SHAPES[t.level] +
+    g.innerHTML = '<circle class="halo" r="17" fill="none" stroke="#ffffff" stroke-width="2"/>' +
+      '<circle class="xring" r="10.5" fill="none" stroke="#e7c76a" stroke-width="1.6"/>' + MARKER_SHAPES[t.level] +
       '<text x="12" y="-8" font-family="Archivo, sans-serif" font-size="11" font-weight="700" fill="#ffffff">' + t.id.replace("Target ", "") + "</text>";
     el.markers.appendChild(g);
     t.markerEl = g;
@@ -430,12 +404,37 @@
     node.classList.add("is-flash");
   }
 
-  /* ---- status, stages ---- */
+  /* ---- survey phase, status, stages ---- */
+
+  var PHASES = ["A", "T", "B", "review", "complete"];
+  var PHASE_LABELS = {
+    A: "Primary Sweep — Horizontal Pass A",
+    T: "Transitioning to Orthogonal Pass",
+    B: "Crosshatch Sweep — Vertical Pass B",
+    review: "Cross-Pass Verification",
+    complete: "Mission Complete"
+  };
+
+  function currentPhase() {
+    if (state.status === "complete") return "complete";
+    if (state.status === "review") return "review";
+    if (state.status === "ready") return null;
+    return Survey.positionAt(route, state.d).pass;
+  }
+
+  function renderPhase() {
+    var ph = currentPhase(), at = PHASES.indexOf(ph);
+    el.phases.forEach(function (li, i) {
+      li.classList.toggle("is-active", i === at && ph !== "complete");
+      li.classList.toggle("is-done", at >= 0 && (i < at || ph === "complete"));
+    });
+    if (state.status === "scanning" && ph) setStatus(PHASE_LABELS[ph], "active");
+  }
 
   var STAGES = ["scanning", "detection", "analysis", "classification", "risk", "decision", "alert", "verification"];
 
   function setStatus(label, mode) {
-    el.statusLabel.textContent = label;
+    if (el.statusLabel.textContent !== label) el.statusLabel.textContent = label;
     el.status.setAttribute("data-state", mode);
   }
 
@@ -469,7 +468,7 @@
     el.box.classList.toggle("is-classified", classified);
     el.box.classList.toggle("is-flip", t.box[1] < 14);
     el.box.classList.toggle("is-right", t.box[0] + t.box[2] > 75);
-    el.box.setAttribute("data-level", classified && state.blocks >= 4 ? t.level : "");
+    el.box.setAttribute("data-level", classified && (state.blocks >= 4 || state.status === "verifying") ? t.level : "");
     el.boxLabel.textContent = t.group === "mine" ? "Potential Mine — unconfirmed" : t.name;
   }
 
@@ -499,7 +498,7 @@
       return;
     }
     el.alert.setAttribute("data-kind", t.level);
-    el.alertTitle.textContent = ALERTS[t.level];
+    el.alertTitle.textContent = ALERTS[t.level] + (state.status === "verifying" ? " — second observation (Pass B)" : "");
     el.alertBody.innerHTML = [
       ["Target", t.id],
       ["Risk", t.risk],
@@ -523,16 +522,20 @@
 
   var EVIDENCE_STATE = { "Detected": "yes", "Not detected": "no", "Inconclusive": "maybe" };
 
+  function obsLine(o) { return "Pass " + o.pass + " — line " + o.lineId + ", heading " + fmtDeg(o.auvHeadingDeg); }
+
   function blockHtml(key, t, cls) {
+    var o = t.obs[0];
     if (key === "detect") {
       return section("Target detected", '<p class="trail__id">' + t.id + "</p>" + kv([
-        ["Detection time (demo clock)", t.time],
+        ["Detection time (demo clock)", o.time],
         ["Detected by", t.source],
-        ["Survey line", "Line " + t.line],
+        ["Survey pass / line", "Pass A (primary) — line " + o.lineId],
+        ["AUV heading (Sim.)", fmtDeg(o.auvHeadingDeg)],
         ["Position (Sim.)", fmtLat(t.latlon[0]) + "<br>" + fmtLon(t.latlon[1])],
         ["Depth (Sim.)", t.depth + " m"],
-        ["Distance from AUV (Sim.)", t.distance + " m"],
-        ["Bearing from AUV (Sim.)", pad3(t.bearing) + "°"]
+        ["Distance from AUV (Sim.)", Math.round(o.distanceToTargetM) + " m"],
+        ["Bearing from AUV (Sim.)", fmtDeg(o.bearingToTargetDeg)]
       ]), cls);
     }
     if (key === "evidence") {
@@ -563,12 +566,12 @@
     }
     if (key === "mark") {
       return section("Alert and marking", '<p class="trail__text"><strong>' + ALERTS[t.level] + "</strong></p>" +
-        kv([["Status", t.statusNow]]) + '<p class="trail__meta">Marked on the survey map and added to the target log.</p>', cls);
+        kv([["Status", t.statusNow]]) + '<p class="trail__meta">Marked on the survey map and added to the target log. A second observation follows on Pass B.</p>', cls);
     }
-    var v = t.verify;
+    var b = t.obs[1] || t.plannedB, x = t.xpass;
     var steps = [
-      ["First pass — line " + t.line + ": target detected", 0],
-      ["Additional pass — line " + t.repass + ", from the other side (additional angle)", 1],
+      [obsLine(o) + ": first observation", 0],
+      [obsLine(b) + ": second observation, perpendicular heading", 1],
       ["Evidence comparison", 2],
       ["Decision update", 3]
     ].map(function (s) {
@@ -576,17 +579,44 @@
       return '<li class="' + c + '">' + s[0] + "</li>";
     }).join("");
     var results = "";
-    if (state.verifyStep >= 1) results += kv([["Additional pass (Sim.)", t.repassRel.distance + " m, bearing " + pad3(t.repassRel.bearing) + "°"]]);
-    if (state.verifyStep >= 2) results += '<p class="trail__text">' + v.compare + "</p>" + kv([["Conceptual multi-angle consensus", v.consensus]]);
-    if (state.verifyStep >= 3) results += '<p class="trail__text"><strong>Decision update:</strong> ' + v.update + "</p>";
-    return section('Multi-pass verification <span class="tag tag--concept">Conceptual</span>', '<ol class="inspect-steps">' + steps + "</ol>" + results, cls);
+    if (state.verifyStep >= 1) {
+      results += kv([
+        ["Same target, same position (Sim.)", t.id + " — " + fmtLat(t.latlon[0]) + ", " + fmtLon(t.latlon[1])],
+        ["Pass B observation (Sim.)", Math.round(b.distanceToTargetM) + " m abeam, bearing " + fmtDeg(b.bearingToTargetDeg)],
+        ["Aspect difference between headings", Math.round(Survey.aspectDifference(o.auvHeadingDeg, b.auvHeadingDeg)) + "°"]
+      ]);
+    }
+    if (state.verifyStep >= 2) results += '<p class="trail__text">' + x.compare + "</p>" + kv([["Conceptual multi-aspect consensus", x.consensus]]);
+    if (state.verifyStep >= 3) results += '<p class="trail__text"><strong>Decision update:</strong> ' + x.update + "</p>";
+    return section('Cross-pass verification <span class="tag tag--concept">Conceptual</span>', '<ol class="inspect-steps">' + steps + "</ol>" + results +
+      '<p class="trail__meta">Multi-aspect observation means two survey headings, not every angle. A second pass does not guarantee a correct classification.</p>', cls);
+  }
+
+  function crossTable() {
+    return '<table class="xtable"><thead><tr><th>Target</th><th>Pass A</th><th>Pass B</th><th>Δ heading</th><th>Result</th></tr></thead><tbody>' +
+      state.marked.map(function (t) {
+        var a = t.obs[0], b = t.obs[1];
+        return "<tr><td>" + t.id.replace("Target ", "") + " " + (t.logName || t.name) + "</td>" +
+          "<td>" + a.lineId + " · " + fmtDeg(a.auvHeadingDeg) + "</td>" +
+          "<td>" + (b ? b.lineId + " · " + fmtDeg(b.auvHeadingDeg) : "—") + "</td>" +
+          "<td>" + (b ? Math.round(Survey.aspectDifference(a.auvHeadingDeg, b.auvHeadingDeg)) + "°" : "—") + "</td>" +
+          "<td>" + (t.verified ? t.xpass.consensus : "Not observed on Pass B") + "</td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+
+  function crossCount() { return state.marked.filter(function (t) { return t.verified; }).length; }
+
+  function reviewHtml() {
+    return '<section class="trail__block is-current is-new"><h4>Cross-pass verification — summary</h4>' +
+      '<p class="trail__text">' + crossCount() + " of " + state.marked.length + " targets observed on both survey headings.</p>" + crossTable() +
+      '<p class="trail__meta">Simulation. Consistent observations keep each decision; they do not confirm an identity. The potential mine still requires verification and the unknown object remains unknown.</p></section>';
   }
 
   function summaryHtml() {
     var m = state.marked;
     var count = function (fn) { return m.filter(fn).length; };
     var byGroup = function (g) { return function (t) { return t.group === g; }; };
-    var cov = coverageAt(state.d);
+    var cov = grid.stats(), L = route.lengths;
     var pending = count(function (t) { return t.decision === "Requires Verification"; });
     var tiles = [
       ["Targets detected", m.length],
@@ -598,12 +628,14 @@
     ].map(function (s) { return "<div><strong>" + s[1] + "</strong><span>" + s[0] + "</span></div>"; }).join("");
     return '<div class="summary trail__block is-new"><h4>Mission complete</h4><div class="summary__grid">' + tiles + "</div>" +
       kv([
-        ["Distance covered (Sim.)", fmtNum(cov.distance) + " m"],
-        ["Area covered (Sim.)", fmtNum(cov.covered) + " m²"],
-        ["Coverage (Sim.)", cov.pct.toFixed(1) + "%"],
+        ["Targets observed on both headings", crossCount() + " of " + m.length],
+        ["Route flown (Sim.)", fmtNum(state.d) + " m of " + fmtNum(L.total) + " m"],
+        ["Pass A / transition / Pass B (Sim.)", fmtNum(L.A) + " / " + fmtNum(L.T) + " / " + fmtNum(L.B) + " m"],
+        ["Unique area coverage (Sim.)", cov.uniquePct.toFixed(1) + "% of " + fmtNum(grid.total) + " m²"],
+        ["Area seen on both headings (Sim.)", cov.bothPct.toFixed(1) + "%"],
         ["Demo time", formatTime(state.ms)]
-      ]) +
-      '<p class="trail__text">Every target has been logged with a risk assessment, a decision and a recommended action. ' +
+      ]) + crossTable() +
+      '<p class="trail__text">Every target has been logged with a risk assessment, a decision and a recommended action, and observed a second time from a perpendicular heading. ' +
       (pending === 1 ? "One target still needs" : pending + " targets still need") + " verification.</p>" +
       '<p class="trail__meta">Simulated demonstration values, not field results.</p></div>';
   }
@@ -611,8 +643,13 @@
   function renderAnalysis() {
     var t = state.current;
     if (state.status === "complete") { el.analysis.innerHTML = summaryHtml(); return; }
+    if (state.status === "review") { el.analysis.innerHTML = reviewHtml(); return; }
     if (!t) {
-      var message = state.status === "scanning" ? "Scanning the survey lines for targets…" : "Start the mission to begin the survey.";
+      var ph = currentPhase();
+      var message = state.status !== "scanning" ? "Start the mission to begin the survey."
+        : ph === "T" ? "Transition leg to the start of the perpendicular pass…"
+        : ph === "B" ? "Pass B — flying the perpendicular lines; each target will be observed again…"
+        : "Pass A — scanning the horizontal survey lines for targets…";
       el.analysis.innerHTML = '<div class="analysis__empty"><p>' + message + "</p></div>";
       state.shownBlocks = 0;
       return;
@@ -630,24 +667,43 @@
   /* ---- coverage ---- */
 
   function renderSurveyInfo() {
-    var legsLine = survey.lines + " × " + fmtNum(sc.width) + " m + " + (survey.lines - 1) + " × " + LINE_SPACING + " m";
+    var L = route.lengths, A = route.A, B = route.B;
     el.covInfo.innerHTML = [
       ["Scenario", sc.name],
-      ["Survey area", fmtNum(sc.width) + " m × " + fmtNum(sc.height) + " m = " + fmtNum(survey.area) + " m²"],
-      ["Survey lines", survey.lines + ", spaced " + LINE_SPACING + " m"],
-      ["Estimated sensor swath", SWATH + " m — simulation parameter"],
-      ["Planned track distance", fmtNum(survey.total) + " m (" + legsLine + ")"]
+      ["Survey area", fmtNum(sc.width) + " m × " + fmtNum(sc.height) + " m = " + fmtNum(sc.width * sc.height) + " m²"],
+      ["Pass A — primary, horizontal", A.count + " lines at y = " + list(A.positions) + " m, spacing " + fmtNum(A.spacing) + " m"],
+      ["Pass B — orthogonal, vertical", B.count + " lines at x = " + list(B.positions) + " m, spacing " + fmtNum(B.spacing) + " m"],
+      ["Estimated sensor swath", CONFIG.swath + " m — simulation parameter"],
+      ["Pass A distance", fmtNum(L.A) + " m (" + fmtNum(L.legsA) + " m legs + " + fmtNum(L.turnsA) + " m turns)"],
+      ["Transition leg", fmtNum(L.T) + " m"],
+      ["Pass B distance", fmtNum(L.B) + " m (" + fmtNum(L.legsB) + " m legs + " + fmtNum(L.turnsB) + " m turns)"],
+      ["Planned route", fmtNum(L.total) + " m = Pass A + transition + Pass B"],
+      ["Same lines, straight connectors", fmtNum(L.straightA) + " + " + fmtNum(L.straightB) + " = " + fmtNum(L.straightA + L.straightB) + " m, without transition — reference"]
     ].map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
     el.scenarioNote.textContent = sc.note;
   }
 
+  function pct(f) { return (f * 100).toFixed(1) + "%"; }
+
   function renderCoverage() {
-    var c = coverageAt(state.d);
-    el.covDistance.textContent = fmtNum(c.distance) + " m";
-    el.covArea.textContent = fmtNum(c.covered) + " m²";
-    el.covPct.textContent = c.pct.toFixed(1) + "%";
-    el.covRemain.textContent = fmtNum(c.remaining) + " m²";
-    el.covBar.style.width = c.pct.toFixed(2) + "%";
+    if (state.d > state.dCovered) {
+      grid.markRoute(route, state.dCovered, state.d);
+      state.dCovered = state.d;
+    }
+    var c = grid.stats();
+    var pa = Survey.passProgress(route, "A", state.d), pb = Survey.passProgress(route, "B", state.d);
+    el.covDistance.textContent = fmtNum(state.d) + " m";
+    el.covPct.textContent = c.uniquePct.toFixed(1) + "%";
+    el.covPctB.textContent = c.uniquePct.toFixed(1) + "%";
+    el.covBar.style.width = c.uniquePct.toFixed(2) + "%";
+    el.covRemain.textContent = fmtNum(c.remainingArea) + " m²";
+    el.covA.textContent = pct(pa);
+    el.covABar.style.width = (pa * 100).toFixed(2) + "%";
+    el.covB.textContent = pct(pb);
+    el.covBBar.style.width = (pb * 100).toFixed(2) + "%";
+    el.covBoth.textContent = c.bothPct.toFixed(1) + "%";
+    el.covBothBar.style.width = c.bothPct.toFixed(2) + "%";
+    el.covXpass.textContent = crossCount() + " / " + TARGETS.length;
   }
 
   /* ---- target log + detection timeline ---- */
@@ -655,30 +711,37 @@
   function renderLog() {
     el.count.textContent = state.marked.length;
     if (!state.marked.length) {
-      el.logBody.innerHTML = '<tr class="is-empty"><td colspan="10">Targets appear here as they are marked.</td></tr>';
+      el.logBody.innerHTML = '<tr class="is-empty"><td colspan="11">Targets appear here as they are marked.</td></tr>';
       return;
     }
-    var last = state.marked.length - 1;
-    el.logBody.innerHTML = state.marked.map(function (t, i) {
-      return '<tr class="' + (i === last && state.justMarked ? "is-new" : "") + '">' +
+    el.logBody.innerHTML = state.marked.map(function (t) {
+      var a = t.obs[0], b = t.obs[1];
+      var obs = '<span class="obs">' + a.lineId + " · " + fmtDeg(a.auvHeadingDeg) + " · " + a.time + "</span>" +
+        (b ? '<span class="obs">' + b.lineId + " · " + fmtDeg(b.auvHeadingDeg) + " · " + b.time + "</span>" : "");
+      var xp = t.verified
+        ? "Δ " + Math.round(Survey.aspectDifference(a.auvHeadingDeg, b.auvHeadingDeg)) + "° — " + t.xpass.consensus + '<span class="xp">' + t.statusNow + "</span>"
+        : '<span class="xp">' + (b ? "Comparing…" : "Pending — Pass B") + "</span>";
+      return '<tr class="' + (t.key === state.flashKey ? "is-new" : "") + '" data-target="' + t.key + '">' +
         "<td>" + t.id.replace("Target ", "") + "</td>" +
-        "<td>" + t.time + "</td>" +
+        "<td>" + a.time + "</td>" +
         "<td>" + (t.logName || t.name) + "</td>" +
         "<td>" + t.classification + "</td>" +
         '<td><span class="risk risk--' + t.level + ' risk--small">' + t.risk + "</span></td>" +
         '<td class="' + (t.level === "safe" ? "" : "is-alert") + '">' + (t.logDecision || t.decision) + "</td>" +
         "<td>" + t.source + "</td>" +
-        "<td>Line " + t.line + ", " + pad3(t.bearing) + "°</td>" +
+        "<td>" + obs + "</td>" +
+        "<td>" + xp + "</td>" +
         "<td>" + fmtLat(t.latlon[0]) + "<br>" + fmtLon(t.latlon[1]) + "</td>" +
         "<td>" + t.depth + " m</td></tr>";
     }).join("");
   }
 
-  function addTimelineMark(t) {
+  function addTimelineMark(t, second) {
     var mark = document.createElement("span");
-    mark.className = "timeline__mark timeline__mark--" + t.level;
+    mark.className = "timeline__mark timeline__mark--" + t.level + (second ? " timeline__mark--b" : "");
     mark.style.left = ((state.ms / plan.total) * 100).toFixed(2) + "%";
-    mark.innerHTML = t.id.replace("Target ", "") + '<span class="timeline__time">' + t.time + "</span>";
+    mark.setAttribute("data-mark", t.key + (second ? "-B" : "-A"));
+    mark.innerHTML = t.id.replace("Target ", "") + (second ? "·B" : "") + '<span class="timeline__time">' + formatTime(state.ms) + "</span>";
     el.timeline.appendChild(mark);
   }
 
@@ -705,33 +768,39 @@
   /* ================= 4. Mission ================= */
 
   var TICK = 100;
-  var SCAN_MS = 20000;   // demo time spent moving along the whole track (compressed)
-  var TARGET_MS = 7200;  // demo time for one target, detection to marking
-  var REPASS_MS = 5400;  // demo time for one additional pass
+  var SCAN_MS = 32000;   // demo time spent moving along the whole route (compressed)
+  var TARGET_MS = 7200;  // demo time for one first observation, detection to marking
+  var CROSS_MS = 5400;   // demo time for one second (Pass B) observation
+  var REVIEW_MS = 4500;  // demo time for the cross-pass verification summary
   var AT = { evidence: 1100, classify: 2200, risk: 3300, decide: 4400, mark: 5600 };
-  var RP = { compare: 1700, update: 3400 };
+  var XP = { compare: 1700, update: 3400 };
 
   var timer = null;
   var state = freshState();
 
   function freshState() {
-    return { status: "ready", running: false, paused: false, ms: 0, d: 0, next: 0, counter: 0, current: null, alert: null,
-             blocks: 0, shownBlocks: 0, verifyStep: 0, justMarked: false, marked: [], byKey: {} };
+    return { status: "ready", running: false, paused: false, ms: 0, d: 0, dCovered: 0, next: 0, counter: 0,
+             current: null, alert: null, blocks: 0, shownBlocks: 0, verifyStep: 0, flashKey: null, marked: [], byKey: {} };
   }
 
-  /* Turn the survey and the targets into timed events and AUV movements. */
+  /* Turn the route and the target observations into timed events and AUV
+     movements. The AUV holds position while a target is being analysed. */
   function compile() {
     var stops = [];
     TARGETS.forEach(function (tg) {
-      stops.push({ d: geo[tg.key].detectD, type: "target", key: tg.key });
-      if (tg.repass) stops.push({ d: geo[tg.key].repassD, type: "repass", key: tg.key });
+      observations[tg.key].forEach(function (o) {
+        stops.push({ d: o.d, type: o.pass === "A" ? "first" : "second", key: tg.key });
+      });
     });
-    stops.sort(function (a, b) { return a.d - b.d; });
+    /* the AUV also passes the start and the end of the transition leg, so the
+       (short) leg between the two passes stays visible for a moment */
+    stops.push({ d: route.passStart.T, type: "waypoint" }, { d: route.passStart.B, type: "waypoint" });
+    stops.sort(function (a, b) { return a.d - b.d || (a.type === "waypoint" ? -1 : b.type === "waypoint" ? 1 : 0); });
 
     var events = [], moves = [], t = 0, d = 0;
     function at(ms, fn, arg) { events.push({ t: ms, run: function () { fn(arg); } }); }
     function scanTo(d1) {
-      var ms = Math.max(d === 0 ? 3000 : 1500, Math.round(((d1 - d) / survey.total) * SCAN_MS));
+      var ms = Math.max(d === 0 ? 2500 : 1200, Math.round(((d1 - d) / route.lengths.total) * SCAN_MS));
       at(t, enterScan);
       moves.push({ t0: t, t1: t + ms, d0: d, d1: d1 });
       t += ms;
@@ -740,7 +809,8 @@
 
     stops.forEach(function (s) {
       scanTo(s.d);
-      if (s.type === "target") {
+      if (s.type === "waypoint") return;
+      if (s.type === "first") {
         at(t, detect, s.key);
         at(t + AT.evidence, analyze);
         at(t + AT.classify, classify);
@@ -749,13 +819,15 @@
         at(t + AT.mark, mark);
         t += TARGET_MS;
       } else {
-        at(t, repassStart, s.key);
-        at(t + RP.compare, repassCompare);
-        at(t + RP.update, repassUpdate);
-        t += REPASS_MS;
+        at(t, crossStart, s.key);
+        at(t + XP.compare, crossCompare);
+        at(t + XP.update, crossUpdate);
+        t += CROSS_MS;
       }
     });
-    scanTo(survey.total);
+    scanTo(route.lengths.total);
+    at(t, review);
+    t += REVIEW_MS;
     at(t, finish);
     return { events: events, moves: moves, total: t };
   }
@@ -777,31 +849,40 @@
     state.status = "scanning";
     state.current = null;
     state.blocks = 0;
-    state.justMarked = false;
-    setStatus("Scanning", "active");
+    state.flashKey = null;
     setStage("scanning");
     showScene("idle");
     setBox(null);
     setCloseup(false);
     clearMarkerFocus();
+    renderPhase();
     renderAnalysis();
   }
 
+  function observe(t, o) {
+    var rec = {
+      pass: o.pass, lineId: o.lineId, time: formatTime(state.ms), auvHeadingDeg: o.auvHeadingDeg,
+      bearingToTargetDeg: o.bearingToTargetDeg, distanceToTargetM: o.distanceToTargetM
+    };
+    t.obs.push(rec);
+    return rec;
+  }
+
+  /* First observation, Pass A: the full detection-to-marking sequence. */
   function detect(key) {
-    var spec = TARGETS.filter(function (tg) { return tg.key === key; })[0];
-    var g = geo[key];
-    var rule = evaluate(spec.evidence);
+    var sp = spec(key), rule = evaluate(sp.evidence), pos = sc.targets[key];
     state.counter += 1;
     var t = {
-      key: key, id: "Target #" + pad3(state.counter), name: spec.name, objectType: spec.objectType,
-      line: spec.line, repass: spec.repass, depth: spec.depth, source: spec.source, scene: spec.scene, box: spec.box,
-      logName: spec.logName, evidence: spec.evidence, decision: spec.decision, logDecision: spec.logDecision, explanation: spec.explanation,
-      action: spec.action, statusNow: spec.status, verify: spec.verify,
+      key: key, id: "Target #" + pad3(state.counter), name: sp.name, objectType: sp.objectType,
+      depth: sp.depth, source: sp.source, scene: sp.scene, box: sp.box, logName: sp.logName,
+      evidence: sp.evidence, decision: sp.decision, logDecision: sp.logDecision, explanation: sp.explanation,
+      action: sp.action, statusNow: sp.status, xpass: sp.xpass,
       classification: rule.classification, group: rule.group, risk: rule.risk, level: rule.level,
       riskType: rule.riskType, certainty: rule.certainty, ruleText: rule.text,
-      x: g.x, y: g.y, latlon: g.latlon, distance: g.detect.distance, bearing: g.detect.bearing, repassRel: g.repass,
-      time: formatTime(state.ms)
+      x: pos[0], y: pos[1], latlon: toLatLon(pos[0], pos[1]),
+      obs: [], plannedB: observations[key][1], verified: false
     };
+    observe(t, observations[key][0]);
     state.byKey[key] = t;
     state.status = "detected";
     state.current = t;
@@ -809,11 +890,12 @@
     state.shownBlocks = 0;
     state.verifyStep = 0;
     state.alert = null;
-    setStatus("Target detected", "alert");
+    setStatus("Target detected — Pass A, line " + t.obs[0].lineId, "alert");
     setStage("detection");
+    renderPhase();
     showScene(t.scene);
     setBox(t, false);
-    addTimelineMark(t);
+    addTimelineMark(t, false);
     renderAlert();
     renderAnalysis();
   }
@@ -852,52 +934,79 @@
     var t = state.current;
     state.marked.push(t);
     state.blocks = 6;
-    state.justMarked = true;
+    state.flashKey = t.key;
     state.alert = t;
     setStatus(t.level === "safe" ? "Logged" : "Alert — target marked", "alert");
     setStage("alert");
     addMarker(t);
     renderAlert();
     renderLog();
+    renderCoverage();
     renderAnalysis();
     flash(el.cardMap);
     flash(el.cardLog);
     flash(el.alert);
   }
 
-  function repassStart(key) {
+  /* Second observation, Pass B: same target, same position, same marker. */
+  function crossStart(key) {
     var t = state.byKey[key];
+    observe(t, observations[key][1]);
     state.status = "verifying";
     state.current = t;
     state.blocks = 7;
     state.shownBlocks = 6;
     state.verifyStep = 1;
-    state.justMarked = false;
+    state.flashKey = t.key;
     state.alert = t;
-    renderAlert();
-    setStatus("Verification — additional pass", "alert");
+    setStatus("Cross-Pass Observation — " + t.id, "alert");
     setStage("verification");
+    renderPhase();
     clearMarkerFocus();
     if (t.markerEl) t.markerEl.classList.add("is-inspecting");
     showScene(t.scene);
     setBox(t, true);
-    setCloseup(true, t, "Additional pass — reference image");
+    setCloseup(true, t, "Pass B — reference image");
+    addTimelineMark(t, true);
+    renderAlert();
+    renderLog();
     renderAnalysis();
   }
 
-  function repassCompare() {
+  function crossCompare() {
     state.verifyStep = 2;
-    setStatus("Comparing evidence", "alert");
+    setStatus("Comparing evidence — " + state.current.id, "alert");
     renderAnalysis();
   }
 
-  function repassUpdate() {
+  function crossUpdate() {
     var t = state.current;
     state.verifyStep = 4;
-    t.statusNow = t.verify.status;
-    setStatus("Verification required", "alert");
-    state.alert = t;
+    t.verified = true;
+    t.statusNow = t.xpass.status;
+    if (t.markerEl) t.markerEl.classList.add("is-crosschecked");
+    setStatus(t.decision === "Requires Verification" ? "Verification required — " + t.id : "Decision unchanged — " + t.id, "alert");
     renderAlert();
+    renderLog();
+    renderCoverage();
+    renderAnalysis();
+  }
+
+  function review() {
+    state.status = "review";
+    state.current = null;
+    state.alert = null;
+    state.flashKey = null;
+    setStatus("Cross-Pass Verification — " + crossCount() + " of " + state.marked.length + " targets on both headings", "alert");
+    setStage("verification");
+    showScene("idle");
+    setBox(null);
+    setCloseup(false);
+    clearMarkerFocus();
+    renderPhase();
+    renderTrack();
+    renderAlert();
+    renderLog();
     renderAnalysis();
   }
 
@@ -909,9 +1018,10 @@
     state.paused = false;
     state.current = null;
     state.alert = null;
-    state.d = survey.total;
+    state.d = route.lengths.total;
     setStatus("Mission complete", "done");
     allStagesDone();
+    renderPhase();
     showScene("idle");
     setBox(null);
     setCloseup(false);
@@ -920,6 +1030,7 @@
     renderCoverage();
     renderClock();
     renderAlert();
+    renderLog();
     renderAnalysis();
     setPausedVisuals(false);
     updateButtons();
@@ -943,6 +1054,7 @@
     renderTrack();
     renderCoverage();
     renderClock();
+    if (state.status === "scanning") renderPhase();
   }
 
   function start() {
@@ -976,12 +1088,14 @@
     clearInterval(timer);
     timer = null;
     state = freshState();
+    grid.reset();
     el.markers.innerHTML = "";
     Array.prototype.slice.call(el.timeline.querySelectorAll(".timeline__mark")).forEach(function (m) { m.remove(); });
     showScene("idle");
     setBox(null);
     setCloseup(false);
     setStage(null);
+    renderPhase();
     setStatus("Ready", "idle");
     [el.cardMap, el.cardLog, el.alert].forEach(function (n) { n.classList.remove("is-flash"); });
     setPausedVisuals(false);
@@ -994,13 +1108,18 @@
     updateButtons();
   }
 
-  /* Changing the scenario rebuilds the survey, the target positions and the
-     timeline, then resets the mission. */
+  /* Changing the scenario rebuilds the route, the observations, the coverage
+     grid and the timeline, then resets the mission. */
   function setScenario(key) {
     scenarioKey = Object.prototype.hasOwnProperty.call(SCENARIOS, key) ? key : "redsea";
     sc = SCENARIOS[scenarioKey];
-    survey = buildSurvey(sc);
-    geo = placeTargets();
+    route = Survey.buildRoute({ width: sc.width, height: sc.height }, CONFIG);
+    grid = new Survey.CoverageGrid({ width: sc.width, height: sc.height }, CONFIG.cell);
+    observations = {};
+    TARGETS.forEach(function (tg) {
+      var pos = sc.targets[tg.key];
+      observations[tg.key] = Survey.observationsFor(route, { x: pos[0], y: pos[1] });
+    });
     plan = compile();
     drawMap();
     renderSurveyInfo();

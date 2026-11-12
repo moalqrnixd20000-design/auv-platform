@@ -7,10 +7,10 @@
 <meta name="description" content="AUV is an autonomous underwater vehicle concept for underwater object detection, hazard assessment, explainable decision support and inspection prioritization, with a conceptual operating range of 1–30 m.">
 <meta name="theme-color" content="#0a2536">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/demo.css">
+<link rel="stylesheet" href="css/tokens.css?v=20261112">
+<link rel="stylesheet" href="css/base.css?v=20261112">
+<link rel="stylesheet" href="css/components.css?v=20261112">
+<link rel="stylesheet" href="css/demo.css?v=20261112">
 <script>document.documentElement.classList.add("js");</script>
 </head>
 <body id="top">
@@ -86,7 +86,7 @@
           </div>
           <h3>What the system does</h3>
           <div class="prose">
-            <p>The AUV concept surveys an area in parallel lines and combines acoustic and onboard sensor data to detect underwater targets. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
+            <p>The AUV concept surveys an area in two perpendicular sets of parallel lines (a crosshatch survey) and combines acoustic and onboard sensor data to detect underwater targets. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
             <p>Targets are marked and reported to the operator at the surface.</p>
           </div>
         </div>
@@ -256,13 +256,13 @@
         <div class="card">
           <h3>Multi-pass verification <span class="tag tag--concept">Conceptual</span></h3>
           <ol class="mini-flow">
-            <li>First pass</li>
+            <li>Primary pass (Pass A)</li>
             <li>Target detected</li>
-            <li>Additional pass, from another angle</li>
+            <li>Orthogonal pass (Pass B), perpendicular heading</li>
             <li>Evidence comparison</li>
             <li>Decision update</li>
           </ol>
-          <p>A suspicious target is passed again from the neighbouring survey line, so it is seen from another angle. The two observations are compared before the decision is updated. In the demo this appears as a conceptual multi-angle consensus; no trained model is involved.</p>
+          <p>The survey is flown twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is therefore observed from two survey headings about 90° apart (multi-aspect observation), and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification. No trained model is involved.</p>
         </div>
         <div class="card">
           <h3>Environmental / acoustic background <span class="tag tag--concept">Conceptual</span></h3>
@@ -358,7 +358,7 @@
             <div><dt>Communication</dt><dd>Underwater acoustic communication — concept; specifications TBD</dd></div>
             <div><dt>Detection</dt><dd>Underwater object detection</dd></div>
             <div><dt>Decision</dt><dd>Explainable risk assessment</dd></div>
-            <div><dt>Survey</dt><dd>Grid / parallel-line survey</dd></div>
+            <div><dt>Survey</dt><dd>Two-pass crosshatch grid survey — concept</dd></div>
           </dl>
           <aside class="inspect-tools" id="inspect-tools" aria-labelledby="inspect-title">
             <h3 id="inspect-title">Inspect the design</h3>
@@ -385,7 +385,7 @@
       <div class="demo__head">
         <div>
           <h2 id="demo-title">Interactive demo</h2>
-          <p>Software simulation of the proposed AUV mission: a grid survey that detects underwater objects, assesses their potential risk and explains every decision.</p>
+          <p>Software simulation of the proposed AUV mission: a two-pass crosshatch survey (a horizontal lawn-mower pass, then a perpendicular pass over the same area) that detects underwater objects, assesses their potential risk, re-observes every target from a second heading and explains every decision.</p>
         </div>
         <div class="demo__controls">
           <label class="scenario"><span>Scenario</span>
@@ -401,6 +401,14 @@
           <button class="btn" type="button" id="demo-full" aria-pressed="false">Full-screen demo</button>
         </div>
       </div>
+
+      <ol class="demo-phases" id="demo-phases" aria-label="Survey phase">
+        <li data-phase="A">Primary Sweep — Pass A <span>horizontal</span></li>
+        <li data-phase="T">Transition <span>to orthogonal pass</span></li>
+        <li data-phase="B">Orthogonal Crosshatch Sweep — Pass B <span>vertical</span></li>
+        <li data-phase="review">Cross-Pass Verification</li>
+        <li data-phase="complete">Mission Complete</li>
+      </ol>
 
       <ol class="demo-stages" id="demo-stages">
         <li data-stage="scanning">Scanning</li>
@@ -421,14 +429,20 @@
       <div class="demo__grid">
         <div class="demo__main">
           <div class="demo-card" id="card-map">
-            <div class="demo-card__head"><h3>Survey area — grid</h3><span>Simulated navigation data</span></div>
+            <div class="demo-card__head"><h3>Survey area — two-pass crosshatch</h3><span>Simulated navigation data</span></div>
             <div class="map-screen">
-              <svg id="demo-map" viewBox="0 0 560 400" role="img" aria-label="Grid survey: parallel survey lines, the AUV position and marked targets">
+              <svg id="demo-map" viewBox="0 0 560 400" role="img" aria-label="Survey map: horizontal Pass A lines, perpendicular Pass B lines, the AUV track and marked targets">
+                <defs><clipPath id="demo-clip"><rect id="demo-clip-rect"/></clipPath></defs>
                 <rect id="demo-bounds" fill="rgb(127 214 230 / 0.04)" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.5"/>
-                <g id="demo-cover" fill="#7fd6e6" fill-opacity="0.16"></g>
-                <path id="demo-plan" fill="none" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.2" stroke-dasharray="4 5"/>
-                <polyline id="demo-track" fill="none" stroke="#7fd6e6" stroke-width="2.4" stroke-linejoin="round"/>
-                <path id="demo-current" fill="none" stroke="#c49837" stroke-width="1.6" stroke-dasharray="6 4"/>
+                <g clip-path="url(#demo-clip)">
+                  <g id="demo-cover-a" fill="#7fd6e6" fill-opacity="0.13"></g>
+                  <g id="demo-cover-b" fill="#e7c76a" fill-opacity="0.11"></g>
+                </g>
+                <path id="demo-plan-a" fill="none" stroke="#ffffff" stroke-opacity="0.32" stroke-width="1.1" stroke-dasharray="5 5"/>
+                <path id="demo-plan-b" fill="none" stroke="#e7c76a" stroke-opacity="0.38" stroke-width="1.1" stroke-dasharray="1.5 4" stroke-linecap="round"/>
+                <path id="demo-plan-t" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.3" stroke-dasharray="2 3"/>
+                <polyline id="demo-track" fill="none" stroke="#7fd6e6" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+                <polyline id="demo-current" fill="none" stroke="#c49837" stroke-width="1.8" stroke-dasharray="6 4" stroke-linejoin="round"/>
                 <g id="demo-ticks" font-family="Archivo, sans-serif" font-size="10" fill="#9fb6c4" stroke="#9fb6c4"></g>
                 <g id="demo-markers"></g>
                 <g id="demo-auv"><polygon points="0,-9 7,8 0,4 -7,8" fill="#c49837" stroke="#071a26" stroke-width="1"/></g>
@@ -436,8 +450,12 @@
             </div>
             <div class="map-legend">
               <span><i class="k-auv"></i>AUV</span>
+              <span><i class="k-plan-a"></i>Pass A planned (horizontal)</span>
+              <span><i class="k-plan-b"></i>Pass B planned (vertical)</span>
+              <span><i class="k-plan-t"></i>Transition leg</span>
               <span><i class="k-track"></i>Completed track</span>
-              <span><i class="k-cover"></i>Covered area</span>
+              <span><i class="k-current"></i>Current leg</span>
+              <span><i class="k-cover"></i>Swath covered</span>
               <span><i class="k-safe"></i>Non-hazardous</span>
               <span><i class="k-hazard"></i>Potential hazard</span>
               <span><i class="k-high"></i>High potential hazard</span>
@@ -447,16 +465,21 @@
           </div>
 
           <div class="demo-card" id="card-coverage">
-            <div class="demo-card__head"><h3>Survey coverage</h3><span>Simulation estimate</span></div>
+            <div class="demo-card__head"><h3>Survey coverage — two passes</h3><span>Simulation estimate</span></div>
             <dl class="coverage__info" id="cov-info"></dl>
             <div class="coverage__live">
-              <div><span>Distance covered</span><strong id="cov-distance">0 m</strong></div>
-              <div><span>Area covered</span><strong id="cov-area">0 m²</strong></div>
-              <div><span>Coverage</span><strong id="cov-pct">0.0%</strong></div>
+              <div><span>Distance flown</span><strong id="cov-distance">0 m</strong></div>
+              <div><span>Unique area coverage</span><strong id="cov-pct">0.0%</strong></div>
               <div><span>Remaining area</span><strong id="cov-remaining">0 m²</strong></div>
+              <div><span>Targets seen on both headings</span><strong id="cov-xpass">0 / 0</strong></div>
             </div>
-            <div class="coverage__bar" aria-hidden="true"><i id="cov-bar"></i></div>
-            <p class="trail__meta">Coverage values are simulated estimates and not validated physical performance. Area covered = distance along survey lines × the smaller of swath and line spacing; turns add no new area. Demo time is compressed and does not represent vehicle speed.</p>
+            <div class="coverage__bars">
+              <div class="pbar"><span>Unique area coverage</span><b id="cov-pct-b">0%</b><em><i id="cov-bar"></i></em></div>
+              <div class="pbar pbar--a"><span>Pass A progress — primary, horizontal</span><b id="cov-a">0%</b><em><i id="cov-a-bar"></i></em></div>
+              <div class="pbar pbar--b"><span>Pass B progress — orthogonal, vertical</span><b id="cov-b">0%</b><em><i id="cov-b-bar"></i></em></div>
+              <div class="pbar pbar--both"><span>Area seen on both headings (overlap, not new area)</span><b id="cov-both">0%</b><em><i id="cov-both-bar"></i></em></div>
+            </div>
+            <p class="trail__meta">Coverage values are simulated estimates and not validated physical performance. Unique coverage is counted on a 5 m plan-view grid: a cell counts once, however many swaths pass over it, so overlap between neighbouring lines and between the two passes is never added twice and coverage cannot exceed 100%. Turns and the transition add no coverage. Rounded end turns are drawn for visualisation only and are not a turning-radius claim. Demo time is compressed and does not represent vehicle speed.</p>
           </div>
         </div>
 
@@ -500,7 +523,7 @@
         <div class="timeline" id="demo-timeline" role="group" aria-label="Detection timeline"><i class="timeline__fill" id="demo-timeline-fill"></i></div>
         <div class="log-scroll">
           <table class="log-table">
-            <thead><tr><th>Target</th><th>Detected</th><th>Identification</th><th>Classification</th><th>Risk</th><th>Decision</th><th>Detected by</th><th>Line, bearing (Sim.)</th><th>Position (Sim.)</th><th>Depth (Sim.)</th></tr></thead>
+            <thead><tr><th>Target</th><th>Detected</th><th>Identification</th><th>Classification</th><th>Risk</th><th>Decision</th><th>Detected by</th><th>Observations — pass, line, heading (Sim.)</th><th>Cross-pass check</th><th>Position (Sim.)</th><th>Depth (Sim.)</th></tr></thead>
             <tbody id="log-body"></tbody>
           </table>
         </div>
@@ -567,8 +590,9 @@
   </div>
 </dialog>
 
-<script src="js/main.js" defer></script>
-<script src="js/auv-viewer.js" defer></script>
-<script src="js/demo.js" defer></script>
+<script src="js/main.js?v=20261112" defer></script>
+<script src="js/auv-viewer.js?v=20261112" defer></script>
+<script src="js/survey-model.js?v=20261112" defer></script>
+<script src="js/demo.js?v=20261112" defer></script>
 </body>
 </html>
