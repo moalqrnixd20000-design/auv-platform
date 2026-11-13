@@ -1,4 +1,4 @@
-/* AUV project site — components.
+/* USV B01 project site — components.
    Buttons, cards, quick facts, About layout, depth diagram, how-it-works
    flow, sensing / recognition cards, the inspection sheet, full-size viewer. */
 
@@ -171,7 +171,7 @@
 .photo-row { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
 @media (min-width: 720px) { .photo-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* ---------- AUV design: inspection sheet ---------- */
+/* ---------- B01 design: inspection sheet ---------- */
 
 .design-grid { display: grid; gap: var(--space-6); align-items: start; }
 @media (min-width: 960px) { .design-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } }
@@ -422,6 +422,6 @@ html:not(.js) .inspect-tools { display: none; }
 .pipeline li:last-child { border-color: var(--hull); background: var(--hull-soft); }
 .pipeline li:last-child::before { background: var(--hull-ink); }
 
-/* ---------- AUV design: layout wrapper ---------- */
+/* ---------- B01 design: layout wrapper ---------- */
 
 .design-views { min-width: 0; }

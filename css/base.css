@@ -1,6 +1,6 @@
-/* AUV project site — base styles: reset, typography, page container,
+/* USV B01 project site — base styles: reset, typography, page container,
    top navigation, hero, section rhythm, footer.
-   Components (cards, figures, the AUV inspection sheet, …) are in
+   Components (cards, figures, the design inspection sheet, …) are in
    components.css; the interactive demo is styled in demo.css. */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -194,12 +194,17 @@ h3 {
   .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
 }
 
+/* "USV B01" is about 4.7 times as wide as its font size: these sizes keep it on
+   one line in the single-column layout and in the hero's left column. */
 .hero h1 {
-  font-size: clamp(5rem, 3rem + 11vw, 10rem);
+  font-size: clamp(3.2rem, 0.5rem + 11vw, 6.6rem);
   font-weight: 800;
   font-stretch: 112%;
   line-height: 0.9;
   letter-spacing: -0.03em;
+}
+@media (min-width: 960px) {
+  .hero h1 { font-size: clamp(4.5rem, 1rem + 6.3vw, 6rem); }
 }
 .hero__sub {
   margin-top: var(--space-4);
@@ -209,6 +214,12 @@ h3 {
   color: var(--sea);
 }
 .hero .lead { margin-top: var(--space-5); }
+
+/* Arabic project name and introduction. The site's own fonts are Latin-only,
+   so Arabic text uses the system's Arabic typefaces; it runs right to left. */
+:lang(ar) { font-family: "Segoe UI", Tahoma, "Geeza Pro", "Noto Naskh Arabic", "Noto Sans Arabic", Arial, sans-serif; font-stretch: 100%; letter-spacing: 0; }
+.hero__sub--ar { margin-top: var(--space-2); font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.5rem); }
+.hero .lead--ar { margin-top: var(--space-4); line-height: 1.9; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 
 .hero__figure img {
