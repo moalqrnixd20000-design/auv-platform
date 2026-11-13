@@ -3,7 +3,7 @@
 USV B01 is an unmanned surface vehicle concept for detecting naval mines and other underwater
 hazards, with explainable decision support and inspection prioritization. Working at the water
 surface, it covers an area with a cross-hatch grid survey and scans the water column and the seabed
-below it with multibeam sonar (conceptual survey depth band 1–30 m).
+below it with multibeam sonar (conceptual survey depth band 0–60 m, 60 m maximum).
 
 This repository is the project website: project information, the team's B01 design render, an
 interactive software simulation of the survey mission, and a Results section that keeps the
