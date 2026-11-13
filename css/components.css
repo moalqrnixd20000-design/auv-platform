@@ -313,7 +313,7 @@ html:not(.js) .inspect-tools { display: none; }
 .viewer__bar h2 { margin: 0; font-size: 1.05rem; letter-spacing: 0; }
 .viewer__bar form { margin: 0; }
 .viewer__scroll { max-height: calc(100vh - 150px); overflow: auto; background: #fff; }
-.viewer__scroll img { width: 1600px; max-width: none; border: 0; border-radius: 0; }
+.viewer__scroll img { width: auto; max-width: none; border: 0; border-radius: 0; }
 
 /* ---------- Labels: simulation / conceptual / reference ---------- */
 
