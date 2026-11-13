@@ -48,6 +48,7 @@
         <p class="hero__sub hero__sub--ar" lang="ar" dir="rtl">المركبة السطحية غير المأهولة B01</p>
         <p class="lead">USV B01 is an unmanned surface vehicle concept for detecting naval mines and other underwater hazards. Working at the water surface, it surveys an area in a cross-hatch grid, scans the water column and the seabed below it with multibeam sonar, and gives the operator an explained decision and a recommended action for every target.</p>
         <p class="lead lead--ar" lang="ar" dir="rtl">B01 مركبة سطحية غير مأهولة لكشف الألغام البحرية وغيرها من الأجسام الخطرة تحت الماء. تعمل على سطح الماء، فتمسح المنطقة بمسحٍ شبكي متقاطع، وتفحص عمود الماء وقاع البحر تحتها بالسونار متعدد الحزم، ثم تعطي المشغّل لكل هدف قرارًا مُفسَّرًا وإجراءً موصى به.</p>
+        <p class="hero__status"><strong>Implemented:</strong> the software simulation on this site. <strong>Proposed:</strong> the B01 vessel, its sensors, links and power, not yet built or tested.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#demo">Try the interactive demo</a>
           <a class="btn" href="#about">About the project</a>
@@ -63,7 +64,7 @@
   <div class="facts-strip">
     <div class="container">
       <dl>
-        <div><dt>Target operating depth</dt><dd>1–30 m below the water surface (concept)</dd></div>
+        <div><dt>Survey depth band</dt><dd>1–30 m below the water surface (concept)</dd></div>
         <div><dt>Sensing</dt><dd>Multibeam sonar and water-column acoustic data, with RTK GNSS, IMU, cameras and radar + AIS (proposed)</dd></div>
         <div><dt>Output</dt><dd>Risk-assessed targets with an explained decision and a recommended action</dd></div>
       </dl>
@@ -98,14 +99,14 @@
         </figure>
       </div>
 
-      <h3 class="subhead">Operating environment</h3>
+      <h3 class="subhead">Survey environment</h3>
       <div class="prose">
-        <p>Target operating depth for the concept: 1–30 metres below the water surface. This is a conceptual range; the physical vehicle has not been tested or certified across it.</p>
+        <p>B01 works at the water surface. Its sonar looks down through the water column to the seabed, and the concept targets a survey depth band of 1–30 metres below the surface. This is a conceptual range; the vessel and its sensors have not been tested or certified across it.</p>
       </div>
       <figure class="figure depth mt-6">
         <svg viewBox="0 0 760 380" role="img" aria-labelledby="depth-title depth-desc">
-          <title id="depth-title">Conceptual operating range</title>
-          <desc id="depth-desc">A water column diagram from the surface to 30 m. The band from 1 m to 30 m below the surface is highlighted as the conceptual operating range.</desc>
+          <title id="depth-title">Conceptual survey depth band</title>
+          <desc id="depth-desc">A water column diagram from the surface to 30 m. B01 sits at the surface; the band from 1 m to 30 m below the surface is highlighted as the conceptual survey depth band of its sonar.</desc>
           <defs>
             <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#e8f4f8"/>
@@ -154,9 +155,14 @@
             <text x="732" y="322">30 m</text>
           </g>
           <text x="90" y="30" font-size="15" class="depth__muted">Water surface</text>
-          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual operating range: 1–30 m</text>
+          <g aria-hidden="true">
+            <line x1="671" y1="40" x2="671" y2="27" stroke="#0c2233" stroke-width="2"/>
+            <polygon points="622,49 637,40 705,40 721,49 709,57 634,57" fill="#1d4a66" stroke="#0c2233" stroke-width="1.2"/>
+            <text x="683" y="30" font-size="13" font-weight="700">B01</text>
+          </g>
+          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual survey depth: 1–30 m</text>
         </svg>
-        <figcaption>The conceptual operating range of USV B01, shown against the water column. A target for the concept, not a tested rating.</figcaption>
+        <figcaption>B01 works at the water surface; the highlighted band is the conceptual survey depth of its sonar. A target for the concept, not a tested rating.</figcaption>
       </figure>
     </div>
   </section>
@@ -170,7 +176,7 @@
       </div>
 
       <ol class="flow flow--end">
-        <li><h3>Underwater Environment</h3><p>The survey area, 1–30 m below the surface (concept).</p></li>
+        <li><h3>Underwater Environment</h3><p>The water column and seabed below B01, 1–30 m deep (concept).</p></li>
         <li><h3>Sensor / Acoustic Data</h3><p>Multibeam sonar and water-column acoustic data, positioned with RTK GNSS and an IMU.</p></li>
         <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
         <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
@@ -370,7 +376,7 @@
                   <p class="sheet__info-title">USV B01</p>
                   <p class="sheet__info-sub">Unmanned Surface Vehicle</p>
                   <dl>
-                    <div><dt>Operating depth</dt><dd>1–30 m (concept)</dd></div>
+                    <div><dt>Survey depth</dt><dd>1–30 m (concept)</dd></div>
                     <div><dt>Sensing</dt><dd>Multibeam + water column</dd></div>
                   </dl>
                 </div>
@@ -384,7 +390,7 @@
           <dl class="spec">
             <div><dt>Platform</dt><dd>Unmanned Surface Vehicle (USV)</dd></div>
             <div><dt>Hull</dt><dd>Faceted, ultra-low-profile — team design</dd></div>
-            <div><dt>Target operating depth</dt><dd>1–30 m — concept</dd></div>
+            <div><dt>Survey depth band</dt><dd>1–30 m — concept</dd></div>
             <div><dt>Sonar</dt><dd>Multibeam sonar, water-column acoustic data — proposed</dd></div>
             <div><dt>Positioning</dt><dd>RTK GNSS + IMU — proposed</dd></div>
             <div><dt>Surface awareness</dt><dd>Cameras, radar + AIS — proposed</dd></div>
@@ -603,7 +609,8 @@
   <div class="container">
     <div class="site-footer__brand"><span class="brand__mark">USV B01</span><span>Unmanned Surface Vehicle</span></div>
     <p>Current demonstrations represent a software prototype of the proposed USV B01 workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
-    <p class="site-footer__small">Simulation values are not field measurements. Reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
+    <p>Implemented: the software simulation on this site (survey planning, coverage calculation and the rule-based decision demo). Proposed / conceptual: the B01 vessel, its sensors, communication links and power sources, and any field performance; none of these has been built or tested yet.</p>
+    <p class="site-footer__small">Simulation values are not field measurements. The B01 render and the reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
   </div>
 </footer>
 

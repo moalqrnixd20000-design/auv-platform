@@ -220,6 +220,7 @@ h3 {
 :lang(ar) { font-family: "Segoe UI", Tahoma, "Geeza Pro", "Noto Naskh Arabic", "Noto Sans Arabic", Arial, sans-serif; font-stretch: 100%; letter-spacing: 0; }
 .hero__sub--ar { margin-top: var(--space-2); font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.5rem); }
 .hero .lead--ar { margin-top: var(--space-4); line-height: 1.9; }
+.hero__status { margin-top: var(--space-5); max-width: 60ch; font-size: var(--text-small); line-height: 1.5; color: var(--ink-soft); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
 
 .hero__figure img {
@@ -257,4 +258,5 @@ h3 {
 .site-footer__brand .brand__mark { font-size: 1.6rem; }
 .site-footer__brand span:last-child { color: color-mix(in srgb, var(--on-deep) 70%, transparent); }
 .site-footer p { max-width: 74ch; }
+:where(.site-footer) p + p { margin-top: var(--space-3); }
 .site-footer__small { margin-top: var(--space-4); font-size: var(--text-small); color: color-mix(in srgb, var(--on-deep) 70%, transparent); }
