@@ -63,7 +63,7 @@
     <div class="container">
       <dl>
         <div><dt>Target operating depth</dt><dd>1–30 m below the water surface (concept)</dd></div>
-        <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data and onboard sensors</dd></div>
+        <div><dt>Sensing</dt><dd>Multibeam sonar and water-column acoustic data, with RTK GNSS, IMU, cameras and radar + AIS (proposed)</dd></div>
         <div><dt>Output</dt><dd>Risk-assessed targets with an explained decision and a recommended action</dd></div>
       </dl>
     </div>
@@ -170,7 +170,7 @@
 
       <ol class="flow flow--end">
         <li><h3>Underwater Environment</h3><p>The survey area, 1–30 m below the surface (concept).</p></li>
-        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam echosounder data, water-column acoustic data and onboard sensor data.</p></li>
+        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam sonar and water-column acoustic data, positioned with RTK GNSS and an IMU.</p></li>
         <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
         <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
         <li><h3>Object Classification</h3><p>Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
@@ -180,36 +180,66 @@
         <li><h3>Target Marking</h3><p>The target is marked at its position on the survey map.</p></li>
         <li><h3>Recommended Action</h3><p>Continue the survey, inspect the target, or verify it.</p></li>
         <li><h3>Local Data Storage</h3><p>Target records and raw sensor data are stored on board.</p></li>
-        <li><h3>Data Transfer / Operator System</h3><p>Priority target records reach the operator at the surface.</p></li>
+        <li><h3>Data Transfer / Operator System</h3><p>Priority target records reach the operator over encrypted radio links: UHF, 4G or satellite.</p></li>
       </ol>
 
-      <h3 class="subhead">Sensing and communication</h3>
+      <h3 class="subhead">Sensors, communication and power <span class="tag tag--concept">Proposed</span></h3>
       <div class="cards-3">
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 20M12 3l3.5 17M12 3l8 17M12 3 8.5 20M4 20h16"/></svg>
-          <h3>Multibeam Echosounder</h3>
-          <p>Seafloor mapping, bathymetric information and acoustic target detection.</p>
+          <h3>Multibeam Sonar</h3>
+          <p>A multibeam echosounder looking down from the hull: seabed mapping, bathymetry and acoustic target detection.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9c4-3 12-3 16 0M4 14c4-3 12-3 16 0M4 19c4-3 12-3 16 0M12 3v0"/></svg>
           <h3>Water-Column Acoustic Data</h3>
-          <p>Acoustic returns within the water column, used to detect potential targets.</p>
+          <p>Acoustic returns between the surface and the seabed, used to detect potential targets in the water column.</p>
         </div>
         <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.2"/></svg>
-          <h3>Onboard Sensors</h3>
-          <p>Sensor data used to support target detection and analysis. Exact sensor specifications are TBD.</p>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+          <h3>RTK GNSS</h3>
+          <p>Precise position of the vessel, so every target is recorded with an accurate location.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13V4m0 0-2.5 2.5M12 4l2.5 2.5M12 13l7.5 4.5m0 0-3.4.4m3.4-.4-1.2-3.2M12 13l-7.5 4.5m0 0 3.4.4m-3.4-.4 1.2-3.2"/></svg>
+          <h3>IMU</h3>
+          <p>Roll, pitch, heave and heading of the vessel, used to correct the sonar data for the vessel's motion.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>
+          <h3>Cameras</h3>
+          <p>Daylight and thermal cameras on the mast, for the surface picture around the vessel.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 12l6-6"/><circle cx="16.5" cy="8.6" r="0.9"/></svg>
+          <h3>Radar + AIS</h3>
+          <p>Radar shows surface traffic and obstacles; AIS identifies the ships that broadcast it. Both support safe navigation.</p>
         </div>
       </div>
-      <div class="card mt-card">
-        <div class="comm">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-          <div>
-            <h3>Underwater Acoustic Communication <span class="tag tag--concept">Conceptual</span></h3>
-            <p>Links USV B01 with the operator and the surface system. It is separate from the sensing layer: sensors observe the environment, while communication carries the results. Communication specifications: TBD.</p>
+      <div class="cards-2 mt-card">
+        <div class="card">
+          <div class="comm">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            <div>
+              <h3>Communications: UHF / 4G / Satellite</h3>
+              <p>Three radio links connect B01 with the operator and the ground control station: UHF, 4G and satellite. Communication is separate from the sensing layer: the sensors observe the environment, the links carry the results.</p>
+              <p>Encryption: we will use the latest available encryption version.</p>
+              <p class="tbd">Link specifications: TBD.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="comm">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3"/><path d="M11.5 9 9.5 12.3h3L10.5 15.5"/></svg>
+            <div>
+              <h3>Power: Li-ion battery, solar, generator</h3>
+              <p>A Li-ion battery pack, integrated solar cells and a generator power the vessel and its sensors.</p>
+              <p class="tbd">Capacities and endurance: TBD.</p>
+            </div>
           </div>
         </div>
       </div>
+      <p class="note-line">All sensors, links and power sources are proposed for B01. They are not yet integrated or tested, and their models and specifications are TBD.</p>
 
       <h3 class="subhead">Classification, risk and decision</h3>
       <div class="prose">
@@ -272,7 +302,7 @@
 
       <h3 class="subhead">Data transfer <span class="tag tag--concept">Conceptual</span></h3>
       <div class="prose">
-        <p>Underwater links carry little data, so the concept keeps large raw sensor data on board and sends compact target records first.</p>
+        <p>Radio links carry limited data, especially over satellite, so the concept keeps the large raw sonar data on board and sends compact target records first.</p>
       </div>
       <ol class="pipeline mt-card">
         <li>Sensors</li>
@@ -282,8 +312,8 @@
         <li>Target Record</li>
         <li>Local Storage</li>
         <li>Data Prioritization / Compression</li>
-        <li>Underwater Acoustic Communication</li>
-        <li>Surface / Operator System</li>
+        <li>Encrypted Radio Link: UHF / 4G / Satellite</li>
+        <li>Ground Control Station / Operator</li>
       </ol>
       <div class="cards-2 mt-card">
         <div class="card">
@@ -294,7 +324,7 @@
         </div>
         <div class="card">
           <h3>Kept on board</h3>
-          <p>Raw and large sensor datasets stay in onboard storage for later retrieval. Communication specifications (range, bandwidth, modem, protocol): TBD.</p>
+          <p>Raw and large sensor datasets stay in onboard storage for later retrieval. Link specifications: TBD.</p>
         </div>
       </div>
 
@@ -340,7 +370,7 @@
                   <p class="sheet__info-sub">Unmanned Surface Vehicle</p>
                   <dl>
                     <div><dt>Operating depth</dt><dd>1–30 m (concept)</dd></div>
-                    <div><dt>Sensing</dt><dd>Acoustic + onboard sensors</dd></div>
+                    <div><dt>Sensing</dt><dd>Multibeam + water column</dd></div>
                   </dl>
                 </div>
               </div>
@@ -352,10 +382,14 @@
         <div class="design-side">
           <dl class="spec">
             <div><dt>Platform</dt><dd>Unmanned Surface Vehicle (USV)</dd></div>
+            <div><dt>Hull</dt><dd>Faceted, ultra-low-profile — team design</dd></div>
             <div><dt>Target operating depth</dt><dd>1–30 m — concept</dd></div>
-            <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data, onboard sensors</dd></div>
+            <div><dt>Sonar</dt><dd>Multibeam sonar, water-column acoustic data — proposed</dd></div>
+            <div><dt>Positioning</dt><dd>RTK GNSS + IMU — proposed</dd></div>
+            <div><dt>Surface awareness</dt><dd>Cameras, radar + AIS — proposed</dd></div>
             <div><dt>Processing</dt><dd>Onboard data processing — concept</dd></div>
-            <div><dt>Communication</dt><dd>Underwater acoustic communication — concept; specifications TBD</dd></div>
+            <div><dt>Communication</dt><dd>UHF / 4G / satellite, encrypted — proposed; specifications TBD</dd></div>
+            <div><dt>Power</dt><dd>Li-ion battery, solar, generator — proposed; capacities TBD</dd></div>
             <div><dt>Detection</dt><dd>Underwater object detection</dd></div>
             <div><dt>Decision</dt><dd>Explainable risk assessment</dd></div>
             <div><dt>Survey</dt><dd>Two-pass crosshatch grid survey — concept</dd></div>
