@@ -2,7 +2,7 @@
 
 | File | Used for | Origin |
 |---|---|---|
-| `b01-render.jpg` | Hero, B01 Design, full-size viewer | The team's own USV B01 design render, supplied by the team (same file as `mine-gcs-console/assets/b01-render.jpg`). Used unmodified; it shows the Saudi national emblem on the hull. |
+| `b01-render.jpg` | Hero, B01 Design, full-size viewer | The team's own USV B01 design render, supplied by the team (same file as `mine-gcs-console/assets/b01-render.jpg`). It shows the Saudi national emblem on the hull. Edited at the team's request (2026-11-13): the distant houses on the horizon were removed and replaced with sky and sea; the vessel itself is unchanged. |
 | `auv-team-design.jpg` | Not displayed since 13 November 2026 | The team's earlier AUV design, supplied by the team. Kept unmodified for the record. |
 | `reference-wreck-propeller.jpg` | About USV B01; demo reference image for Target #003 (the marked object is simulated, not a photographed mine) | Reference photograph supplied by the team. Add credit and licence before public release. |
 | `reference-lionfish-reef.jpg` | Demo reference image for Target #001 (lionfish) | Reference photograph supplied by the team. Add credit and licence before public release. |
