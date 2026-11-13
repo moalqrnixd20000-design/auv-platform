@@ -1,7 +1,6 @@
-/* AUV project site — components.
+/* USV B01 project site — components.
    Buttons, cards, quick facts, About layout, depth diagram, how-it-works
-   flow, sensing / recognition cards, the AUV inspection sheet, video and
-   project-material panels, full-size viewer. */
+   flow, sensing / recognition cards, the inspection sheet, full-size viewer. */
 
 .sr-only {
   position: absolute;
@@ -20,6 +19,14 @@
 .comm { display: flex; gap: var(--space-4); align-items: flex-start; }
 .comm .icon { flex: none; margin: 0; }
 .comm h3 { margin-bottom: var(--space-1); }
+.comm p + p { margin-top: var(--space-2); }
+.card .tbd { font-size: var(--text-small); }
+
+/* ---------- Results: software outcome vs proposed field capabilities ---------- */
+
+.results .card h3 { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.results__sim { margin-top: var(--space-4); }
+.results__concept { display: grid; gap: var(--space-2); margin-top: var(--space-4); padding-left: 1.2em; list-style: disc; color: var(--ink-soft); }
 
 /* ---------- Buttons ---------- */
 
@@ -172,7 +179,7 @@
 .photo-row { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
 @media (min-width: 720px) { .photo-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* ---------- AUV design: inspection sheet ---------- */
+/* ---------- B01 design: inspection sheet ---------- */
 
 .design-grid { display: grid; gap: var(--space-6); align-items: start; }
 @media (min-width: 960px) { .design-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); } }
@@ -291,32 +298,6 @@ html:not(.js) .inspect-tools { display: none; }
 .design-grid--coarse .pointer-only-touch { display: block; }
 .design-grid--coarse .pointer-only-fine { display: none; }
 
-/* ---------- Video + project materials ---------- */
-
-.media-slot {
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: var(--space-3);
-  padding: var(--space-6);
-  text-align: center;
-  color: var(--ink-soft);
-  background: var(--paper);
-  border: 1.5px dashed var(--line-strong);
-  border-radius: var(--radius-lg);
-}
-.media-slot svg { width: 44px; height: 44px; fill: none; stroke: var(--line-strong); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-
-.video-frame { aspect-ratio: 16 / 9; max-width: 960px; }
-.video-frame svg { width: 64px; height: 64px; }
-
-.materials { display: grid; gap: var(--space-5); }
-@media (min-width: 800px) { .materials { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.materials .card { display: grid; gap: var(--space-4); align-content: start; }
-.materials .card h3 { margin: 0; }
-.materials .media-slot { min-height: 200px; padding: var(--space-5); }
-.media-slot--a0 { aspect-ratio: 841 / 1189; min-height: 0 !important; }
-
 /* ---------- Full-size viewer (dialog) ---------- */
 
 .viewer {
@@ -340,7 +321,7 @@ html:not(.js) .inspect-tools { display: none; }
 .viewer__bar h2 { margin: 0; font-size: 1.05rem; letter-spacing: 0; }
 .viewer__bar form { margin: 0; }
 .viewer__scroll { max-height: calc(100vh - 150px); overflow: auto; background: #fff; }
-.viewer__scroll img { width: 1600px; max-width: none; border: 0; border-radius: 0; }
+.viewer__scroll img { width: auto; max-width: none; border: 0; border-radius: 0; }
 
 /* ---------- Labels: simulation / conceptual / reference ---------- */
 
@@ -449,6 +430,6 @@ html:not(.js) .inspect-tools { display: none; }
 .pipeline li:last-child { border-color: var(--hull); background: var(--hull-soft); }
 .pipeline li:last-child::before { background: var(--hull-ink); }
 
-/* ---------- AUV design: layout wrapper ---------- */
+/* ---------- B01 design: layout wrapper ---------- */
 
 .design-views { min-width: 0; }

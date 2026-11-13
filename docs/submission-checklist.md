@@ -1,14 +1,15 @@
 # Submission checklist
 
-Notes for the team. The competition platform asks for four items; the site has a
-place for each.
+Notes for the team. The competition platform asks for four items. They are uploaded to the
+platform itself: the website's video and project-materials sections were removed on
+13 November 2026.
 
-| Item | Where on the site | Notes |
+| Item | Where | Notes |
 |---|---|---|
-| Project photo | Project Materials, second card | A high-quality representative image of the AUV project. Use the team's own design or real photographs; do not create fake hardware photography. |
-| Poster or brochure | Project Materials, first card | A0 scientific poster, in English. |
-| Demonstration video | Video section | Arabic or English; shows the interactive prototype clearly and quickly. |
-| Google Drive link | Project Materials, third card | Sharing setting: "Anyone with the link can view". |
+| Project photo | Competition platform | A high-quality representative image of the AUV project. Use the team's own design or real photographs; do not create fake hardware photography. |
+| Poster or brochure | Competition platform | A0 scientific poster, in English. |
+| Demonstration video | Competition platform | Arabic or English; shows the interactive prototype clearly and quickly. |
+| Google Drive link | Competition platform | Sharing setting: "Anyone with the link can view". |
 
 ## A0 poster requirements
 

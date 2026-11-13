@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AUV — Autonomous Underwater Vehicle</title>
-<meta name="description" content="AUV is an autonomous underwater vehicle concept for underwater object detection, hazard assessment, explainable decision support and inspection prioritization, with a conceptual operating range of 1–30 m.">
+<title>USV B01 — Unmanned Surface Vehicle</title>
+<meta name="description" content="USV B01 is an unmanned surface vehicle concept for detecting naval mines and other underwater hazards: a cross-hatch grid survey from the water surface with multibeam sonar, explainable risk assessment and an interactive software simulation.">
 <meta name="theme-color" content="#0a2536">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/tokens.css?v=20261112">
-<link rel="stylesheet" href="css/base.css?v=20261112">
-<link rel="stylesheet" href="css/components.css?v=20261112">
-<link rel="stylesheet" href="css/demo.css?v=20261112">
+<link rel="stylesheet" href="css/tokens.css?v=20261113">
+<link rel="stylesheet" href="css/base.css?v=20261113">
+<link rel="stylesheet" href="css/components.css?v=20261113">
+<link rel="stylesheet" href="css/demo.css?v=20261113">
 <script>document.documentElement.classList.add("js");</script>
 </head>
 <body id="top">
@@ -19,19 +19,18 @@
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="brand" href="#home" aria-label="AUV, back to top">
-      <span class="brand__mark">AUV</span>
-      <span class="brand__name">Autonomous Underwater Vehicle</span>
+    <a class="brand" href="#home" aria-label="USV B01, back to top">
+      <span class="brand__mark">USV B01</span>
+      <span class="brand__name">Unmanned Surface Vehicle</span>
     </a>
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul>
         <li><a href="#home">Home</a></li>
-        <li><a href="#about">About AUV</a></li>
+        <li><a href="#about">About USV B01</a></li>
         <li><a href="#how">How It Works</a></li>
-        <li><a href="#design">AUV Design</a></li>
+        <li><a href="#design">B01 Design</a></li>
         <li><a href="#demo">Interactive Demo</a></li>
-        <li><a href="#video">Video</a></li>
-        <li><a href="#materials">Project Materials</a></li>
+        <li><a href="#results">Results</a></li>
       </ul>
     </nav>
     <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
@@ -44,17 +43,20 @@
   <section class="hero" id="home" aria-labelledby="hero-title">
     <div class="container hero__grid">
       <div>
-        <h1 id="hero-title">AUV</h1>
-        <p class="hero__sub">Autonomous Underwater Vehicle</p>
-        <p class="lead">An autonomous underwater vehicle concept for underwater object detection, hazard assessment, explainable decision support and inspection prioritization.</p>
+        <h1 id="hero-title">USV B01</h1>
+        <p class="hero__sub">Unmanned Surface Vehicle</p>
+        <p class="hero__sub hero__sub--ar" lang="ar" dir="rtl">المركبة السطحية غير المأهولة B01</p>
+        <p class="lead">USV B01 is an unmanned surface vehicle concept for detecting naval mines and other underwater hazards. Working at the water surface, it surveys an area in a cross-hatch grid, scans the water column and the seabed below it with multibeam sonar, and gives the operator an explained decision and a recommended action for every target.</p>
+        <p class="lead lead--ar" lang="ar" dir="rtl">B01 مركبة سطحية غير مأهولة لكشف الألغام البحرية وغيرها من الأجسام الخطرة تحت الماء. تعمل على سطح الماء، فتمسح المنطقة بمسحٍ شبكي متقاطع، وتفحص عمود الماء وقاع البحر تحتها بالسونار متعدد الحزم، ثم تعطي المشغّل لكل هدف قرارًا مُفسَّرًا وإجراءً موصى به.</p>
+        <p class="hero__status"><strong>Implemented:</strong> the software simulation on this site. <strong>Proposed:</strong> the B01 vessel, its sensors, links and power, not yet built or tested.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#demo">Try the interactive demo</a>
           <a class="btn" href="#about">About the project</a>
         </div>
       </div>
       <figure class="hero__figure">
-        <img src="assets/images/auv-team-design.jpg" width="1600" height="1011"
-             alt="The AUV: a gold, torpedo-shaped hull with a propeller and tail fins at one end.">
+        <img src="assets/images/b01-render.jpg" width="1408" height="768"
+             alt="USV B01, the team's design render: a dark blue, faceted, ultra-low-profile hull at the water surface with a short mast carrying sensors. A cutaway window shows the internal equipment bay; the hull carries the Saudi national emblem and the marking B01.">
       </figure>
     </div>
   </section>
@@ -62,19 +64,19 @@
   <div class="facts-strip">
     <div class="container">
       <dl>
-        <div><dt>Target operating depth</dt><dd>1–30 m below the water surface (concept)</dd></div>
-        <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data and onboard sensors</dd></div>
+        <div><dt>Survey depth band</dt><dd>1–30 m below the water surface (concept)</dd></div>
+        <div><dt>Sensing</dt><dd>Multibeam sonar and water-column acoustic data, with RTK GNSS, IMU, cameras and radar + AIS (proposed)</dd></div>
         <div><dt>Output</dt><dd>Risk-assessed targets with an explained decision and a recommended action</dd></div>
       </dl>
     </div>
   </div>
 
-  <!-- About AUV -->
+  <!-- About USV B01 -->
   <section class="section" id="about" aria-labelledby="about-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="about-title">About the AUV</h2>
-        <p>An autonomous underwater vehicle built around the team's own design. It surveys an area underwater, detects objects, assesses whether they may be hazardous, explains each decision and tells the operator which targets to inspect first.</p>
+        <h2 id="about-title">About USV B01</h2>
+        <p>An unmanned surface vehicle built around the team's own B01 hull design. Working at the water surface, it surveys an area, detects underwater objects with sonar, assesses whether they may be hazardous, explains each decision and tells the operator which targets to inspect first.</p>
       </div>
 
       <div class="about-grid">
@@ -86,25 +88,25 @@
           </div>
           <h3>What the system does</h3>
           <div class="prose">
-            <p>The AUV concept surveys an area in two perpendicular sets of parallel lines (a crosshatch survey) and combines acoustic and onboard sensor data to detect underwater targets. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
-            <p>Targets are marked and reported to the operator at the surface.</p>
+            <p>USV B01 covers the survey area with a grid (cross-hatch) method: a complete set of parallel survey lines, then a second complete set at right angles over the same area. Its multibeam sonar and water-column acoustic data detect underwater targets, and RTK GNSS with the IMU gives each target its position. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
+            <p>Targets are marked on the survey map and reported to the operator over the vessel's radio links.</p>
           </div>
         </div>
         <figure class="figure">
           <img src="assets/images/reference-wreck-propeller.jpg" width="1000" height="664" loading="lazy"
                alt="Underwater photograph of a large ship propeller and hull structure lying on the seabed.">
-          <figcaption>A wreck site on the seabed: the kind of object the AUV is meant to find, assess and flag. Reference photograph.</figcaption>
+          <figcaption>A wreck site on the seabed: the kind of object USV B01 is meant to find, assess and flag. Reference photograph.</figcaption>
         </figure>
       </div>
 
-      <h3 class="subhead">Operating environment</h3>
+      <h3 class="subhead">Survey environment</h3>
       <div class="prose">
-        <p>Target operating depth for the concept: 1–30 metres below the water surface. This is a conceptual range; the physical vehicle has not been tested or certified across it.</p>
+        <p>B01 works at the water surface. Its sonar looks down through the water column to the seabed, and the concept targets a survey depth band of 1–30 metres below the surface. This is a conceptual range; the vessel and its sensors have not been tested or certified across it.</p>
       </div>
       <figure class="figure depth mt-6">
         <svg viewBox="0 0 760 380" role="img" aria-labelledby="depth-title depth-desc">
-          <title id="depth-title">Conceptual operating range</title>
-          <desc id="depth-desc">A water column diagram from the surface to 30 m. The band from 1 m to 30 m below the surface is highlighted as the conceptual operating range.</desc>
+          <title id="depth-title">Conceptual survey depth band</title>
+          <desc id="depth-desc">A water column diagram from the surface to 30 m. B01 sits at the surface; the band from 1 m to 30 m below the surface is highlighted as the conceptual survey depth band of its sonar.</desc>
           <defs>
             <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#e8f4f8"/>
@@ -153,9 +155,14 @@
             <text x="732" y="322">30 m</text>
           </g>
           <text x="90" y="30" font-size="15" class="depth__muted">Water surface</text>
-          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual operating range: 1–30 m</text>
+          <g aria-hidden="true">
+            <line x1="671" y1="40" x2="671" y2="27" stroke="#0c2233" stroke-width="2"/>
+            <polygon points="622,49 637,40 705,40 721,49 709,57 634,57" fill="#1d4a66" stroke="#0c2233" stroke-width="1.2"/>
+            <text x="683" y="30" font-size="13" font-weight="700">B01</text>
+          </g>
+          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual survey depth: 1–30 m</text>
         </svg>
-        <figcaption>The conceptual operating range of the AUV, shown against the water column. A target for the concept, not a tested rating.</figcaption>
+        <figcaption>B01 works at the water surface; the highlighted band is the conceptual survey depth of its sonar. A target for the concept, not a tested rating.</figcaption>
       </figure>
     </div>
   </section>
@@ -165,12 +172,12 @@
     <div class="container">
       <div class="section__head">
         <h2 id="how-title">How it works</h2>
-        <p>From the water to the operator: the AUV senses its surroundings, detects targets, classifies them, assesses their potential risk, explains each decision and recommends an action.</p>
+        <p>From the water to the operator: USV B01 senses the area below it, detects targets, classifies them, assesses their potential risk, explains each decision and recommends an action.</p>
       </div>
 
       <ol class="flow flow--end">
-        <li><h3>Underwater Environment</h3><p>The survey area, 1–30 m below the surface (concept).</p></li>
-        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam echosounder data, water-column acoustic data and onboard sensor data.</p></li>
+        <li><h3>Underwater Environment</h3><p>The water column and seabed below B01, 1–30 m deep (concept).</p></li>
+        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam sonar and water-column acoustic data, positioned with RTK GNSS and an IMU.</p></li>
         <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
         <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
         <li><h3>Object Classification</h3><p>Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
@@ -180,36 +187,66 @@
         <li><h3>Target Marking</h3><p>The target is marked at its position on the survey map.</p></li>
         <li><h3>Recommended Action</h3><p>Continue the survey, inspect the target, or verify it.</p></li>
         <li><h3>Local Data Storage</h3><p>Target records and raw sensor data are stored on board.</p></li>
-        <li><h3>Data Transfer / Operator System</h3><p>Priority target records reach the operator at the surface.</p></li>
+        <li><h3>Data Transfer / Operator System</h3><p>Priority target records reach the operator over encrypted radio links: UHF, 4G or satellite.</p></li>
       </ol>
 
-      <h3 class="subhead">Sensing and communication</h3>
+      <h3 class="subhead">Sensors, communication and power <span class="tag tag--concept">Proposed</span></h3>
       <div class="cards-3">
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 20M12 3l3.5 17M12 3l8 17M12 3 8.5 20M4 20h16"/></svg>
-          <h3>Multibeam Echosounder</h3>
-          <p>Seafloor mapping, bathymetric information and acoustic target detection.</p>
+          <h3>Multibeam Sonar</h3>
+          <p>A multibeam echosounder looking down from the hull: seabed mapping, bathymetry and acoustic target detection.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9c4-3 12-3 16 0M4 14c4-3 12-3 16 0M4 19c4-3 12-3 16 0M12 3v0"/></svg>
           <h3>Water-Column Acoustic Data</h3>
-          <p>Acoustic returns within the water column, used to detect potential targets.</p>
+          <p>Acoustic returns between the surface and the seabed, used to detect potential targets in the water column.</p>
         </div>
         <div class="card">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/><circle cx="12" cy="17" r="1.2"/></svg>
-          <h3>Onboard Sensors</h3>
-          <p>Sensor data used to support target detection and analysis. Exact sensor specifications are TBD.</p>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+          <h3>RTK GNSS</h3>
+          <p>Precise position of the vessel, so every target is recorded with an accurate location.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13V4m0 0-2.5 2.5M12 4l2.5 2.5M12 13l7.5 4.5m0 0-3.4.4m3.4-.4-1.2-3.2M12 13l-7.5 4.5m0 0 3.4.4m-3.4-.4 1.2-3.2"/></svg>
+          <h3>IMU</h3>
+          <p>Roll, pitch, heave and heading of the vessel, used to correct the sonar data for the vessel's motion.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/></svg>
+          <h3>Cameras</h3>
+          <p>Daylight and thermal cameras on the mast, for the surface picture around the vessel.</p>
+        </div>
+        <div class="card">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 12l6-6"/><circle cx="16.5" cy="8.6" r="0.9"/></svg>
+          <h3>Radar + AIS</h3>
+          <p>Radar shows surface traffic and obstacles; AIS identifies the ships that broadcast it. Both support safe navigation.</p>
         </div>
       </div>
-      <div class="card mt-card">
-        <div class="comm">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-          <div>
-            <h3>Underwater Acoustic Communication <span class="tag tag--concept">Conceptual</span></h3>
-            <p>Links the AUV with the operator and the surface system. It is separate from the sensing layer: sensors observe the environment, while communication carries the results. Communication specifications: TBD.</p>
+      <div class="cards-2 mt-card">
+        <div class="card">
+          <div class="comm">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            <div>
+              <h3>Communications: UHF / 4G / Satellite</h3>
+              <p>Three radio links connect B01 with the operator and the ground control station: UHF, 4G and satellite. Communication is separate from the sensing layer: the sensors observe the environment, the links carry the results.</p>
+              <p>Encryption: we will use the latest available encryption version.</p>
+              <p class="tbd">Link specifications: TBD.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="comm">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3"/><path d="M11.5 9 9.5 12.3h3L10.5 15.5"/></svg>
+            <div>
+              <h3>Power: Li-ion battery, solar, generator</h3>
+              <p>A Li-ion battery pack, integrated solar cells and a generator power the vessel and its sensors.</p>
+              <p class="tbd">Capacities and endurance: TBD.</p>
+            </div>
           </div>
         </div>
       </div>
+      <p class="note-line">All sensors, links and power sources are proposed for B01. They are not yet integrated or tested, and their models and specifications are TBD.</p>
 
       <h3 class="subhead">Classification, risk and decision</h3>
       <div class="prose">
@@ -262,7 +299,7 @@
             <li>Evidence comparison</li>
             <li>Decision update</li>
           </ol>
-          <p>The survey is flown twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is therefore observed from two survey headings about 90° apart (multi-aspect observation), and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification. No trained model is involved.</p>
+          <p>The grid is surveyed twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is therefore observed from two survey headings about 90° apart (multi-aspect observation), and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification. No trained model is involved.</p>
         </div>
         <div class="card">
           <h3>Environmental / acoustic background <span class="tag tag--concept">Conceptual</span></h3>
@@ -272,7 +309,7 @@
 
       <h3 class="subhead">Data transfer <span class="tag tag--concept">Conceptual</span></h3>
       <div class="prose">
-        <p>Underwater links carry little data, so the concept keeps large raw sensor data on board and sends compact target records first.</p>
+        <p>Radio links carry limited data, especially over satellite, so the concept keeps the large raw sonar data on board and sends compact target records first.</p>
       </div>
       <ol class="pipeline mt-card">
         <li>Sensors</li>
@@ -282,8 +319,8 @@
         <li>Target Record</li>
         <li>Local Storage</li>
         <li>Data Prioritization / Compression</li>
-        <li>Underwater Acoustic Communication</li>
-        <li>Surface / Operator System</li>
+        <li>Encrypted Radio Link: UHF / 4G / Satellite</li>
+        <li>Ground Control Station / Operator</li>
       </ol>
       <div class="cards-2 mt-card">
         <div class="card">
@@ -294,7 +331,7 @@
         </div>
         <div class="card">
           <h3>Kept on board</h3>
-          <p>Raw and large sensor datasets stay in onboard storage for later retrieval. Communication specifications (range, bandwidth, modem, protocol): TBD.</p>
+          <p>Raw and large sensor datasets stay in onboard storage for later retrieval. Link specifications: TBD.</p>
         </div>
       </div>
 
@@ -318,12 +355,12 @@
     </div>
   </section>
 
-  <!-- AUV Design -->
+  <!-- B01 Design -->
   <section class="section" id="design" aria-labelledby="design-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="design-title">AUV design</h2>
-        <p>The AUV is built around the team's own hull design: a streamlined, torpedo-shaped body with tail fins and a propeller. Move over the image to inspect the details.</p>
+        <h2 id="design-title">B01 design</h2>
+        <p>USV B01 is built around the team's own hull design: a faceted, ultra-low-profile hull that works at the water surface, with a short mast for the sensors that look around the vessel. The cutaway in the render shows the internal equipment bay. Move over the image to inspect the details.</p>
       </div>
 
       <div class="design-grid" id="design-grid">
@@ -331,31 +368,35 @@
           <figure class="sheet" id="auv-sheet">
             <div class="sheet__frame">
               <div class="sheet__view" id="auv-view" tabindex="0" role="button" aria-describedby="sheet-hint"
-                   aria-label="AUV design. Open the full-size view.">
-                <img id="auv-img" src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
-                     alt="The AUV: a gold, torpedo-shaped hull with a propeller and tail fins at one end.">
+                   aria-label="B01 design. Open the full-size view.">
+                <img id="auv-img" src="assets/images/b01-render.jpg" width="1408" height="768" loading="lazy"
+                     alt="USV B01, the team's design render: a dark blue, faceted, ultra-low-profile hull at the water surface with a short mast carrying sensors. A cutaway window shows the internal equipment bay; the hull carries the Saudi national emblem and the marking B01.">
                 <div class="loupe" id="auv-loupe" aria-hidden="true"></div>
                 <div class="sheet__info" aria-hidden="true">
-                  <p class="sheet__info-title">AUV</p>
-                  <p class="sheet__info-sub">Autonomous Underwater Vehicle</p>
+                  <p class="sheet__info-title">USV B01</p>
+                  <p class="sheet__info-sub">Unmanned Surface Vehicle</p>
                   <dl>
-                    <div><dt>Operating depth</dt><dd>1–30 m (concept)</dd></div>
-                    <div><dt>Sensing</dt><dd>Acoustic + onboard sensors</dd></div>
+                    <div><dt>Survey depth</dt><dd>1–30 m (concept)</dd></div>
+                    <div><dt>Sensing</dt><dd>Multibeam + water column</dd></div>
                   </dl>
                 </div>
               </div>
             </div>
-            <figcaption class="sheet__strip"><span>AUV</span><span>Official Team Design</span></figcaption>
+            <figcaption class="sheet__strip"><span>USV B01</span><span>Official Team Design</span></figcaption>
           </figure>
         </div>
 
         <div class="design-side">
           <dl class="spec">
-            <div><dt>Platform</dt><dd>Autonomous Underwater Vehicle</dd></div>
-            <div><dt>Target operating depth</dt><dd>1–30 m — concept</dd></div>
-            <div><dt>Sensing</dt><dd>Multibeam echosounder, water-column acoustic data, onboard sensors</dd></div>
+            <div><dt>Platform</dt><dd>Unmanned Surface Vehicle (USV)</dd></div>
+            <div><dt>Hull</dt><dd>Faceted, ultra-low-profile — team design</dd></div>
+            <div><dt>Survey depth band</dt><dd>1–30 m — concept</dd></div>
+            <div><dt>Sonar</dt><dd>Multibeam sonar, water-column acoustic data — proposed</dd></div>
+            <div><dt>Positioning</dt><dd>RTK GNSS + IMU — proposed</dd></div>
+            <div><dt>Surface awareness</dt><dd>Cameras, radar + AIS — proposed</dd></div>
             <div><dt>Processing</dt><dd>Onboard data processing — concept</dd></div>
-            <div><dt>Communication</dt><dd>Underwater acoustic communication — concept; specifications TBD</dd></div>
+            <div><dt>Communication</dt><dd>UHF / 4G / satellite, encrypted — proposed; specifications TBD</dd></div>
+            <div><dt>Power</dt><dd>Li-ion battery, solar, generator — proposed; capacities TBD</dd></div>
             <div><dt>Detection</dt><dd>Underwater object detection</dd></div>
             <div><dt>Decision</dt><dd>Explainable risk assessment</dd></div>
             <div><dt>Survey</dt><dd>Two-pass crosshatch grid survey — concept</dd></div>
@@ -385,7 +426,7 @@
       <div class="demo__head">
         <div>
           <h2 id="demo-title">Interactive demo</h2>
-          <p>Software simulation of the proposed AUV mission: a two-pass crosshatch survey (a horizontal lawn-mower pass, then a perpendicular pass over the same area) that detects underwater objects, assesses their potential risk, re-observes every target from a second heading and explains every decision.</p>
+          <p>Software simulation of the proposed USV B01 mission: a two-pass crosshatch survey (a horizontal lawn-mower pass, then a perpendicular pass over the same area) that detects underwater objects, assesses their potential risk, re-observes every target from a second heading and explains every decision.</p>
         </div>
         <div class="demo__controls">
           <label class="scenario"><span>Scenario</span>
@@ -431,7 +472,7 @@
           <div class="demo-card" id="card-map">
             <div class="demo-card__head"><h3>Survey area — two-pass crosshatch</h3><span>Simulated navigation data</span></div>
             <div class="map-screen">
-              <svg id="demo-map" viewBox="0 0 560 400" role="img" aria-label="Survey map: horizontal Pass A lines, perpendicular Pass B lines, the AUV track and marked targets">
+              <svg id="demo-map" viewBox="0 0 560 400" role="img" aria-label="Survey map: horizontal Pass A lines, perpendicular Pass B lines, the B01 track and marked targets">
                 <defs><clipPath id="demo-clip"><rect id="demo-clip-rect"/></clipPath></defs>
                 <rect id="demo-bounds" fill="rgb(127 214 230 / 0.04)" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.5"/>
                 <g clip-path="url(#demo-clip)">
@@ -449,7 +490,7 @@
               </svg>
             </div>
             <div class="map-legend">
-              <span><i class="k-auv"></i>AUV</span>
+              <span><i class="k-auv"></i>B01</span>
               <span><i class="k-plan-a"></i>Pass A planned (horizontal)</span>
               <span><i class="k-plan-b"></i>Pass B planned (vertical)</span>
               <span><i class="k-plan-t"></i>Transition leg</span>
@@ -468,7 +509,7 @@
             <div class="demo-card__head"><h3>Survey coverage — two passes</h3><span>Simulation estimate</span></div>
             <dl class="coverage__info" id="cov-info"></dl>
             <div class="coverage__live">
-              <div><span>Distance flown</span><strong id="cov-distance">0 m</strong></div>
+              <div><span>Distance run</span><strong id="cov-distance">0 m</strong></div>
               <div><span>Unique area coverage</span><strong id="cov-pct">0.0%</strong></div>
               <div><span>Remaining area</span><strong id="cov-remaining">0 m²</strong></div>
               <div><span>Targets seen on both headings</span><strong id="cov-xpass">0 / 0</strong></div>
@@ -531,39 +572,32 @@
     </div>
   </section>
 
-  <!-- Video -->
-  <section class="section" id="video" aria-labelledby="video-title">
+  <!-- Results -->
+  <section class="section" id="results" aria-labelledby="results-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="video-title">Demonstration Video</h2>
-        <p>A short walkthrough of the AUV interactive prototype.</p>
+        <h2 id="results-title">Results</h2>
+        <p>What the project has produced so far is software: the simulation on this page. It is kept apart from the field capabilities proposed for the B01 vessel.</p>
       </div>
-      <div class="media-slot video-frame">
-        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="M20 16.5v15l12-7.5z"/></svg>
-        <span>[Video will be added here]</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Project Materials -->
-  <section class="section section--white" id="materials" aria-labelledby="materials-title">
-    <div class="container">
-      <div class="section__head">
-        <h2 id="materials-title">Project materials</h2>
-        <p>Supporting material for the AUV project.</p>
-      </div>
-      <div class="materials">
+      <div class="cards-2 results">
         <div class="card">
-          <h3>A0 Scientific Poster</h3>
-          <div class="media-slot media-slot--a0"><span>[Poster will be added here]</span></div>
+          <h3>Software outcome <span class="tag tag--sim">Simulation — implemented</span></h3>
+          <p>Calculated by the interactive demo's survey model for its Red Sea scenario. These are software results, not field measurements.</p>
+          <dl class="spec results__sim" id="results-sim"></dl>
         </div>
         <div class="card">
-          <h3>Project Photo</h3>
-          <div class="media-slot"><span>[Photo will be added here]</span></div>
-        </div>
-        <div class="card">
-          <h3>Additional Materials</h3>
-          <div class="media-slot"><span>[Google Drive link will be added here]</span></div>
+          <h3>Field capabilities <span class="tag tag--concept">Proposed / conceptual</span></h3>
+          <p>Proposed for B01. None of these has been built, integrated or tested at sea yet.</p>
+          <ul class="results__concept">
+            <li>The B01 vessel and its hull (design stage)</li>
+            <li>Multibeam sonar and water-column survey at sea</li>
+            <li>Survey depth band of 1–30 m below the surface</li>
+            <li>Target positions from RTK GNSS and the IMU</li>
+            <li>Surface picture from cameras, radar and AIS</li>
+            <li>Encrypted UHF / 4G / satellite links to the operator</li>
+            <li>Li-ion battery, solar and generator power</li>
+            <li>A trained recognition model (future development)</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -573,26 +607,27 @@
 
 <footer class="site-footer">
   <div class="container">
-    <div class="site-footer__brand"><span class="brand__mark">AUV</span><span>Autonomous Underwater Vehicle</span></div>
-    <p>Current demonstrations represent a software prototype of the proposed AUV workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
-    <p class="site-footer__small">Simulation values are not field measurements. Reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
+    <div class="site-footer__brand"><span class="brand__mark">USV B01</span><span>Unmanned Surface Vehicle</span></div>
+    <p>Current demonstrations represent a software prototype of the proposed USV B01 workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
+    <p>Implemented: the software simulation on this site (survey planning, coverage calculation and the rule-based decision demo). Proposed / conceptual: the B01 vessel, its sensors, communication links and power sources, and any field performance; none of these has been built or tested yet.</p>
+    <p class="site-footer__small">Simulation values are not field measurements. The B01 render and the reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
   </div>
 </footer>
 
 <dialog class="viewer" id="auv-viewer" aria-labelledby="viewer-title">
   <div class="viewer__bar">
-    <h2 id="viewer-title">AUV design, full size</h2>
+    <h2 id="viewer-title">B01 design, full size</h2>
     <form method="dialog"><button class="btn btn--small">Close</button></form>
   </div>
   <div class="viewer__scroll" tabindex="0">
-    <img src="assets/images/auv-team-design.jpg" width="1600" height="1011" loading="lazy"
-         alt="The AUV: a gold, torpedo-shaped hull with a propeller and tail fins at one end.">
+    <img src="assets/images/b01-render.jpg" width="1408" height="768" loading="lazy"
+         alt="USV B01, the team's design render: a dark blue, faceted, ultra-low-profile hull at the water surface with a short mast carrying sensors. A cutaway window shows the internal equipment bay; the hull carries the Saudi national emblem and the marking B01.">
   </div>
 </dialog>
 
-<script src="js/main.js?v=20261112" defer></script>
-<script src="js/auv-viewer.js?v=20261112" defer></script>
-<script src="js/survey-model.js?v=20261112" defer></script>
-<script src="js/demo.js?v=20261112" defer></script>
+<script src="js/main.js?v=20261113" defer></script>
+<script src="js/auv-viewer.js?v=20261113" defer></script>
+<script src="js/survey-model.js?v=20261113" defer></script>
+<script src="js/demo.js?v=20261113" defer></script>
 </body>
 </html>

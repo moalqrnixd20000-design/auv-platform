@@ -1,7 +1,7 @@
-/* AUV project site — interactive demo (software simulation).
+/* USV B01 project site — interactive demo (software simulation).
 
    A fixed, scripted two-pass crosshatch survey that shows how the proposed
-   AUV could detect underwater objects, classify them, assess their potential
+   USV B01 could detect underwater objects, classify them, assess their potential
    risk, explain the decision and recommend an action — then observe every
    target a second time from a perpendicular survey heading:
 
@@ -15,7 +15,7 @@
      Review  Cross-pass verification summary, then Mission complete.
 
    The route, line counts, distances, coverage and observation times come
-   from js/survey-model.js (window.AUVSurvey) and the scenario parameters;
+   from js/survey-model.js (window.SurveyModel) and the scenario parameters;
    nothing is hard-coded per scenario. A second heading adds an observation;
    it never turns a potential mine into a confirmed one or forces an unknown
    object into a class.
@@ -37,7 +37,7 @@
   "use strict";
 
   var demo = document.getElementById("demo");
-  var Survey = window.AUVSurvey;
+  var Survey = window.SurveyModel;
   if (!demo || !Survey) return;
 
   var $ = function (id) { return document.getElementById(id); };
@@ -63,7 +63,7 @@
       width: 600,
       height: 240,
       targets: { fish: [240, 36], wreck: [372, 44], mine: [348, 160], unknown: [480, 200] },
-      note: "Illustrative / Simulation: a small survey segment inspired by the Strait of Hormuz. The AUV has not surveyed the strait and is not claimed to cover it."
+      note: "Illustrative / Simulation: a small survey segment inspired by the Strait of Hormuz. B01 has not surveyed the strait and is not claimed to cover it."
     }
   };
 
@@ -214,7 +214,7 @@
   ];
 
   var SCENE_CREDITS = {
-    idle: "Reference imagery appears here when a target is detected. It is not a live feed from the AUV.",
+    idle: "Reference imagery appears here when a target is detected. It is not a live feed from B01.",
     fish: "Reference image: lionfish on a reef. Photograph supplied by the team.",
     wreck: "Reference image: synthetic aperture sonar image of an unknown shipwreck off of Nantucket. Image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research.",
     mine: "Reference image: wreck site on the seabed. Photograph supplied by the team. The marked object is a simulated target, not a photographed mine.",
@@ -327,7 +327,7 @@
     el.planB.setAttribute("d", pathOf(bySeg("B")));
     el.planT.setAttribute("d", pathOf(bySeg("T")));
 
-    /* one swath rectangle per survey leg, grown as the leg is flown */
+    /* one swath rectangle per survey leg, grown as the leg is run */
     [["A", el.coverA], ["B", el.coverB]].forEach(function (p) {
       p[1].innerHTML = route.segments.filter(function (s) { return s.pass === p[0] && s.type === "survey"; })
         .map(function () { return '<rect x="0" y="0" width="0" height="0"/>'; }).join("");
@@ -531,11 +531,11 @@
         ["Detection time (demo clock)", o.time],
         ["Detected by", t.source],
         ["Survey pass / line", "Pass A (primary) — line " + o.lineId],
-        ["AUV heading (Sim.)", fmtDeg(o.auvHeadingDeg)],
+        ["B01 heading (Sim.)", fmtDeg(o.auvHeadingDeg)],
         ["Position (Sim.)", fmtLat(t.latlon[0]) + "<br>" + fmtLon(t.latlon[1])],
         ["Depth (Sim.)", t.depth + " m"],
-        ["Distance from AUV (Sim.)", Math.round(o.distanceToTargetM) + " m"],
-        ["Bearing from AUV (Sim.)", fmtDeg(o.bearingToTargetDeg)]
+        ["Distance from B01 (Sim.)", Math.round(o.distanceToTargetM) + " m"],
+        ["Bearing from B01 (Sim.)", fmtDeg(o.bearingToTargetDeg)]
       ]), cls);
     }
     if (key === "evidence") {
@@ -629,7 +629,7 @@
     return '<div class="summary trail__block is-new"><h4>Mission complete</h4><div class="summary__grid">' + tiles + "</div>" +
       kv([
         ["Targets observed on both headings", crossCount() + " of " + m.length],
-        ["Route flown (Sim.)", fmtNum(state.d) + " m of " + fmtNum(L.total) + " m"],
+        ["Route run (Sim.)", fmtNum(state.d) + " m of " + fmtNum(L.total) + " m"],
         ["Pass A / transition / Pass B (Sim.)", fmtNum(L.A) + " / " + fmtNum(L.T) + " / " + fmtNum(L.B) + " m"],
         ["Unique area coverage (Sim.)", cov.uniquePct.toFixed(1) + "% of " + fmtNum(grid.total) + " m²"],
         ["Area seen on both headings (Sim.)", cov.bothPct.toFixed(1) + "%"],
@@ -648,7 +648,7 @@
       var ph = currentPhase();
       var message = state.status !== "scanning" ? "Start the mission to begin the survey."
         : ph === "T" ? "Transition leg to the start of the perpendicular pass…"
-        : ph === "B" ? "Pass B — flying the perpendicular lines; each target will be observed again…"
+        : ph === "B" ? "Pass B — running the perpendicular lines; each target will be observed again…"
         : "Pass A — scanning the horizontal survey lines for targets…";
       el.analysis.innerHTML = '<div class="analysis__empty"><p>' + message + "</p></div>";
       state.shownBlocks = 0;
@@ -783,8 +783,8 @@
              current: null, alert: null, blocks: 0, shownBlocks: 0, verifyStep: 0, flashKey: null, marked: [], byKey: {} };
   }
 
-  /* Turn the route and the target observations into timed events and AUV
-     movements. The AUV holds position while a target is being analysed. */
+  /* Turn the route and the target observations into timed events and vessel
+     movements. The vessel holds position while a target is being analysed. */
   function compile() {
     var stops = [];
     TARGETS.forEach(function (tg) {
@@ -792,7 +792,7 @@
         stops.push({ d: o.d, type: o.pass === "A" ? "first" : "second", key: tg.key });
       });
     });
-    /* the AUV also passes the start and the end of the transition leg, so the
+    /* the vessel also passes the start and the end of the transition leg, so the
        (short) leg between the two passes stays visible for a moment */
     stops.push({ d: route.passStart.T, type: "waypoint" }, { d: route.passStart.B, type: "waypoint" });
     stops.sort(function (a, b) { return a.d - b.d || (a.type === "waypoint" ? -1 : b.type === "waypoint" ? 1 : 0); });
@@ -1125,6 +1125,37 @@
     renderSurveyInfo();
   }
 
+  /* ---- results section: the software outcome of the Red Sea scenario,
+     calculated with the same survey model and rules as the demo ---- */
+
+  function renderResults() {
+    var box = $("results-sim");
+    if (!box) return;
+    var s = SCENARIOS.redsea, area = { width: s.width, height: s.height };
+    var r = Survey.buildRoute(area, CONFIG);
+    var g = new Survey.CoverageGrid(area, CONFIG.cell);
+    g.markRoute(r, 0, r.lengths.total);
+    var cov = g.stats();
+    var groups = TARGETS.map(function (tg) { return evaluate(tg.evidence).group; });
+    var count = function (group) { return groups.filter(function (x) { return x === group; }).length; };
+    var both = TARGETS.filter(function (tg) {
+      var p = s.targets[tg.key];
+      return Survey.observationsFor(r, { x: p[0], y: p[1] }).length === 2;
+    }).length;
+    var verify = TARGETS.filter(function (tg) { return tg.decision === "Requires Verification"; }).length;
+    box.innerHTML = [
+      ["Survey area", fmtNum(area.width * area.height) + " m² (" + fmtNum(area.width) + " m × " + fmtNum(area.height) + " m)"],
+      ["Survey pattern", "Two-pass cross-hatch grid: " + r.A.count + " + " + r.B.count + " lines, " + fmtNum(r.A.spacing) + " m apart"],
+      ["Planned route", fmtNum(r.lengths.total) + " m"],
+      ["Unique area coverage", cov.uniquePct.toFixed(1) + "% (" + fmtNum(cov.uniqueArea) + " m²)"],
+      ["Area seen on both headings", cov.bothPct.toFixed(1) + "%"],
+      ["Targets detected", TARGETS.length + " (" + count("life") + " marine life, " + count("structure") + " shipwreck, " +
+        count("mine") + " potential mine, " + count("unknown") + " unknown)"],
+      ["Observed on both survey headings", both + " of " + TARGETS.length],
+      ["Requires verification", String(verify)]
+    ].map(function (row) { return "<div><dt>" + row[0] + "</dt><dd>" + row[1] + "</dd></div>"; }).join("");
+  }
+
   /* --- full-screen demo: a clean layout for screen recording --- */
 
   function setFullscreen(on) {
@@ -1150,4 +1181,5 @@
   el.scenario.value = scenarioKey;
   setScenario(scenarioKey);
   reset();
+  renderResults();
 })();

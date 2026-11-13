@@ -1,4 +1,4 @@
-/* AUV project site — survey model (software simulation, no DOM).
+/* USV B01 project site — survey model (software simulation, no DOM).
 
    Coverage path planning for the demo mission: a two-direction crosshatch.
 
@@ -23,7 +23,7 @@
    polyline, so the route total is the sum of what is drawn. The turn shape
    says nothing about the vehicle's real turning ability.
 
-   Exposed as window.AUVSurvey (classic script, works from file://). */
+   Exposed as window.SurveyModel (classic script, works from file://). */
 (function (root) {
   "use strict";
 
@@ -192,7 +192,7 @@
     return s[s.length - 1];
   }
 
-  /* position and heading of the AUV at a distance along the route */
+  /* position and heading of the vessel at a distance along the route */
   function positionAt(route, d) {
     d = Math.max(0, Math.min(route.lengths.total, d));
     var s = segmentAt(route, d), local = d - s.d0, k = 1;
@@ -237,7 +237,7 @@
   /* Transparent simulation rule: a target is observed on a pass when it lies
      inside the simulated swath of a straight survey leg of that pass
      (perpendicular offset ≤ swath / 2). The observation is taken on the first
-     such leg in flying order, at the moment the AUV is abeam of the target.
+     such leg in flying order, at the moment the vessel is abeam of the target.
      No detection probability is modelled. */
   function observationsFor(route, target) {
     var half = route.cfg.swath / 2, out = [];
@@ -269,7 +269,7 @@
   /* ---------- unique coverage ---------- */
 
   /* Plan-view occupancy grid. A cell counts as covered once its centre is
-     inside the swath of a straight survey leg that the AUV has flown; a cell
+     inside the swath of a straight survey leg that the vessel has run; a cell
      is never counted twice, so overlap between neighbouring swaths and
      between the two passes is not double-counted and coverage cannot exceed
      100 %. Turns and the transition add no coverage. Flags: 1 = Pass A,
@@ -334,7 +334,7 @@
     };
   };
 
-  root.AUVSurvey = {
+  root.SurveyModel = {
     lineSet: lineSet,
     buildRoute: buildRoute,
     positionAt: positionAt,

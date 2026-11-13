@@ -1,4 +1,4 @@
-/* AUV project site — page behaviour: the top navigation (mobile menu and
+/* USV B01 project site — page behaviour: the top navigation (mobile menu and
    a highlight for the section being read). Plain script, no dependencies. */
 (function () {
   "use strict";

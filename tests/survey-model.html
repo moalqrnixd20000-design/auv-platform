@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Survey model tests — AUV</title>
+<title>Survey model tests — USV B01</title>
 <style>
   body { margin: 0; padding: 24px; background: #f3f6f8; color: #0c2233; font: 15px/1.5 system-ui, "Segoe UI", Arial, sans-serif; }
   h1 { font-size: 1.3rem; margin: 0 0 4px; }
@@ -24,7 +24,7 @@
 <script>
 (function () {
   "use strict";
-  var S = window.AUVSurvey, results = [], fails = 0;
+  var S = window.SurveyModel, results = [], fails = 0;
   function check(name, ok, detail) {
     results.push({ name: name, ok: !!ok, detail: detail });
     if (!ok) fails += 1;
@@ -94,9 +94,9 @@
       maxJump = Math.max(maxJump, Math.hypot(q.x - prev.x, q.y - prev.y));
       prev = q;
     }
-    check(p + "sampled AUV position never jumps further than the distance step", maxJump <= L.total / steps + 1e-6, maxJump.toFixed(3) + " m per " + (L.total / steps).toFixed(3) + " m");
+    check(p + "sampled vessel position never jumps further than the distance step", maxJump <= L.total / steps + 1e-6, maxJump.toFixed(3) + " m per " + (L.total / steps).toFixed(3) + " m");
     var end = S.positionAt(r, L.total);
-    check(p + "AUV ends at the last Pass B waypoint", near(end.x, segs[segs.length - 1].x1) && near(end.y, segs[segs.length - 1].y1));
+    check(p + "vessel ends at the last Pass B waypoint", near(end.x, segs[segs.length - 1].x1) && near(end.y, segs[segs.length - 1].y1));
 
     /* targets: two observations, fixed position, perpendicular headings */
     Object.keys(sc.targets).forEach(function (tk) {
@@ -108,7 +108,7 @@
         check(p + tk + " aspect difference ≈ 90° (mod 180)", near(S.aspectDifference(obs[0].auvHeadingDeg, obs[1].auvHeadingDeg), 90), obs[0].auvHeadingDeg + "° / " + obs[1].auvHeadingDeg + "°");
         check(p + tk + " within the simulated swath on both passes", obs.every(function (o) { return o.distanceToTargetM <= CFG.swath / 2; }), obs.map(function (o) { return o.distanceToTargetM; }).join(" / "));
         var atA = S.positionAt(r, obs[0].d), atB = S.positionAt(r, obs[1].d);
-        check(p + tk + " AUV is abeam of the target when it is observed", near(atA.x, obs[0].auv[0], 1e-6) && near(atA.y, obs[0].auv[1], 1e-6) && near(atB.x, obs[1].auv[0], 1e-6) && near(atB.y, obs[1].auv[1], 1e-6));
+        check(p + tk + " vessel is abeam of the target when it is observed", near(atA.x, obs[0].auv[0], 1e-6) && near(atA.y, obs[0].auv[1], 1e-6) && near(atB.x, obs[1].auv[0], 1e-6) && near(atB.y, obs[1].auv[1], 1e-6));
       }
     });
 

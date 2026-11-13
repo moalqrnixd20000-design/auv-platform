@@ -1,9 +1,9 @@
-/* AUV project site — design tokens and fonts.
+/* USV B01 project site — design tokens and fonts.
    Every colour, size and spacing value used by the other stylesheets comes
    from here, so the whole look can be changed in one place.
 
-   Colour logic: the accent (hull gold) is sampled from the team's own AUV
-   render; the ink is a deep marine blue. */
+   Colour logic: the gold accent was sampled from the team's earlier design
+   render and is kept as the site accent; the ink is a deep marine blue. */
 
 @font-face {
   font-family: "Archivo";
@@ -42,7 +42,7 @@
   /* Interactive + status */
   --sea: #0e5a72;          /* links, focus, highlights */
   --sea-soft: #e4f0f4;
-  --hull: #c49837;         /* sampled from the AUV render */
+  --hull: #c49837;         /* the site's gold accent */
   --hull-soft: #f6ebd0;
   --hull-ink: #6f520f;     /* gold text that must stay readable */
 

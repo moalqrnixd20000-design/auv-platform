@@ -1,4 +1,4 @@
-/* AUV project platform — inspection tools for the team's AUV design (Figure 2).
+/* USV B01 project site — inspection tools for the team's B01 design image.
    The image itself is never changed. This script only:
      - highlights the sheet and shows a small information panel on hover / focus,
      - follows the mouse pointer with a magnifier (a round window onto the
@@ -42,9 +42,10 @@
     var y = event.clientY - box.top;
     if (x < 0 || y < 0 || x > box.width || y > box.height) return;
 
-    /* The vehicle runs corner to corner, so the top-right and bottom-left
-       corners are empty. Keep the information panel in whichever of them is
-       farther from the pointer, so the magnifier never covers it. */
+    /* The vessel sits across the middle of the render, so the top-right
+       (sky) and bottom-left (water) corners are open. Keep the information
+       panel in whichever of them is farther from the pointer, so the
+       magnifier never covers it. */
     var toTopRight = Math.hypot(x - box.width, y);
     var toBottomLeft = Math.hypot(x, y - box.height);
     sheet.classList.toggle("sheet--panel-bl", toTopRight < toBottomLeft);
