@@ -1,7 +1,6 @@
 /* AUV project site — components.
    Buttons, cards, quick facts, About layout, depth diagram, how-it-works
-   flow, sensing / recognition cards, the AUV inspection sheet, video and
-   project-material panels, full-size viewer. */
+   flow, sensing / recognition cards, the inspection sheet, full-size viewer. */
 
 .sr-only {
   position: absolute;
@@ -290,32 +289,6 @@ html:not(.js) .inspect-tools { display: none; }
 .design-grid--coarse .zoom-only { display: none; }
 .design-grid--coarse .pointer-only-touch { display: block; }
 .design-grid--coarse .pointer-only-fine { display: none; }
-
-/* ---------- Video + project materials ---------- */
-
-.media-slot {
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: var(--space-3);
-  padding: var(--space-6);
-  text-align: center;
-  color: var(--ink-soft);
-  background: var(--paper);
-  border: 1.5px dashed var(--line-strong);
-  border-radius: var(--radius-lg);
-}
-.media-slot svg { width: 44px; height: 44px; fill: none; stroke: var(--line-strong); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-
-.video-frame { aspect-ratio: 16 / 9; max-width: 960px; }
-.video-frame svg { width: 64px; height: 64px; }
-
-.materials { display: grid; gap: var(--space-5); }
-@media (min-width: 800px) { .materials { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-.materials .card { display: grid; gap: var(--space-4); align-content: start; }
-.materials .card h3 { margin: 0; }
-.materials .media-slot { min-height: 200px; padding: var(--space-5); }
-.media-slot--a0 { aspect-ratio: 841 / 1189; min-height: 0 !important; }
 
 /* ---------- Full-size viewer (dialog) ---------- */
 
