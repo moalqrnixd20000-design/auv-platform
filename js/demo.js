@@ -53,7 +53,7 @@
     width: 400,
     height: 240,
     targets: { fish: [160, 36], wreck: [248, 44], mine: [232, 160], unknown: [320, 200] },
-    note: "Illustrative survey segment off the Red Sea coast. All positions are simulated."
+    note: "All positions are simulated."
   };
 
   /* Simulation parameters — not validated hardware specifications. */
