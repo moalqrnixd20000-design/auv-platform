@@ -176,8 +176,6 @@
   font-size: 0.9rem;
 }
 
-.photo-row { display: grid; gap: var(--space-5); margin-top: var(--space-6); }
-@media (min-width: 720px) { .photo-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ---------- B01 design: inspection sheet ---------- */
 

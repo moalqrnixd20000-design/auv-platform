@@ -12,7 +12,7 @@ Notes for the team. This folder is not part of the public site.
 | The demo is built into the page (`js/demo.js`) and driven by one mission clock. | Pause, Resume and Reset are exact; no timers to get out of step. |
 | Demo values (positions, depths, times, coverage) are simulated and labelled "Sim." or "Simulation" where shown. | They are not measurements. |
 | Communication is described as UHF / 4G / satellite radio links (proposed) and kept separate from the sensing layer. Encryption is stated only as "the latest available encryption version"; no cipher, protocol or link specification is named. | Team brief, 13 November 2026. No specification has been given. |
-| Red Sea fish (lionfish, clownfish, grouper) are presented as selected examples. | The recognition is not a general species classifier. |
+| The demo's marine-life example is a lionfish. The website's species section ("Selected Red Sea fish") was removed on 13 November 2026 at the team's request. | The recognition is not a general species classifier. |
 | Fonts are self-hosted. | No third-party requests; works offline at a venue. |
 | Light background, navy accents, hull-gold highlight sampled from the team's render. | Marine technology look; the image sits naturally on a light page. |
 | The demo runs on one mission clock and is fully deterministic; a full-screen mode is provided for screen recording. | Predictable recordings; Pause and Reset are exact. |

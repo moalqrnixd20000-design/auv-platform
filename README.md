@@ -57,7 +57,7 @@ below is a simulation parameter or is calculated from one.
   They are **visualisation only** and say nothing about the vehicle's turning ability. Every segment
   is a polyline; route distances are the lengths of the generated polylines, so
   *total = Pass A + transition + Pass B* exactly. For reference, the same lines with straight
-  connectors give 2,600 m + 2,760 m = 5,360 m (Red Sea, without the transition).
+  connectors give 2,600 m + 2,760 m = 5,360 m (the demo's survey area, without the transition).
 
 **Coverage.** The survey area is 400 × 240 = 96,000 m² whatever the number of passes. Unique coverage
 is counted on a 5 m plan-view grid: a cell counts once when its centre falls inside the simulated
