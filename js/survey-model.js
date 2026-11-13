@@ -8,7 +8,7 @@
      Pass B  orthogonal crosshatch pass: a second, complete boustrophedon
              sweep over the same rectangle, legs running north / south.
 
-   Everything is generated from the scenario (width, height) and the survey
+   Everything is generated from the survey area (width, height) and the survey
    configuration (requested line spacing, simulated swath); no line count or
    distance is hard-coded. All values are simulation parameters, not
    validated vehicle or sensor specifications.

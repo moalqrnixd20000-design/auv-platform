@@ -32,9 +32,9 @@
   function near(a, b, tol) { return Math.abs(a - b) <= (tol || 1e-6); }
 
   var CFG = { lineSpacing: 40, swath: 50 };
-  var SCENARIOS = {
+  var AREAS = {
     redsea: { width: 400, height: 240, targets: { fish: [160, 36], wreck: [248, 44], mine: [232, 160], unknown: [320, 200] } },
-    hormuz: { width: 600, height: 240, targets: { fish: [240, 36], wreck: [372, 44], mine: [348, 160], unknown: [480, 200] } }
+    wide: { width: 600, height: 240, targets: { fish: [240, 36], wreck: [372, 44], mine: [348, 160], unknown: [480, 200] } }
   };
 
   /* 1. line generation */
@@ -46,8 +46,8 @@
   var odd = S.lineSet(250, 40);
   check("Non-multiple extent: ceil(250/40) = 7 lines, spacing ≤ requested", odd.count === 7 && odd.spacing <= 40 && near(odd.positions[0], odd.spacing / 2), odd.count + " / " + odd.spacing);
 
-  Object.keys(SCENARIOS).forEach(function (key) {
-    var sc = SCENARIOS[key], area = { width: sc.width, height: sc.height };
+  Object.keys(AREAS).forEach(function (key) {
+    var sc = AREAS[key], area = { width: sc.width, height: sc.height };
     var r = S.buildRoute(area, CFG), segs = r.segments, L = r.lengths;
     var A = segs.filter(function (s) { return s.pass === "A"; });
     var B = segs.filter(function (s) { return s.pass === "B"; });

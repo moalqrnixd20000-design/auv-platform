@@ -7,10 +7,10 @@
 <meta name="description" content="USV B01 is an unmanned surface vehicle concept for detecting naval mines and other underwater hazards: a cross-hatch grid survey from the water surface with multibeam sonar, explainable risk assessment and an interactive software simulation.">
 <meta name="theme-color" content="#0a2536">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="css/tokens.css?v=20261113">
-<link rel="stylesheet" href="css/base.css?v=20261113">
-<link rel="stylesheet" href="css/components.css?v=20261113">
-<link rel="stylesheet" href="css/demo.css?v=20261113">
+<link rel="stylesheet" href="css/tokens.css?v=20261113b">
+<link rel="stylesheet" href="css/base.css?v=20261113b">
+<link rel="stylesheet" href="css/components.css?v=20261113b">
+<link rel="stylesheet" href="css/demo.css?v=20261113b">
 <script>document.documentElement.classList.add("js");</script>
 </head>
 <body id="top">
@@ -429,12 +429,6 @@
           <p>Software simulation of the proposed USV B01 mission: a two-pass crosshatch survey (a horizontal lawn-mower pass, then a perpendicular pass over the same area) that detects underwater objects, assesses their potential risk, re-observes every target from a second heading and explains every decision.</p>
         </div>
         <div class="demo__controls">
-          <label class="scenario"><span>Scenario</span>
-            <select id="demo-scenario">
-              <option value="redsea">Red Sea coastal segment</option>
-              <option value="hormuz">Strait of Hormuz — simulated</option>
-            </select>
-          </label>
           <span class="demo-status" id="demo-status" data-state="idle" role="status"><i></i><span id="demo-status-label">Ready</span></span>
           <button class="btn btn--go" type="button" id="demo-start">Start mission</button>
           <button class="btn" type="button" id="demo-pause" disabled>Pause</button>
@@ -502,7 +496,7 @@
               <span><i class="k-high"></i>High potential hazard</span>
               <span><i class="k-unknown"></i>Unknown</span>
             </div>
-            <p class="map-note" id="demo-scenario-note"></p>
+            <p class="map-note" id="demo-map-note"></p>
           </div>
 
           <div class="demo-card" id="card-coverage">
@@ -582,7 +576,7 @@
       <div class="cards-2 results">
         <div class="card">
           <h3>Software outcome <span class="tag tag--sim">Simulation — implemented</span></h3>
-          <p>Calculated by the interactive demo's survey model for its Red Sea scenario. These are software results, not field measurements.</p>
+          <p>Calculated by the interactive demo's survey model. These are software results, not field measurements.</p>
           <dl class="spec results__sim" id="results-sim"></dl>
         </div>
         <div class="card">
@@ -625,9 +619,9 @@
   </div>
 </dialog>
 
-<script src="js/main.js?v=20261113" defer></script>
-<script src="js/auv-viewer.js?v=20261113" defer></script>
-<script src="js/survey-model.js?v=20261113" defer></script>
-<script src="js/demo.js?v=20261113" defer></script>
+<script src="js/main.js?v=20261113b" defer></script>
+<script src="js/auv-viewer.js?v=20261113b" defer></script>
+<script src="js/survey-model.js?v=20261113b" defer></script>
+<script src="js/demo.js?v=20261113b" defer></script>
 </body>
 </html>

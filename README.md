@@ -48,9 +48,8 @@ below is a simulation parameter or is calculated from one.
 
 - `lines = ceil(extent / requestedLineSpacing)`, `actualSpacing = extent / lines`;
   each line sits in the middle of its strip: `actualSpacing / 2 + i × actualSpacing`.
-- Red Sea scenario (400 m × 240 m, requested spacing 40 m): Pass A has 6 horizontal lines at
-  y = 20 … 220 m, Pass B has 10 vertical lines at x = 20 … 380 m. The Strait of Hormuz scenario
-  (600 m × 240 m) uses the same generator: 6 and 15 lines.
+- The demo's survey area (400 m × 240 m, requested spacing 40 m): Pass A has 6 horizontal lines at
+  y = 20 … 220 m, Pass B has 10 vertical lines at x = 20 … 380 m.
 - Pass B can be run four ways (start west or east, start south or north). The variant whose first
   waypoint is closest to the end of Pass A is chosen; the order of the candidates is fixed, so a tie is
   always resolved the same way. An explicit transition leg joins the two passes — the vessel never jumps.

@@ -15,8 +15,8 @@
      Review  Cross-pass verification summary, then Mission complete.
 
    The route, line counts, distances, coverage and observation times come
-   from js/survey-model.js (window.SurveyModel) and the scenario parameters;
-   nothing is hard-coded per scenario. A second heading adds an observation;
+   from js/survey-model.js (window.SurveyModel) and the survey-area
+   parameters; nothing is hard-coded. A second heading adds an observation;
    it never turns a potential mine into a confirmed one or forces an unknown
    object into a class.
 
@@ -29,10 +29,10 @@
    specifications. Demo time is compressed and says nothing about speed.
 
    Sections of this file:
-     1. Survey setup – scenarios, simulation parameters, coordinates
+     1. Survey setup – survey area, simulation parameters, coordinates
      2. Targets      – evidence, decision rules, target content
      3. Views        – map, observation view, alert, analysis, coverage, log
-     4. Mission      – event timeline, clock, Start / Pause / Reset, scenario, full screen */
+     4. Mission      – event timeline, clock, Start / Pause / Reset, full screen */
 (function () {
   "use strict";
 
@@ -45,26 +45,15 @@
 
   /* ================= 1. Survey setup ================= */
 
-  /* origin = [latitude, longitude] of the south-west corner of the survey box.
+  /* The survey area. origin = [latitude, longitude] of its south-west corner.
      Target positions are plan-view metres from that corner: x east, y north.
      Illustrative positions only. */
-  var SCENARIOS = {
-    redsea: {
-      name: "Red Sea coastal segment",
-      origin: [21.62, 39.08],
-      width: 400,
-      height: 240,
-      targets: { fish: [160, 36], wreck: [248, 44], mine: [232, 160], unknown: [320, 200] },
-      note: "Illustrative survey segment off the Red Sea coast. All positions are simulated."
-    },
-    hormuz: {
-      name: "Strait of Hormuz — Simulated Survey Scenario",
-      origin: [26.56, 56.35],
-      width: 600,
-      height: 240,
-      targets: { fish: [240, 36], wreck: [372, 44], mine: [348, 160], unknown: [480, 200] },
-      note: "Illustrative / Simulation: a small survey segment inspired by the Strait of Hormuz. B01 has not surveyed the strait and is not claimed to cover it."
-    }
+  var sc = {
+    origin: [21.62, 39.08],
+    width: 400,
+    height: 240,
+    targets: { fish: [160, 36], wreck: [248, 44], mine: [232, 160], unknown: [320, 200] },
+    note: "Illustrative survey segment off the Red Sea coast. All positions are simulated."
   };
 
   /* Simulation parameters — not validated hardware specifications. */
@@ -75,8 +64,7 @@
   };
   var M_PER_DEG = 111320;  // metres per degree of latitude (approximation)
 
-  var scenarioKey = "redsea";
-  var sc, route, grid, observations, plan;
+  var route, grid, observations, plan;
 
   function toLatLon(x, y) {
     var lat = sc.origin[0] + y / M_PER_DEG;
@@ -150,13 +138,13 @@
     unknown: "NOTICE — Unknown Object Requires Verification"
   };
 
-  /* Target content. Positions come from the scenario (plan-view x, y);
+  /* Target content. Positions come from the survey area (plan-view x, y);
      box = [left, top, width, height] of the frame in the reference image, in %.
      xpass = what the second, perpendicular observation shows. It never
      resolves an identity the first pass could not confirm. */
   var TARGETS = [
     {
-      key: "fish", name: "Lionfish (scenario example)", logName: "Lionfish", objectType: "Fish", depth: 9,
+      key: "fish", name: "Lionfish (demo example)", logName: "Lionfish", objectType: "Fish", depth: 9,
       source: "Water-Column Acoustic Data", scene: "fish", box: [31, 5, 60, 80],
       evidence: { bio: "Detected", motion: "Detected", rigid: "Not detected", nonbio: "Not detected", size: "Small", background: "Detected" },
       decision: "Continue Survey / Log Observation", logDecision: "Log Observation",
@@ -237,8 +225,7 @@
     pause: $("demo-pause"),
     reset: $("demo-reset"),
     full: $("demo-full"),
-    scenario: $("demo-scenario"),
-    scenarioNote: $("demo-scenario-note"),
+    mapNote: $("demo-map-note"),
     phases: Array.prototype.slice.call($("demo-phases").children),
     stages: Array.prototype.slice.call($("demo-stages").children),
     alert: $("demo-alert"),
@@ -669,7 +656,6 @@
   function renderSurveyInfo() {
     var L = route.lengths, A = route.A, B = route.B;
     el.covInfo.innerHTML = [
-      ["Scenario", sc.name],
       ["Survey area", fmtNum(sc.width) + " m × " + fmtNum(sc.height) + " m = " + fmtNum(sc.width * sc.height) + " m²"],
       ["Pass A — primary, horizontal", A.count + " lines at y = " + list(A.positions) + " m, spacing " + fmtNum(A.spacing) + " m"],
       ["Pass B — orthogonal, vertical", B.count + " lines at x = " + list(B.positions) + " m, spacing " + fmtNum(B.spacing) + " m"],
@@ -680,7 +666,7 @@
       ["Planned route", fmtNum(L.total) + " m = Pass A + transition + Pass B"],
       ["Same lines, straight connectors", fmtNum(L.straightA) + " + " + fmtNum(L.straightB) + " = " + fmtNum(L.straightA + L.straightB) + " m, without transition — reference"]
     ].map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
-    el.scenarioNote.textContent = sc.note;
+    el.mapNote.textContent = sc.note;
   }
 
   function pct(f) { return (f * 100).toFixed(1) + "%"; }
@@ -754,7 +740,6 @@
     el.start.disabled = state.running;
     el.pause.disabled = !state.running;
     el.pause.textContent = state.paused ? "Resume" : "Pause";
-    el.scenario.disabled = state.running;
   }
 
   /* While paused, freeze every animation too (CSS and SVG). */
@@ -1108,11 +1093,9 @@
     updateButtons();
   }
 
-  /* Changing the scenario rebuilds the route, the observations, the coverage
-     grid and the timeline, then resets the mission. */
-  function setScenario(key) {
-    scenarioKey = Object.prototype.hasOwnProperty.call(SCENARIOS, key) ? key : "redsea";
-    sc = SCENARIOS[scenarioKey];
+  /* Build the route, the target observations, the coverage grid and the
+     timeline for the survey area. */
+  function setupSurvey() {
     route = Survey.buildRoute({ width: sc.width, height: sc.height }, CONFIG);
     grid = new Survey.CoverageGrid({ width: sc.width, height: sc.height }, CONFIG.cell);
     observations = {};
@@ -1125,23 +1108,19 @@
     renderSurveyInfo();
   }
 
-  /* ---- results section: the software outcome of the Red Sea scenario,
+  /* ---- results section: the software outcome of the demo's survey,
      calculated with the same survey model and rules as the demo ---- */
 
   function renderResults() {
     var box = $("results-sim");
     if (!box) return;
-    var s = SCENARIOS.redsea, area = { width: s.width, height: s.height };
-    var r = Survey.buildRoute(area, CONFIG);
+    var area = { width: sc.width, height: sc.height }, r = route;
     var g = new Survey.CoverageGrid(area, CONFIG.cell);
     g.markRoute(r, 0, r.lengths.total);
     var cov = g.stats();
     var groups = TARGETS.map(function (tg) { return evaluate(tg.evidence).group; });
     var count = function (group) { return groups.filter(function (x) { return x === group; }).length; };
-    var both = TARGETS.filter(function (tg) {
-      var p = s.targets[tg.key];
-      return Survey.observationsFor(r, { x: p[0], y: p[1] }).length === 2;
-    }).length;
+    var both = TARGETS.filter(function (tg) { return observations[tg.key].length === 2; }).length;
     var verify = TARGETS.filter(function (tg) { return tg.decision === "Requires Verification"; }).length;
     box.innerHTML = [
       ["Survey area", fmtNum(area.width * area.height) + " m² (" + fmtNum(area.width) + " m × " + fmtNum(area.height) + " m)"],
@@ -1169,17 +1148,11 @@
   el.pause.addEventListener("click", function () { if (state.paused) resume(); else pause(); });
   el.reset.addEventListener("click", reset);
   el.full.addEventListener("click", function () { setFullscreen(!demo.classList.contains("is-recording")); });
-  el.scenario.addEventListener("change", function () {
-    if (state.running) { el.scenario.value = scenarioKey; return; }
-    setScenario(el.scenario.value);
-    reset();
-  });
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape" && demo.classList.contains("is-recording")) setFullscreen(false);
   });
 
-  el.scenario.value = scenarioKey;
-  setScenario(scenarioKey);
+  setupSurvey();
   reset();
   renderResults();
 })();
