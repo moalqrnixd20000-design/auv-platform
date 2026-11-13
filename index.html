@@ -30,6 +30,7 @@
         <li><a href="#how">How It Works</a></li>
         <li><a href="#design">B01 Design</a></li>
         <li><a href="#demo">Interactive Demo</a></li>
+        <li><a href="#results">Results</a></li>
       </ul>
     </nav>
     <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
@@ -86,8 +87,8 @@
           </div>
           <h3>What the system does</h3>
           <div class="prose">
-            <p>The USV B01 concept surveys an area in two perpendicular sets of parallel lines (a crosshatch survey) and combines acoustic and onboard sensor data to detect underwater targets. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
-            <p>Targets are marked and reported to the operator at the surface.</p>
+            <p>USV B01 covers the survey area with a grid (cross-hatch) method: a complete set of parallel survey lines, then a second complete set at right angles over the same area. Its multibeam sonar and water-column acoustic data detect underwater targets, and RTK GNSS with the IMU gives each target its position. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
+            <p>Targets are marked on the survey map and reported to the operator over the vessel's radio links.</p>
           </div>
         </div>
         <figure class="figure">
@@ -292,7 +293,7 @@
             <li>Evidence comparison</li>
             <li>Decision update</li>
           </ol>
-          <p>The survey is flown twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is therefore observed from two survey headings about 90° apart (multi-aspect observation), and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification. No trained model is involved.</p>
+          <p>The grid is surveyed twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is therefore observed from two survey headings about 90° apart (multi-aspect observation), and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification. No trained model is involved.</p>
         </div>
         <div class="card">
           <h3>Environmental / acoustic background <span class="tag tag--concept">Conceptual</span></h3>
@@ -502,7 +503,7 @@
             <div class="demo-card__head"><h3>Survey coverage — two passes</h3><span>Simulation estimate</span></div>
             <dl class="coverage__info" id="cov-info"></dl>
             <div class="coverage__live">
-              <div><span>Distance flown</span><strong id="cov-distance">0 m</strong></div>
+              <div><span>Distance run</span><strong id="cov-distance">0 m</strong></div>
               <div><span>Unique area coverage</span><strong id="cov-pct">0.0%</strong></div>
               <div><span>Remaining area</span><strong id="cov-remaining">0 m²</strong></div>
               <div><span>Targets seen on both headings</span><strong id="cov-xpass">0 / 0</strong></div>
@@ -560,6 +561,37 @@
             <thead><tr><th>Target</th><th>Detected</th><th>Identification</th><th>Classification</th><th>Risk</th><th>Decision</th><th>Detected by</th><th>Observations — pass, line, heading (Sim.)</th><th>Cross-pass check</th><th>Position (Sim.)</th><th>Depth (Sim.)</th></tr></thead>
             <tbody id="log-body"></tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="section" id="results" aria-labelledby="results-title">
+    <div class="container">
+      <div class="section__head">
+        <h2 id="results-title">Results</h2>
+        <p>What the project has produced so far is software: the simulation on this page. It is kept apart from the field capabilities proposed for the B01 vessel.</p>
+      </div>
+      <div class="cards-2 results">
+        <div class="card">
+          <h3>Software outcome <span class="tag tag--sim">Simulation — implemented</span></h3>
+          <p>Calculated by the interactive demo's survey model for its Red Sea scenario. These are software results, not field measurements.</p>
+          <dl class="spec results__sim" id="results-sim"></dl>
+        </div>
+        <div class="card">
+          <h3>Field capabilities <span class="tag tag--concept">Proposed / conceptual</span></h3>
+          <p>Proposed for B01. None of these has been built, integrated or tested at sea yet.</p>
+          <ul class="results__concept">
+            <li>The B01 vessel and its hull (design stage)</li>
+            <li>Multibeam sonar and water-column survey at sea</li>
+            <li>Survey depth band of 1–30 m below the surface</li>
+            <li>Target positions from RTK GNSS and the IMU</li>
+            <li>Surface picture from cameras, radar and AIS</li>
+            <li>Encrypted UHF / 4G / satellite links to the operator</li>
+            <li>Li-ion battery, solar and generator power</li>
+            <li>A trained recognition model (future development)</li>
+          </ul>
         </div>
       </div>
     </div>
