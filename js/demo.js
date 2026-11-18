@@ -159,7 +159,7 @@
     },
     {
       key: "wreck", name: "Shipwreck", objectType: "Large structure on the seafloor", depth: 26,
-      source: "Multibeam Echosounder", scene: "wreck", box: [18, 18, 60, 48],
+      source: "Multibeam + Side-Scan Sonar", scene: "wreck", box: [18, 18, 60, 48],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Detected", nonbio: "Detected", size: "Large", background: "Detected" },
       decision: "Requires Inspection",
       explanation: "Large rigid structure with non-biological geometric characteristics detected on or near the seafloor.",
@@ -173,7 +173,7 @@
     },
     {
       key: "mine", name: "Potential Mine", objectType: "Compact object on the seafloor", depth: 21,
-      source: "Multibeam Echosounder", scene: "mine", box: [89, 53, 10.5, 11.5],
+      source: "Multibeam + Side-Scan Sonar", scene: "mine", box: [89, 53, 10.5, 11.5],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Detected", nonbio: "Detected", size: "Compact", background: "Detected" },
       decision: "Requires Verification",
       explanation: "Detected characteristics are consistent with a potential hazardous man-made object, but the simulation cannot confirm the object's identity.",
@@ -187,7 +187,7 @@
     },
     {
       key: "unknown", name: "Unknown Object", objectType: "Unresolved object", depth: 28,
-      source: "Multibeam Echosounder", scene: "unknown", box: [13, 33, 72, 24],
+      source: "Multibeam + Side-Scan Sonar", scene: "unknown", box: [13, 33, 72, 24],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Inconclusive", nonbio: "Inconclusive", size: "Medium", background: "Detected" },
       decision: "Requires Verification",
       explanation: "Detected object contains insufficient evidence for reliable classification.",
