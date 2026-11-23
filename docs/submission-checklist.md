@@ -6,7 +6,7 @@ platform itself: the website's video and project-materials sections were removed
 
 | Item | Where | Notes |
 |---|---|---|
-| Project photo | Competition platform | A high-quality representative image of the AUV project. Use the team's own design or real photographs; do not create fake hardware photography. |
+| Project photo | Competition platform | A high-quality representative image of USV B01. Use the team's own design or real photographs; do not create fake hardware photography. |
 | Poster or brochure | Competition platform | A0 scientific poster, in English. |
 | Demonstration video | Competition platform | Arabic or English; shows the interactive prototype clearly and quickly. |
 | Google Drive link | Competition platform | Sharing setting: "Anyone with the link can view". |
