@@ -6,7 +6,7 @@ risk-prioritized information to support maritime safety and inspection decisions
 water surface, it covers an area with an autonomous cross-hatch grid survey and scans the water
 column and the seabed below it with multibeam and side-scan sonar.
 
-Survey depth: Designed to support surveys in shallow-water and deeper coastal environments. The
+Survey depth: proposed, approximately 0–60 m. Designed to support surveys in shallow-water and deeper coastal environments. The
 achievable detection depth, minimum detection range, and effective coverage depend on the selected
 sensor models, installation geometry, water conditions, and field validation.
 
@@ -25,6 +25,10 @@ repository and the site address still carry the project's earlier name (`auv-pla
 **Live website:** https://moalqrnixd20000-design.github.io/auv-platform/
 
 It is a static site (plain HTML, CSS and JavaScript). There is no build step and no backend.
+
+**Languages.** English and Arabic. The button in the header switches the whole page, including the
+interactive demo, and the page reads right to left in Arabic. The Arabic text is in `js/i18n.js` (page)
+and in the `AR` table of `js/demo.js` (demo); the choice is remembered on the device.
 
 ## Run locally
 

@@ -72,10 +72,10 @@
     return [lat, lon];
   }
 
-  function fmtLat(v) { return v.toFixed(5) + "° N"; }
-  function fmtLon(v) { return v.toFixed(5) + "° E"; }
+  function fmtLat(v) { return ltr(v.toFixed(5) + "° N"); }
+  function fmtLon(v) { return ltr(v.toFixed(5) + "° E"); }
   function fmtNum(n) { return Math.round(n).toLocaleString("en-US"); }
-  function fmtDeg(h) { return String(Math.round(h) % 360).padStart(3, "0") + "°"; }
+  function fmtDeg(h) { return ltr(String(Math.round(h) % 360).padStart(3, "0") + "°"); }
   function pad3(n) { return String(n).padStart(3, "0"); }
   function formatTime(ms) {
     var s = Math.floor(ms / 1000);
@@ -85,6 +85,253 @@
     if (values.length <= 4) return values.map(fmtNum).join(", ");
     return fmtNum(values[0]) + ", " + fmtNum(values[1]) + " … " + fmtNum(values[values.length - 1]);
   }
+
+  /* ---- language: the English text is written in this file; AR holds the Arabic.
+     js/i18n.js switches the page and fires "sitelang"; relabel() (section 4)
+     then rewrites the live text. tx("text") gives the text in the page
+     language, tf("… {0} …", a) fills in values. Logic always uses the English. */
+
+  function isAr() { return !!window.SiteLang && window.SiteLang.get() === "ar"; }
+  function tx(s) { return isAr() && AR[s] != null ? AR[s] : s; }
+  function tf(s) {
+    var args = arguments;
+    return tx(s).replace(/\{(\d)\}/g, function (m, i) { return args[Number(i) + 1]; });
+  }
+  /* coordinates, headings and line lists stay left to right inside Arabic text */
+  function ltr(s) { return isAr() ? "⁦" + s + "⁩" : s; }
+  function tid(t) { return isAr() ? "الهدف " + t.id.replace("Target ", "") : t.id; }
+
+  var AR = {
+    /* evidence */
+    "Biological morphology": "شكل حيوي",
+    "Movement consistent with marine life": "حركة تتسق مع الحياة البحرية",
+    "Rigid / geometric structure": "بنية صلبة / هندسية",
+    "Non-biological appearance": "مظهر غير حيوي",
+    "Size category": "فئة الحجم",
+    "Return differs from surrounding background": "الصدى يختلف عن الخلفية المحيطة",
+    "Detected": "مرصود",
+    "Not detected": "غير مرصود",
+    "Inconclusive": "غير حاسم",
+    "Small": "صغير",
+    "Large": "كبير",
+    "Compact": "مدمج",
+    "Medium": "متوسط",
+
+    /* decision rules */
+    "Biological morphology detected → Marine Life.": "رُصد شكل حيوي ← حياة بحرية.",
+    "Rigid, non-biological and large → man-made structure.": "صلب وغير حيوي وكبير ← هيكل من صنع الإنسان.",
+    "Rigid, non-biological and compact → potential hazardous object. The identity cannot be confirmed.": "صلب وغير حيوي ومدمج ← جسم خطِر محتمل. لا يمكن تأكيد هويته.",
+    "No rule is met with enough evidence → Unknown. The system does not force a class.": "لا تنطبق أي قاعدة بأدلة كافية ← غير معروف. لا يفرض النظام تصنيفًا.",
+    "Marine Life": "حياة بحرية",
+    "Man-Made Structure": "هيكل من صنع الإنسان",
+    "Potential Hazardous Object": "جسم خطِر محتمل",
+    "Unknown": "غير معروف",
+    "Likely Non-Hazardous": "غير خطِر على الأرجح",
+    "Potential Hazard — Requires Verification": "خطر محتمل، يحتاج تحققًا",
+    "High Potential Hazard — Requires Verification": "خطر محتمل مرتفع، يحتاج تحققًا",
+    "Unknown — Requires Verification": "غير معروف، يحتاج تحققًا",
+    "Biological / Marine Life": "حيوي / حياة بحرية",
+    "Navigation / Obstruction Risk": "خطر ملاحي / عائق",
+    "Potential Explosive Hazard": "خطر انفجار محتمل",
+    "Unknown Risk": "خطر غير معروف",
+    "High — all defining features detected": "مرتفعة — رُصدت كل السمات المحدِّدة",
+    "Moderate — identity not confirmed": "متوسطة — الهوية غير مؤكدة",
+    "Low — insufficient evidence": "منخفضة — الأدلة غير كافية",
+    "STATUS — Likely Non-Hazardous": "حالة — غير خطِر على الأرجح",
+    "ALERT — Potential Hazard — Requires Verification": "تنبيه — خطر محتمل، يحتاج تحققًا",
+    "ALERT — High Potential Hazard — Requires Verification": "تنبيه — خطر محتمل مرتفع، يحتاج تحققًا",
+    "NOTICE — Unknown — Requires Verification": "إشعار — غير معروف، يحتاج تحققًا",
+
+    /* targets */
+    "Lionfish (demo example)": "سمكة الأسد (مثال توضيحي)",
+    "Lionfish": "سمكة الأسد",
+    "Fish": "سمكة",
+    "Water-Column Acoustic Data": "بيانات صوتية لعمود الماء",
+    "Continue Survey / Log Observation": "متابعة المسح / تسجيل الملاحظة",
+    "Log Observation": "تسجيل الملاحظة",
+    "Biological morphology and expected marine-life characteristics detected.": "رُصد شكل حيوي وخصائص متوقعة للحياة البحرية.",
+    "Continue the survey and log the observation.": "متابعة المسح وتسجيل الملاحظة.",
+    "Logged": "مُسجَّل",
+    "The perpendicular heading also shows biological morphology and movement.": "الاتجاه العمودي يُظهر أيضًا شكلًا حيويًا وحركة.",
+    "Consistent across two orthogonal passes": "متسق عبر تمريرتين متعامدتين",
+    "No change: Marine Life — Likely Non-Hazardous. Continue survey / log observation.": "لا تغيير: حياة بحرية — غير خطِر على الأرجح. متابعة المسح / تسجيل الملاحظة.",
+    "Logged — observed on both headings": "مُسجَّل — رُصد من الاتجاهين",
+    "Shipwreck": "حطام سفينة",
+    "Large structure on the seafloor": "هيكل كبير على قاع البحر",
+    "Multibeam + Side-Scan Sonar": "سونار متعدد الحزم + سونار المسح الجانبي",
+    "Requires Inspection": "يحتاج فحصًا",
+    "Large rigid structure with non-biological geometric characteristics detected on or near the seafloor.": "رُصد هيكل صلب كبير بخصائص هندسية غير حيوية على قاع البحر أو بالقرب منه.",
+    "Mark the position and schedule an inspection.": "تعليم الموقع وجدولة فحص.",
+    "Marked for inspection": "مُعلَّم للفحص",
+    "The perpendicular heading also shows a large, rigid, non-biological structure.": "الاتجاه العمودي يُظهر أيضًا هيكلًا كبيرًا صلبًا غير حيوي.",
+    "No change: Man-Made Structure — Potential Hazard — Requires Verification. Decision: Requires Inspection. A second heading adds an observation; it does not identify the wreck.": "لا تغيير: هيكل من صنع الإنسان — خطر محتمل، يحتاج تحققًا. القرار: يحتاج فحصًا. الاتجاه الثاني يضيف رصدًا، ولا يحدد هوية الحطام.",
+    "Marked for inspection — observed on both headings": "مُعلَّم للفحص — رُصد من الاتجاهين",
+    "Compact object on the seafloor": "جسم مدمج على قاع البحر",
+    "Requires Verification": "يحتاج تحققًا",
+    "Detected characteristics are consistent with a potential hazardous man-made object, but the simulation cannot confirm the object's identity.": "الخصائص المرصودة تتسق مع جسم خطِر محتمل من صنع الإنسان، لكن المحاكاة لا تستطيع تأكيد هوية الجسم.",
+    "Do not treat as confirmed. Request further inspection / verification.": "لا يُعامَل على أنه مؤكد. اطلب مزيدًا من الفحص / التحقق.",
+    "Awaiting verification": "بانتظار التحقق",
+    "Both headings show a compact, rigid, non-biological return.": "الاتجاهان يُظهران صدى مدمجًا صلبًا غير حيوي.",
+    "Consistent across two orthogonal passes — identity not confirmed": "متسق عبر تمريرتين متعامدتين — الهوية غير مؤكدة",
+    "Still High Potential Hazard — Requires Verification. The identity is not confirmed; the second pass adds an observation, not certainty.": "لا يزال خطرًا محتملًا مرتفعًا، يحتاج تحققًا. الهوية غير مؤكدة؛ التمريرة الثانية تضيف رصدًا لا يقينًا.",
+    "Verification required": "يحتاج تحققًا",
+    "Unknown Object": "جسم غير معروف",
+    "Unresolved object": "جسم غير محدد",
+    "Detected object contains insufficient evidence for reliable classification.": "الجسم المرصود لا يحمل أدلة كافية لتصنيف موثوق.",
+    "Additional inspection / multi-pass verification.": "فحص إضافي / تحقق بتمريرات متعددة.",
+    "The perpendicular heading does not resolve the shape either.": "الاتجاه العمودي لا يحسم الشكل أيضًا.",
+    "Still inconclusive": "لا يزال غير حاسم",
+    "Remains Unknown — Requires Verification.": "يبقى غير معروف، يحتاج تحققًا.",
+
+    /* reference images */
+    "Reference imagery appears here when a target is detected. It is not a live feed from B01.": "تظهر هنا صورة مرجعية عند رصد هدف. وهي ليست بثًا مباشرًا من B01.",
+    "Reference image: lionfish on a reef. Photograph supplied by the team.": "صورة مرجعية: سمكة أسد على شعاب مرجانية. الصورة مقدمة من الفريق.",
+    "Reference image: synthetic aperture sonar image of an unknown shipwreck off of Nantucket. Image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research.": "صورة مرجعية: صورة سونار ذي فتحة تركيبية لحطام سفينة مجهول قبالة نانتوكيت. الصورة بإذن من ThayerMahan, Inc. وKraken Robotics ومكتب NOAA لاستكشاف المحيطات وأبحاثها.",
+    "Reference image: wreck site on the seabed. Photograph supplied by the team. The marked object is a simulated target, not a photographed hazardous object.": "صورة مرجعية: موقع حطام على قاع البحر. الصورة مقدمة من الفريق. الجسم المُعلَّم هدف محاكى، وليس جسمًا خطِرًا مُصوَّرًا.",
+    "Reference image: coral-covered metal structure. Photograph supplied by the team. The marked object is a simulated target.": "صورة مرجعية: هيكل معدني مغطى بالمرجان. الصورة مقدمة من الفريق. الجسم المُعلَّم هدف محاكى.",
+    "Reference image": "صورة مرجعية",
+    "Close-range view": "منظر قريب",
+    "Pass B — reference image": "التمريرة B — صورة مرجعية",
+    "All positions are simulated.": "جميع المواقع محاكاة.",
+
+    /* phases, status, buttons */
+    "Primary Sweep — Horizontal Pass A": "المسح الأساسي — التمريرة الأفقية A",
+    "Transitioning to Orthogonal Pass": "الانتقال إلى التمريرة المتعامدة",
+    "Crosshatch Sweep — Vertical Pass B": "المسح المتقاطع — التمريرة العمودية B",
+    "Cross-Pass Verification": "التحقق بين التمريرتين",
+    "Mission Complete": "اكتملت المهمة",
+    "Ready": "جاهز",
+    "Target detected — Pass A, line {0}": "رُصد هدف — التمريرة A، الخط {0}",
+    "Analysing characteristics": "تحليل الخصائص",
+    "Classifying": "التصنيف",
+    "Risk assessment": "تقييم الخطورة",
+    "Decision": "القرار",
+    "Alert — target marked": "تنبيه — عُلِّم الهدف",
+    "Cross-Pass Observation — {0}": "رصد بين التمريرتين — {0}",
+    "Comparing evidence — {0}": "مقارنة الأدلة — {0}",
+    "Verification required — {0}": "يحتاج تحققًا — {0}",
+    "Decision unchanged — {0}": "القرار دون تغيير — {0}",
+    "Cross-Pass Verification — {0} of {1} targets on both headings": "التحقق بين التمريرتين — {0} من {1} أهداف من الاتجاهين",
+    "Mission complete": "اكتملت المهمة",
+    "Pause": "إيقاف مؤقت",
+    "Resume": "استئناف",
+    "Full-screen demo": "العرض بملء الشاشة",
+    "Exit full screen": "الخروج من ملء الشاشة",
+
+    /* alert */
+    "Mission complete — see the summary and target log": "اكتملت المهمة — راجع الملخص وسجل الأهداف",
+    "Assessing {0} — alert pending": "تقييم {0} — التنبيه قيد الانتظار",
+    "No active alerts": "لا توجد تنبيهات نشطة",
+    "Alerts": "التنبيهات",
+    "An alert is issued once the target's risk has been assessed.": "يصدر التنبيه بعد تقييم خطورة الهدف.",
+    "All simulated alerts are recorded in the target log.": "جميع تنبيهات المحاكاة مسجلة في سجل الأهداف.",
+    "Simulated alerts appear here when a target has been assessed.": "تظهر تنبيهات المحاكاة هنا بعد تقييم الهدف.",
+    " — second observation (Pass B)": " — الرصد الثاني (التمريرة B)",
+    "Target": "الهدف",
+    "Risk": "الخطورة",
+    "Risk type": "نوع الخطر",
+    "Location (Sim.)": "الموقع (محاكاة)",
+    "Recommended action": "الإجراء الموصى به",
+
+    /* analysis trail */
+    "Target detected": "رُصد هدف",
+    "Detection time (demo clock)": "وقت الرصد (ساعة العرض)",
+    "Detected by": "رُصد بواسطة",
+    "Survey pass / line": "تمريرة / خط المسح",
+    "Pass A (primary) — line {0}": "التمريرة A (الأساسية) — الخط {0}",
+    "B01 heading (Sim.)": "اتجاه B01 (محاكاة)",
+    "Position (Sim.)": "الموقع (محاكاة)",
+    "Depth (Sim.)": "العمق (محاكاة)",
+    "{0} m": "{0} م",
+    "{0} m²": "{0} م²",
+    "Distance from B01 (Sim.)": "المسافة من B01 (محاكاة)",
+    "Bearing from B01 (Sim.)": "السمت من B01 (محاكاة)",
+    "Detected characteristics": "الخصائص المرصودة",
+    "Conceptual": "مفهومي",
+    "Simulation evidence. The background comparison is a conceptual layer, not a trained model.": "أدلة محاكاة. المقارنة بالخلفية طبقة مفهومية، وليست نموذجًا مدرَّبًا.",
+    "Classification": "التصنيف",
+    "Identification": "التعرّف",
+    "Object type": "نوع الجسم",
+    "Simulation certainty": "يقين المحاكاة",
+    "Rule applied: {0}": "القاعدة المطبقة: {0}",
+    "Potential risk is a priority for the operator to review, not confirmed danger.": "الخطورة المحتملة أولوية ليراجعها المشغّل، وليست خطرًا مؤكدًا.",
+    "Alert and marking": "التنبيه والتعليم",
+    "Status": "الحالة",
+    "Marked on the survey map and added to the target log. A second observation follows on Pass B.": "عُلِّم على خريطة المسح وأُضيف إلى سجل الأهداف. ويتبعه رصد ثانٍ في التمريرة B.",
+    "Pass {0} — line {1}, heading {2}": "التمريرة {0} — الخط {1}، الاتجاه {2}",
+    "{0}: first observation": "{0}: الرصد الأول",
+    "{0}: second observation, perpendicular heading": "{0}: الرصد الثاني، باتجاه عمودي",
+    "Evidence comparison": "مقارنة الأدلة",
+    "Decision update": "تحديث القرار",
+    "Same target, same position (Sim.)": "الهدف نفسه، الموقع نفسه (محاكاة)",
+    "Pass B observation (Sim.)": "رصد التمريرة B (محاكاة)",
+    "{0} m abeam, bearing {1}": "{0} م على الجانب، السمت {1}",
+    "Aspect difference between headings": "فرق الزاوية بين الاتجاهين",
+    "Conceptual multi-aspect consensus": "توافق مفهومي متعدد الزوايا",
+    "Decision update:": "تحديث القرار:",
+    "Cross-pass verification": "التحقق بين التمريرتين",
+    "Multi-aspect observation means two survey headings, not every angle. A second pass does not guarantee a correct classification.": "الرصد متعدد الزوايا يعني اتجاهَي مسح، لا كل الزوايا. والتمريرة الثانية لا تضمن تصنيفًا صحيحًا.",
+    "Pass A": "التمريرة A",
+    "Pass B": "التمريرة B",
+    "Δ heading": "فرق الاتجاه",
+    "Result": "النتيجة",
+    "Not observed on Pass B": "لم يُرصد في التمريرة B",
+    "Cross-pass verification — summary": "التحقق بين التمريرتين — ملخص",
+    "{0} of {1} targets observed on both survey headings.": "رُصد {0} من {1} أهداف من اتجاهَي المسح.",
+    "Simulation. Consistent observations keep each decision; they do not confirm an identity. The potential hazardous object still requires verification and the unknown object remains unknown.": "محاكاة. الأرصاد المتسقة تُبقي كل قرار كما هو، ولا تؤكد الهوية. ولا يزال الجسم الخطِر المحتمل يحتاج تحققًا، ويبقى الجسم غير المعروف غير معروف.",
+    "Targets detected": "الأهداف المرصودة",
+    "Marine life": "حياة بحرية",
+    "Shipwreck / man-made": "حطام / من صنع الإنسان",
+    "Potential hazardous object": "جسم خطِر محتمل",
+    "Requires verification": "يحتاج تحققًا",
+    "Targets observed on both headings": "أهداف رُصدت من الاتجاهين",
+    "{0} of {1}": "{0} من {1}",
+    "Route run (Sim.)": "المسار المقطوع (محاكاة)",
+    "{0} m of {1} m": "{0} م من {1} م",
+    "Pass A / transition / Pass B (Sim.)": "التمريرة A / الانتقال / التمريرة B (محاكاة)",
+    "{0} / {1} / {2} m": "{0} / {1} / {2} م",
+    "Unique area coverage (Sim.)": "تغطية المساحة الفريدة (محاكاة)",
+    "{0}% of {1} m²": "{0}% من {1} م²",
+    "Area seen on both headings (Sim.)": "المساحة المرصودة من الاتجاهين (محاكاة)",
+    "Demo time": "زمن العرض",
+    "Every target has been logged with a risk assessment, a decision and a recommended action, and observed a second time from a perpendicular heading. ": "سُجّل كل هدف مع تقييم للخطورة وقرار وإجراء موصى به، ورُصد مرة ثانية من اتجاه عمودي. ",
+    "One target still needs verification.": "لا يزال هدف واحد بحاجة إلى تحقق.",
+    "{0} targets still need verification.": "لا يزال {0} من الأهداف بحاجة إلى تحقق.",
+    "Simulated demonstration values, not field results.": "قيم عرض محاكاة، وليست نتائج ميدانية.",
+    "Start the mission to begin the survey.": "ابدأ المهمة لبدء المسح.",
+    "Transition leg to the start of the perpendicular pass…": "مقطع الانتقال إلى بداية التمريرة العمودية…",
+    "Pass B — running the perpendicular lines; each target will be observed again…": "التمريرة B — تنفيذ الخطوط العمودية؛ وسيُرصد كل هدف مرة أخرى…",
+    "Pass A — scanning the horizontal survey lines for targets…": "التمريرة A — مسح الخطوط الأفقية بحثًا عن أهداف…",
+
+    /* survey information, log and results */
+    "Survey area": "منطقة المسح",
+    "{0} m × {1} m = {2} m²": "{0} م × {1} م = {2} م²",
+    "Pass A — primary, horizontal": "التمريرة A — أساسية، أفقية",
+    "{0} lines at y = {1} m, spacing {2} m": "{0} خطوط عند y = {1} م، بتباعد {2} م",
+    "Pass B — orthogonal, vertical": "التمريرة B — متعامدة، عمودية",
+    "{0} lines at x = {1} m, spacing {2} m": "{0} خطوط عند x = {1} م، بتباعد {2} م",
+    "Estimated sensor swath": "عرض المسح التقديري للمستشعر",
+    "{0} m — simulation parameter": "{0} م — مُعامل محاكاة",
+    "Pass A distance": "مسافة التمريرة A",
+    "{0} m ({1} m legs + {2} m turns)": "{0} م ({1} م مقاطع + {2} م انعطافات)",
+    "Transition leg": "مقطع الانتقال",
+    "Pass B distance": "مسافة التمريرة B",
+    "Planned route": "المسار المخطط",
+    "{0} m = Pass A + transition + Pass B": "{0} م = التمريرة A + الانتقال + التمريرة B",
+    "Same lines, straight connectors": "الخطوط نفسها بوصلات مستقيمة",
+    "{0} + {1} = {2} m, without transition — reference": "{0} + {1} = {2} م، دون مقطع الانتقال — للمرجع",
+    "Targets appear here as they are marked.": "تظهر الأهداف هنا عند تعليمها.",
+    "Comparing…": "مقارنة…",
+    "Pending — Pass B": "بانتظار التمريرة B",
+    "{0} m² ({1} m × {2} m)": "{0} م² ({1} م × {2} م)",
+    "Survey pattern": "نمط المسح",
+    "Two-pass cross-hatch grid: {0} + {1} lines, {2} m apart": "شبكة متقاطعة بتمريرتين: {0} + {1} خطًا، بتباعد {2} م",
+    "Unique area coverage": "تغطية المساحة الفريدة",
+    "{0}% ({1} m²)": "{0}% ({1} م²)",
+    "Area seen on both headings": "المساحة المرصودة من الاتجاهين",
+    "{0} ({1} marine life, {2} shipwreck, {3} potential hazardous object, {4} unknown)": "{0} ({1} حياة بحرية، {2} حطام سفينة، {3} جسم خطِر محتمل، {4} غير معروف)",
+    "Observed on both survey headings": "رُصدت من اتجاهَي المسح"
+  };
 
   /* ================= 2. Targets and decision rules ================= */
 
@@ -420,7 +667,11 @@
 
   var STAGES = ["scanning", "detection", "analysis", "classification", "risk", "decision", "alert", "verification"];
 
+  /* label: English text, or a function that writes it (kept for a language change) */
   function setStatus(label, mode) {
+    state.statusLabel = label;
+    state.statusMode = mode;
+    label = typeof label === "function" ? label() : tx(label);
     if (el.statusLabel.textContent !== label) el.statusLabel.textContent = label;
     el.status.setAttribute("data-state", mode);
   }
@@ -440,9 +691,12 @@
 
   /* ---- observation view (reference imagery, never a live feed) ---- */
 
+  var sceneNow = "idle", chipNow = "Reference image";
+
   function showScene(name) {
+    sceneNow = name;
     el.scenes.forEach(function (s) { s.classList.toggle("is-visible", s.getAttribute("data-scene") === name); });
-    el.credit.textContent = SCENE_CREDITS[name];
+    el.credit.textContent = tx(SCENE_CREDITS[name]);
   }
 
   function setBox(t, classified) {
@@ -456,15 +710,17 @@
     el.box.classList.toggle("is-flip", t.box[1] < 14);
     el.box.classList.toggle("is-right", t.box[0] + t.box[2] > 75);
     el.box.setAttribute("data-level", classified && (state.blocks >= 4 || state.status === "verifying") ? t.level : "");
-    el.boxLabel.textContent = t.name;
+    el.boxLabel.textContent = tx(t.name);
   }
 
   function setCloseup(on, t, label) {
     if (on && t) {
       el.stage.style.transformOrigin = (t.box[0] + t.box[2] / 2) + "% " + (t.box[1] + t.box[3] / 2) + "%";
-      el.chip.textContent = label || "Close-range view";
+      chipNow = label || "Close-range view";
+      el.chip.textContent = tx(chipNow);
     } else {
-      el.chip.textContent = "Reference image";
+      chipNow = "Reference image";
+      el.chip.textContent = tx(chipNow);
     }
     el.stage.classList.toggle("is-closeup", !!on);
   }
@@ -476,23 +732,23 @@
     if (!t) {
       var assessing = state.current && state.status === "detected";
       el.alert.setAttribute("data-kind", "idle");
-      el.alertTitle.textContent = state.status === "complete" ? "Mission complete — see the summary and target log"
-        : assessing ? "Assessing " + state.current.id + " — alert pending" : "No active alerts";
-      el.alertBody.innerHTML = '<div class="demo-alert__idle"><dt class="sr-only">Alerts</dt><dd>' +
-        (assessing ? "An alert is issued once the target's risk has been assessed."
+      el.alertTitle.textContent = state.status === "complete" ? tx("Mission complete — see the summary and target log")
+        : assessing ? tf("Assessing {0} — alert pending", tid(state.current)) : tx("No active alerts");
+      el.alertBody.innerHTML = '<div class="demo-alert__idle"><dt class="sr-only">' + tx("Alerts") + '</dt><dd>' +
+        tx(assessing ? "An alert is issued once the target's risk has been assessed."
           : state.status === "complete" ? "All simulated alerts are recorded in the target log."
           : "Simulated alerts appear here when a target has been assessed.") + "</dd></div>";
       return;
     }
     el.alert.setAttribute("data-kind", t.level);
-    el.alertTitle.textContent = ALERTS[t.level] + (state.status === "verifying" ? " — second observation (Pass B)" : "");
+    el.alertTitle.textContent = tx(ALERTS[t.level]) + (state.status === "verifying" ? tx(" — second observation (Pass B)") : "");
     el.alertBody.innerHTML = [
-      ["Target", t.id],
-      ["Risk", t.risk],
-      ["Risk type", t.riskType],
-      ["Location (Sim.)", fmtLat(t.latlon[0]) + ", " + fmtLon(t.latlon[1])],
-      ["Recommended action", t.action]
-    ].map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
+      ["Target", tid(t)],
+      ["Risk", tx(t.risk)],
+      ["Risk type", tx(t.riskType)],
+      ["Location (Sim.)", fmtLat(t.latlon[0]) + (isAr() ? "، " : ", ") + fmtLon(t.latlon[1])],
+      ["Recommended action", tx(t.action)]
+    ].map(function (r) { return "<div><dt>" + tx(r[0]) + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
   }
 
   /* ---- analysis panel: a decision trail that builds up as the mission runs ---- */
@@ -500,28 +756,28 @@
   var BLOCK_ORDER = ["detect", "evidence", "classify", "risk", "decide", "mark", "verify"];
 
   function section(title, body, cls) {
-    return '<section class="trail__block ' + cls + '"><h4>' + title + "</h4>" + body + "</section>";
+    return '<section class="trail__block ' + cls + '"><h4>' + tx(title) + "</h4>" + body + "</section>";
   }
 
   function kv(rows) {
-    return '<dl class="kv">' + rows.map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("") + "</dl>";
+    return '<dl class="kv">' + rows.map(function (r) { return "<div><dt>" + tx(r[0]) + "</dt><dd>" + r[1] + "</dd></div>"; }).join("") + "</dl>";
   }
 
   var EVIDENCE_STATE = { "Detected": "yes", "Not detected": "no", "Inconclusive": "maybe" };
 
-  function obsLine(o) { return "Pass " + o.pass + " — line " + o.lineId + ", heading " + fmtDeg(o.auvHeadingDeg); }
+  function obsLine(o) { return tf("Pass {0} — line {1}, heading {2}", o.pass, o.lineId, fmtDeg(o.auvHeadingDeg)); }
 
   function blockHtml(key, t, cls) {
     var o = t.obs[0];
     if (key === "detect") {
-      return section("Target detected", '<p class="trail__id">' + t.id + "</p>" + kv([
+      return section("Target detected", '<p class="trail__id">' + tid(t) + "</p>" + kv([
         ["Detection time (demo clock)", o.time],
-        ["Detected by", t.source],
-        ["Survey pass / line", "Pass A (primary) — line " + o.lineId],
+        ["Detected by", tx(t.source)],
+        ["Survey pass / line", tf("Pass A (primary) — line {0}", o.lineId)],
         ["B01 heading (Sim.)", fmtDeg(o.auvHeadingDeg)],
         ["Position (Sim.)", fmtLat(t.latlon[0]) + "<br>" + fmtLon(t.latlon[1])],
-        ["Depth (Sim.)", t.depth + " m"],
-        ["Distance from B01 (Sim.)", Math.round(o.distanceToTargetM) + " m"],
+        ["Depth (Sim.)", tf("{0} m", t.depth)],
+        ["Distance from B01 (Sim.)", tf("{0} m", Math.round(o.distanceToTargetM))],
         ["Bearing from B01 (Sim.)", fmtDeg(o.bearingToTargetDeg)]
       ]), cls);
     }
@@ -529,38 +785,38 @@
       var rows = EVIDENCE.map(function (e) {
         var v = t.evidence[e[0]];
         var state_ = EVIDENCE_STATE[v] || "info";
-        var label = e[0] === "background" ? e[1] + ' <span class="tag tag--concept">Conceptual</span>' : e[1];
-        return '<li><span>' + label + '</span><span class="ev ev--' + state_ + '">' + v + "</span></li>";
+        var label = e[0] === "background" ? tx(e[1]) + ' <span class="tag tag--concept">' + tx("Conceptual") + '</span>' : tx(e[1]);
+        return '<li><span>' + label + '</span><span class="ev ev--' + state_ + '">' + tx(v) + "</span></li>";
       }).join("");
-      return section("Detected characteristics", '<ul class="evidence">' + rows + '</ul><p class="trail__meta">Simulation evidence. The background comparison is a conceptual layer, not a trained model.</p>', cls);
+      return section("Detected characteristics", '<ul class="evidence">' + rows + '</ul><p class="trail__meta">' + tx("Simulation evidence. The background comparison is a conceptual layer, not a trained model.") + '</p>', cls);
     }
     if (key === "classify") {
       return section("Classification", kv([
-        ["Identification", t.name],
-        ["Classification", "<strong>" + t.classification + "</strong>"],
-        ["Object type", t.objectType],
-        ["Simulation certainty", t.certainty]
-      ]) + '<p class="trail__meta">Rule applied: ' + t.ruleText + "</p>", cls);
+        ["Identification", tx(t.name)],
+        ["Classification", "<strong>" + tx(t.classification) + "</strong>"],
+        ["Object type", tx(t.objectType)],
+        ["Simulation certainty", tx(t.certainty)]
+      ]) + '<p class="trail__meta">' + tf("Rule applied: {0}", tx(t.ruleText)) + "</p>", cls);
     }
     if (key === "risk") {
-      return section("Risk assessment", '<p class="trail__decision"><span class="risk risk--' + t.level + '">' + t.risk + "</span></p>" +
-        kv([["Risk type", t.riskType]]) +
-        '<p class="trail__meta">Potential risk is a priority for the operator to review, not confirmed danger.</p>', cls);
+      return section("Risk assessment", '<p class="trail__decision"><span class="risk risk--' + t.level + '">' + tx(t.risk) + "</span></p>" +
+        kv([["Risk type", tx(t.riskType)]]) +
+        '<p class="trail__meta">' + tx("Potential risk is a priority for the operator to review, not confirmed danger.") + '</p>', cls);
     }
     if (key === "decide") {
-      return section("Decision", '<p class="trail__decision"><span class="chip chip--' + t.level + '">' + t.decision + "</span></p>" +
-        '<p class="trail__text">' + t.explanation + "</p>" + kv([["Recommended action", t.action]]), cls);
+      return section("Decision", '<p class="trail__decision"><span class="chip chip--' + t.level + '">' + tx(t.decision) + "</span></p>" +
+        '<p class="trail__text">' + tx(t.explanation) + "</p>" + kv([["Recommended action", tx(t.action)]]), cls);
     }
     if (key === "mark") {
-      return section("Alert and marking", '<p class="trail__text"><strong>' + ALERTS[t.level] + "</strong></p>" +
-        kv([["Status", t.statusNow]]) + '<p class="trail__meta">Marked on the survey map and added to the target log. A second observation follows on Pass B.</p>', cls);
+      return section("Alert and marking", '<p class="trail__text"><strong>' + tx(ALERTS[t.level]) + "</strong></p>" +
+        kv([["Status", tx(t.statusNow)]]) + '<p class="trail__meta">' + tx("Marked on the survey map and added to the target log. A second observation follows on Pass B.") + '</p>', cls);
     }
     var b = t.obs[1] || t.plannedB, x = t.xpass;
     var steps = [
-      [obsLine(o) + ": first observation", 0],
-      [obsLine(b) + ": second observation, perpendicular heading", 1],
-      ["Evidence comparison", 2],
-      ["Decision update", 3]
+      [tf("{0}: first observation", obsLine(o)), 0],
+      [tf("{0}: second observation, perpendicular heading", obsLine(b)), 1],
+      [tx("Evidence comparison"), 2],
+      [tx("Decision update"), 3]
     ].map(function (s) {
       var c = s[1] < state.verifyStep ? "is-done" : s[1] === state.verifyStep ? "is-active" : "";
       return '<li class="' + c + '">' + s[0] + "</li>";
@@ -568,35 +824,35 @@
     var results = "";
     if (state.verifyStep >= 1) {
       results += kv([
-        ["Same target, same position (Sim.)", t.id + " — " + fmtLat(t.latlon[0]) + ", " + fmtLon(t.latlon[1])],
-        ["Pass B observation (Sim.)", Math.round(b.distanceToTargetM) + " m abeam, bearing " + fmtDeg(b.bearingToTargetDeg)],
-        ["Aspect difference between headings", Math.round(Survey.aspectDifference(o.auvHeadingDeg, b.auvHeadingDeg)) + "°"]
+        ["Same target, same position (Sim.)", tid(t) + " — " + fmtLat(t.latlon[0]) + (isAr() ? "، " : ", ") + fmtLon(t.latlon[1])],
+        ["Pass B observation (Sim.)", tf("{0} m abeam, bearing {1}", Math.round(b.distanceToTargetM), fmtDeg(b.bearingToTargetDeg))],
+        ["Aspect difference between headings", ltr(Math.round(Survey.aspectDifference(o.auvHeadingDeg, b.auvHeadingDeg)) + "°")]
       ]);
     }
-    if (state.verifyStep >= 2) results += '<p class="trail__text">' + x.compare + "</p>" + kv([["Conceptual multi-aspect consensus", x.consensus]]);
-    if (state.verifyStep >= 3) results += '<p class="trail__text"><strong>Decision update:</strong> ' + x.update + "</p>";
-    return section('Cross-pass verification <span class="tag tag--concept">Conceptual</span>', '<ol class="inspect-steps">' + steps + "</ol>" + results +
-      '<p class="trail__meta">Multi-aspect observation means two survey headings, not every angle. A second pass does not guarantee a correct classification.</p>', cls);
+    if (state.verifyStep >= 2) results += '<p class="trail__text">' + tx(x.compare) + "</p>" + kv([["Conceptual multi-aspect consensus", tx(x.consensus)]]);
+    if (state.verifyStep >= 3) results += '<p class="trail__text"><strong>' + tx("Decision update:") + '</strong> ' + tx(x.update) + "</p>";
+    return section(tx("Cross-pass verification") + ' <span class="tag tag--concept">' + tx("Conceptual") + '</span>', '<ol class="inspect-steps">' + steps + "</ol>" + results +
+      '<p class="trail__meta">' + tx("Multi-aspect observation means two survey headings, not every angle. A second pass does not guarantee a correct classification.") + '</p>', cls);
   }
 
   function crossTable() {
-    return '<table class="xtable"><thead><tr><th>Target</th><th>Pass A</th><th>Pass B</th><th>Δ heading</th><th>Result</th></tr></thead><tbody>' +
+    return '<table class="xtable"><thead><tr><th>' + ["Target", "Pass A", "Pass B", "Δ heading", "Result"].map(tx).join("</th><th>") + '</th></tr></thead><tbody>' +
       state.marked.map(function (t) {
         var a = t.obs[0], b = t.obs[1];
-        return "<tr><td>" + t.id.replace("Target ", "") + " " + (t.logName || t.name) + "</td>" +
-          "<td>" + a.lineId + " · " + fmtDeg(a.auvHeadingDeg) + "</td>" +
-          "<td>" + (b ? b.lineId + " · " + fmtDeg(b.auvHeadingDeg) : "—") + "</td>" +
-          "<td>" + (b ? Math.round(Survey.aspectDifference(a.auvHeadingDeg, b.auvHeadingDeg)) + "°" : "—") + "</td>" +
-          "<td>" + (t.verified ? t.xpass.consensus : "Not observed on Pass B") + "</td></tr>";
+        return "<tr><td>" + t.id.replace("Target ", "") + " " + tx(t.logName || t.name) + "</td>" +
+          "<td>" + ltr(a.lineId + " · " + fmtDeg(a.auvHeadingDeg)) + "</td>" +
+          "<td>" + (b ? ltr(b.lineId + " · " + fmtDeg(b.auvHeadingDeg)) : "—") + "</td>" +
+          "<td>" + (b ? ltr(Math.round(Survey.aspectDifference(a.auvHeadingDeg, b.auvHeadingDeg)) + "°") : "—") + "</td>" +
+          "<td>" + tx(t.verified ? t.xpass.consensus : "Not observed on Pass B") + "</td></tr>";
       }).join("") + "</tbody></table>";
   }
 
   function crossCount() { return state.marked.filter(function (t) { return t.verified; }).length; }
 
   function reviewHtml() {
-    return '<section class="trail__block is-current is-new"><h4>Cross-pass verification — summary</h4>' +
-      '<p class="trail__text">' + crossCount() + " of " + state.marked.length + " targets observed on both survey headings.</p>" + crossTable() +
-      '<p class="trail__meta">Simulation. Consistent observations keep each decision; they do not confirm an identity. The potential hazardous object still requires verification and the unknown object remains unknown.</p></section>';
+    return '<section class="trail__block is-current is-new"><h4>' + tx("Cross-pass verification — summary") + '</h4>' +
+      '<p class="trail__text">' + tf("{0} of {1} targets observed on both survey headings.", crossCount(), state.marked.length) + "</p>" + crossTable() +
+      '<p class="trail__meta">' + tx("Simulation. Consistent observations keep each decision; they do not confirm an identity. The potential hazardous object still requires verification and the unknown object remains unknown.") + '</p></section>';
   }
 
   function summaryHtml() {
@@ -612,19 +868,19 @@
       ["Potential hazardous object", count(byGroup("mine"))],
       ["Unknown", count(byGroup("unknown"))],
       ["Requires verification", pending]
-    ].map(function (s) { return "<div><strong>" + s[1] + "</strong><span>" + s[0] + "</span></div>"; }).join("");
-    return '<div class="summary trail__block is-new"><h4>Mission complete</h4><div class="summary__grid">' + tiles + "</div>" +
+    ].map(function (s) { return "<div><strong>" + s[1] + "</strong><span>" + tx(s[0]) + "</span></div>"; }).join("");
+    return '<div class="summary trail__block is-new"><h4>' + tx("Mission complete") + '</h4><div class="summary__grid">' + tiles + "</div>" +
       kv([
-        ["Targets observed on both headings", crossCount() + " of " + m.length],
-        ["Route run (Sim.)", fmtNum(state.d) + " m of " + fmtNum(L.total) + " m"],
-        ["Pass A / transition / Pass B (Sim.)", fmtNum(L.A) + " / " + fmtNum(L.T) + " / " + fmtNum(L.B) + " m"],
-        ["Unique area coverage (Sim.)", cov.uniquePct.toFixed(1) + "% of " + fmtNum(grid.total) + " m²"],
+        ["Targets observed on both headings", tf("{0} of {1}", crossCount(), m.length)],
+        ["Route run (Sim.)", tf("{0} m of {1} m", fmtNum(state.d), fmtNum(L.total))],
+        ["Pass A / transition / Pass B (Sim.)", tf("{0} / {1} / {2} m", fmtNum(L.A), fmtNum(L.T), fmtNum(L.B))],
+        ["Unique area coverage (Sim.)", tf("{0}% of {1} m²", cov.uniquePct.toFixed(1), fmtNum(grid.total))],
         ["Area seen on both headings (Sim.)", cov.bothPct.toFixed(1) + "%"],
         ["Demo time", formatTime(state.ms)]
       ]) + crossTable() +
-      '<p class="trail__text">Every target has been logged with a risk assessment, a decision and a recommended action, and observed a second time from a perpendicular heading. ' +
-      (pending === 1 ? "One target still needs" : pending + " targets still need") + " verification.</p>" +
-      '<p class="trail__meta">Simulated demonstration values, not field results.</p></div>';
+      '<p class="trail__text">' + tx("Every target has been logged with a risk assessment, a decision and a recommended action, and observed a second time from a perpendicular heading. ") +
+      (pending === 1 ? tx("One target still needs verification.") : tf("{0} targets still need verification.", pending)) + "</p>" +
+      '<p class="trail__meta">' + tx("Simulated demonstration values, not field results.") + '</p></div>';
   }
 
   function renderAnalysis() {
@@ -637,7 +893,7 @@
         : ph === "T" ? "Transition leg to the start of the perpendicular pass…"
         : ph === "B" ? "Pass B — running the perpendicular lines; each target will be observed again…"
         : "Pass A — scanning the horizontal survey lines for targets…";
-      el.analysis.innerHTML = '<div class="analysis__empty"><p>' + message + "</p></div>";
+      el.analysis.innerHTML = '<div class="analysis__empty"><p>' + tx(message) + "</p></div>";
       state.shownBlocks = 0;
       return;
     }
@@ -656,17 +912,17 @@
   function renderSurveyInfo() {
     var L = route.lengths, A = route.A, B = route.B;
     el.covInfo.innerHTML = [
-      ["Survey area", fmtNum(sc.width) + " m × " + fmtNum(sc.height) + " m = " + fmtNum(sc.width * sc.height) + " m²"],
-      ["Pass A — primary, horizontal", A.count + " lines at y = " + list(A.positions) + " m, spacing " + fmtNum(A.spacing) + " m"],
-      ["Pass B — orthogonal, vertical", B.count + " lines at x = " + list(B.positions) + " m, spacing " + fmtNum(B.spacing) + " m"],
-      ["Estimated sensor swath", CONFIG.swath + " m — simulation parameter"],
-      ["Pass A distance", fmtNum(L.A) + " m (" + fmtNum(L.legsA) + " m legs + " + fmtNum(L.turnsA) + " m turns)"],
-      ["Transition leg", fmtNum(L.T) + " m"],
-      ["Pass B distance", fmtNum(L.B) + " m (" + fmtNum(L.legsB) + " m legs + " + fmtNum(L.turnsB) + " m turns)"],
-      ["Planned route", fmtNum(L.total) + " m = Pass A + transition + Pass B"],
-      ["Same lines, straight connectors", fmtNum(L.straightA) + " + " + fmtNum(L.straightB) + " = " + fmtNum(L.straightA + L.straightB) + " m, without transition — reference"]
-    ].map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
-    el.mapNote.textContent = sc.note;
+      ["Survey area", tf("{0} m × {1} m = {2} m²", fmtNum(sc.width), fmtNum(sc.height), fmtNum(sc.width * sc.height))],
+      ["Pass A — primary, horizontal", tf("{0} lines at y = {1} m, spacing {2} m", A.count, ltr(list(A.positions)), fmtNum(A.spacing))],
+      ["Pass B — orthogonal, vertical", tf("{0} lines at x = {1} m, spacing {2} m", B.count, ltr(list(B.positions)), fmtNum(B.spacing))],
+      ["Estimated sensor swath", tf("{0} m — simulation parameter", CONFIG.swath)],
+      ["Pass A distance", tf("{0} m ({1} m legs + {2} m turns)", fmtNum(L.A), fmtNum(L.legsA), fmtNum(L.turnsA))],
+      ["Transition leg", tf("{0} m", fmtNum(L.T))],
+      ["Pass B distance", tf("{0} m ({1} m legs + {2} m turns)", fmtNum(L.B), fmtNum(L.legsB), fmtNum(L.turnsB))],
+      ["Planned route", tf("{0} m = Pass A + transition + Pass B", fmtNum(L.total))],
+      ["Same lines, straight connectors", tf("{0} + {1} = {2} m, without transition — reference", fmtNum(L.straightA), fmtNum(L.straightB), fmtNum(L.straightA + L.straightB))]
+    ].map(function (r) { return "<div><dt>" + tx(r[0]) + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
+    el.mapNote.textContent = tx(sc.note);
   }
 
   function pct(f) { return (f * 100).toFixed(1) + "%"; }
@@ -678,11 +934,11 @@
     }
     var c = grid.stats();
     var pa = Survey.passProgress(route, "A", state.d), pb = Survey.passProgress(route, "B", state.d);
-    el.covDistance.textContent = fmtNum(state.d) + " m";
+    el.covDistance.textContent = tf("{0} m", fmtNum(state.d));
     el.covPct.textContent = c.uniquePct.toFixed(1) + "%";
     el.covPctB.textContent = c.uniquePct.toFixed(1) + "%";
     el.covBar.style.width = c.uniquePct.toFixed(2) + "%";
-    el.covRemain.textContent = fmtNum(c.remainingArea) + " m²";
+    el.covRemain.textContent = tf("{0} m²", fmtNum(c.remainingArea));
     el.covA.textContent = pct(pa);
     el.covABar.style.width = (pa * 100).toFixed(2) + "%";
     el.covB.textContent = pct(pb);
@@ -697,28 +953,28 @@
   function renderLog() {
     el.count.textContent = state.marked.length;
     if (!state.marked.length) {
-      el.logBody.innerHTML = '<tr class="is-empty"><td colspan="11">Targets appear here as they are marked.</td></tr>';
+      el.logBody.innerHTML = '<tr class="is-empty"><td colspan="11">' + tx("Targets appear here as they are marked.") + '</td></tr>';
       return;
     }
     el.logBody.innerHTML = state.marked.map(function (t) {
       var a = t.obs[0], b = t.obs[1];
-      var obs = '<span class="obs">' + a.lineId + " · " + fmtDeg(a.auvHeadingDeg) + " · " + a.time + "</span>" +
-        (b ? '<span class="obs">' + b.lineId + " · " + fmtDeg(b.auvHeadingDeg) + " · " + b.time + "</span>" : "");
+      var obs = '<span class="obs">' + ltr(a.lineId + " · " + fmtDeg(a.auvHeadingDeg) + " · " + a.time) + "</span>" +
+        (b ? '<span class="obs">' + ltr(b.lineId + " · " + fmtDeg(b.auvHeadingDeg) + " · " + b.time) + "</span>" : "");
       var xp = t.verified
-        ? "Δ " + Math.round(Survey.aspectDifference(a.auvHeadingDeg, b.auvHeadingDeg)) + "° — " + t.xpass.consensus + '<span class="xp">' + t.statusNow + "</span>"
-        : '<span class="xp">' + (b ? "Comparing…" : "Pending — Pass B") + "</span>";
+        ? ltr("Δ " + Math.round(Survey.aspectDifference(a.auvHeadingDeg, b.auvHeadingDeg)) + "°") + " — " + tx(t.xpass.consensus) + '<span class="xp">' + tx(t.statusNow) + "</span>"
+        : '<span class="xp">' + tx(b ? "Comparing…" : "Pending — Pass B") + "</span>";
       return '<tr class="' + (t.key === state.flashKey ? "is-new" : "") + '" data-target="' + t.key + '">' +
         "<td>" + t.id.replace("Target ", "") + "</td>" +
         "<td>" + a.time + "</td>" +
-        "<td>" + (t.logName || t.name) + "</td>" +
-        "<td>" + t.classification + "</td>" +
-        '<td><span class="risk risk--' + t.level + ' risk--small">' + t.risk + "</span></td>" +
-        '<td class="' + (t.level === "safe" ? "" : "is-alert") + '">' + (t.logDecision || t.decision) + "</td>" +
-        "<td>" + t.source + "</td>" +
+        "<td>" + tx(t.logName || t.name) + "</td>" +
+        "<td>" + tx(t.classification) + "</td>" +
+        '<td><span class="risk risk--' + t.level + ' risk--small">' + tx(t.risk) + "</span></td>" +
+        '<td class="' + (t.level === "safe" ? "" : "is-alert") + '">' + tx(t.logDecision || t.decision) + "</td>" +
+        "<td>" + tx(t.source) + "</td>" +
         "<td>" + obs + "</td>" +
         "<td>" + xp + "</td>" +
         "<td>" + fmtLat(t.latlon[0]) + "<br>" + fmtLon(t.latlon[1]) + "</td>" +
-        "<td>" + t.depth + " m</td></tr>";
+        "<td>" + tf("{0} m", t.depth) + "</td></tr>";
     }).join("");
   }
 
@@ -739,7 +995,7 @@
   function updateButtons() {
     el.start.disabled = state.running;
     el.pause.disabled = !state.running;
-    el.pause.textContent = state.paused ? "Resume" : "Pause";
+    el.pause.textContent = tx(state.paused ? "Resume" : "Pause");
   }
 
   /* While paused, freeze every animation too (CSS and SVG). */
@@ -875,7 +1131,7 @@
     state.shownBlocks = 0;
     state.verifyStep = 0;
     state.alert = null;
-    setStatus("Target detected — Pass A, line " + t.obs[0].lineId, "alert");
+    setStatus(function () { return tf("Target detected — Pass A, line {0}", t.obs[0].lineId); }, "alert");
     setStage("detection");
     renderPhase();
     showScene(t.scene);
@@ -944,7 +1200,7 @@
     state.verifyStep = 1;
     state.flashKey = t.key;
     state.alert = t;
-    setStatus("Cross-Pass Observation — " + t.id, "alert");
+    setStatus(function () { return tf("Cross-Pass Observation — {0}", tid(t)); }, "alert");
     setStage("verification");
     renderPhase();
     clearMarkerFocus();
@@ -960,7 +1216,8 @@
 
   function crossCompare() {
     state.verifyStep = 2;
-    setStatus("Comparing evidence — " + state.current.id, "alert");
+    var tc = state.current;
+    setStatus(function () { return tf("Comparing evidence — {0}", tid(tc)); }, "alert");
     renderAnalysis();
   }
 
@@ -970,7 +1227,7 @@
     t.verified = true;
     t.statusNow = t.xpass.status;
     if (t.markerEl) t.markerEl.classList.add("is-crosschecked");
-    setStatus(t.decision === "Requires Verification" ? "Verification required — " + t.id : "Decision unchanged — " + t.id, "alert");
+    setStatus(function () { return tf(t.decision === "Requires Verification" ? "Verification required — {0}" : "Decision unchanged — {0}", tid(t)); }, "alert");
     renderAlert();
     renderLog();
     renderCoverage();
@@ -982,7 +1239,8 @@
     state.current = null;
     state.alert = null;
     state.flashKey = null;
-    setStatus("Cross-Pass Verification — " + crossCount() + " of " + state.marked.length + " targets on both headings", "alert");
+    var nx = crossCount(), nm = state.marked.length;
+    setStatus(function () { return tf("Cross-Pass Verification — {0} of {1} targets on both headings", nx, nm); }, "alert");
     setStage("verification");
     showScene("idle");
     setBox(null);
@@ -1123,16 +1381,16 @@
     var both = TARGETS.filter(function (tg) { return observations[tg.key].length === 2; }).length;
     var verify = TARGETS.filter(function (tg) { return tg.decision === "Requires Verification"; }).length;
     box.innerHTML = [
-      ["Survey area", fmtNum(area.width * area.height) + " m² (" + fmtNum(area.width) + " m × " + fmtNum(area.height) + " m)"],
-      ["Survey pattern", "Two-pass cross-hatch grid: " + r.A.count + " + " + r.B.count + " lines, " + fmtNum(r.A.spacing) + " m apart"],
-      ["Planned route", fmtNum(r.lengths.total) + " m"],
-      ["Unique area coverage", cov.uniquePct.toFixed(1) + "% (" + fmtNum(cov.uniqueArea) + " m²)"],
+      ["Survey area", tf("{0} m² ({1} m × {2} m)", fmtNum(area.width * area.height), fmtNum(area.width), fmtNum(area.height))],
+      ["Survey pattern", tf("Two-pass cross-hatch grid: {0} + {1} lines, {2} m apart", r.A.count, r.B.count, fmtNum(r.A.spacing))],
+      ["Planned route", tf("{0} m", fmtNum(r.lengths.total))],
+      ["Unique area coverage", tf("{0}% ({1} m²)", cov.uniquePct.toFixed(1), fmtNum(cov.uniqueArea))],
       ["Area seen on both headings", cov.bothPct.toFixed(1) + "%"],
-      ["Targets detected", TARGETS.length + " (" + count("life") + " marine life, " + count("structure") + " shipwreck, " +
-        count("mine") + " potential hazardous object, " + count("unknown") + " unknown)"],
-      ["Observed on both survey headings", both + " of " + TARGETS.length],
+      ["Targets detected", tf("{0} ({1} marine life, {2} shipwreck, {3} potential hazardous object, {4} unknown)",
+        TARGETS.length, count("life"), count("structure"), count("mine"), count("unknown"))],
+      ["Observed on both survey headings", tf("{0} of {1}", both, TARGETS.length)],
       ["Requires verification", String(verify)]
-    ].map(function (row) { return "<div><dt>" + row[0] + "</dt><dd>" + row[1] + "</dd></div>"; }).join("");
+    ].map(function (row) { return "<div><dt>" + tx(row[0]) + "</dt><dd>" + row[1] + "</dd></div>"; }).join("");
   }
 
   /* --- full-screen demo: a clean layout for screen recording --- */
@@ -1141,8 +1399,26 @@
     demo.classList.toggle("is-recording", on);
     document.body.classList.toggle("demo-locked", on);
     el.full.setAttribute("aria-pressed", String(on));
-    el.full.textContent = on ? "Exit full screen" : "Full-screen demo";
+    el.full.textContent = tx(on ? "Exit full screen" : "Full-screen demo");
   }
+
+  /* language change (js/i18n.js): write the live text again, without replaying animations */
+  function relabel() {
+    setStatus(state.statusLabel || "Ready", state.statusMode || "idle");
+    updateButtons();
+    el.full.textContent = tx(demo.classList.contains("is-recording") ? "Exit full screen" : "Full-screen demo");
+    showScene(sceneNow);
+    el.chip.textContent = tx(chipNow);
+    if (state.current && !el.box.hidden) el.boxLabel.textContent = tx(state.current.name);
+    state.shownBlocks = state.blocks;
+    renderAlert();
+    renderAnalysis();
+    renderLog();
+    renderSurveyInfo();
+    renderCoverage();
+    renderResults();
+  }
+  document.addEventListener("sitelang", relabel);
 
   el.start.addEventListener("click", start);
   el.pause.addEventListener("click", function () { if (state.paused) resume(); else pause(); });
