@@ -1,0 +1,103 @@
+/* USV B01 project site — the language switch (English / Arabic) and the
+   right-to-left layout used for Arabic. Loaded after the other style sheets:
+   everything for Arabic is scoped to :root[lang="ar"] or [dir="rtl"], so the
+   English page is unchanged apart from the switch itself. */
+
+/* ---------- the switch in the header ---------- */
+
+.lang-btn {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--sheet);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.lang-btn:hover { background: var(--sea-soft); }
+@media (min-width: 940px) { .site-nav { margin-inline-start: auto; } }
+@media (max-width: 939.98px) { .lang-btn { margin-inline-start: auto; } }
+
+/* A returning Arabic reader: the page stays hidden until the Arabic text is
+   in (js/i18n.js), at most 1.5 s (the inline script in <head>). */
+.i18n-wait body { visibility: hidden; }
+
+/* ---------- Arabic typography ---------- */
+
+/* Arabic uses the system's Arabic typefaces; names written in Latin letters
+   (USV B01, the English switch label) keep the site's own fonts. */
+:root[lang="ar"] {
+  --font-ui: "Segoe UI", Tahoma, "Geeza Pro", "Noto Sans Arabic", Arial, sans-serif;
+  --font-prose: "Segoe UI", Tahoma, "Geeza Pro", "Noto Naskh Arabic", "Noto Sans Arabic", Arial, sans-serif;
+}
+:root[lang="ar"] [lang="en"] {
+  --font-ui: "Archivo", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-prose: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-family: var(--font-ui);
+}
+:root[lang="ar"] .prose p,
+:root[lang="ar"] .section__head p,
+:root[lang="ar"] .card p { line-height: 1.8; }
+:root[lang="ar"] .trail__block h4 { letter-spacing: 0; }
+
+/* The hero already carries the Arabic name and introduction under the English
+   ones; in Arabic they take the English lines' place. */
+:root[lang="ar"] .hero__sub:not(.hero__sub--ar),
+:root[lang="ar"] .hero .lead:not(.lead--ar) { display: none; }
+:root[lang="ar"] .hero__sub--ar { margin-top: var(--space-4); font-size: clamp(1.3rem, 1rem + 1.2vw, 1.85rem); }
+:root[lang="ar"] .hero .lead--ar { margin-top: var(--space-5); }
+
+/* ---------- right to left ---------- */
+
+[dir="rtl"] .skip-link { left: auto; right: var(--space-3); }
+[dir="rtl"] .results__concept { padding-left: 0; padding-right: 1.2em; }
+
+[dir="rtl"] .facts-strip dl > div { padding: var(--space-5) 0 var(--space-5) var(--space-5); }
+@media (min-width: 720px) {
+  [dir="rtl"] .facts-strip dl > div + div { padding-right: var(--space-5); border-left: 0; border-right: 1px solid var(--line); }
+}
+
+/* the chevron between flow cards points the reading way */
+@media (min-width: 960px) {
+  [dir="rtl"] .flow li:not(:nth-child(3n))::after {
+    right: auto;
+    left: calc(-1 * var(--space-5) / 2 - 5px);
+    transform: translateY(-50%) rotate(-135deg);
+  }
+}
+
+[dir="rtl"] .sheet__strip > span:first-child { border-right: 0; border-left: 1px solid var(--ink); }
+[dir="rtl"] .segmented label + label span { border-left: 0; border-right: 1px solid var(--line-strong); }
+[dir="rtl"] .sheet__info dd,
+[dir="rtl"] .explain__result dd,
+[dir="rtl"] .kv dd,
+[dir="rtl"] .coverage__info dd { text-align: left; }
+[dir="rtl"] .explain__table th, [dir="rtl"] .explain__table td { padding: 8px 0 8px 12px; text-align: right; }
+[dir="rtl"] .log-table th, [dir="rtl"] .log-table td { padding: 9px 0 9px 12px; text-align: right; }
+[dir="rtl"] .xtable th, [dir="rtl"] .xtable td { padding: 5px 0 5px 6px; text-align: right; }
+
+[dir="rtl"] .trail__block { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-left: 0; border-right: 3px solid var(--line); }
+[dir="rtl"] .trail__block.is-current { border-right-color: var(--hull); }
+[dir="rtl"] .summary { border-right-color: var(--sea); }
+[dir="rtl"] .trail__block h4 .tag { margin-left: 0; margin-right: 4px; }
+[dir="rtl"] .inspect-steps li { padding-left: 0; padding-right: 26px; }
+[dir="rtl"] .inspect-steps li::before { left: auto; right: 0; }
+
+[dir="rtl"] .demo-alert { border-left: 0; border-right: 6px solid var(--line-strong); }
+[dir="rtl"] .demo-alert[data-kind="safe"] { border-right-color: var(--risk-safe); }
+[dir="rtl"] .demo-alert[data-kind="hazard"] { border-right-color: var(--risk-hazard); }
+[dir="rtl"] .demo-alert[data-kind="high"] { border-right-color: var(--risk-high); }
+[dir="rtl"] .demo-alert[data-kind="unknown"] { border-right-color: var(--risk-unknown); }
+
+/* the detection timeline keeps time running left to right */
+[dir="rtl"] .timeline { direction: ltr; }
+
+/* Drawings keep their geometry. In the depth diagram the Arabic labels read
+   right to left and stay anchored at the same points as the English ones. */
+[dir="rtl"] svg { direction: ltr; }
+[dir="rtl"] .depth svg text { direction: rtl; }
+[dir="rtl"] .depth svg g[text-anchor="end"] > text { text-anchor: start; }
+[dir="rtl"] .depth svg > text:not([text-anchor]),
+[dir="rtl"] .depth svg g:not([text-anchor]) > text { text-anchor: end; }

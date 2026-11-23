@@ -11,29 +11,31 @@
 <link rel="stylesheet" href="css/base.css?v=20261118">
 <link rel="stylesheet" href="css/components.css?v=20261118">
 <link rel="stylesheet" href="css/demo.css?v=20261118">
-<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="css/i18n.css?v=20261123">
+<script>document.documentElement.classList.add("js");try{if(localStorage.getItem("usvb01.lang")==="ar"){var h=document.documentElement;h.lang="ar";h.dir="rtl";h.classList.add("i18n-wait");setTimeout(function(){h.classList.remove("i18n-wait");},1500);}}catch(e){}</script>
 </head>
 <body id="top">
 
-<a class="skip-link" href="#main">Skip to content</a>
+<a data-i18n="skip" class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="brand" href="#home" aria-label="USV B01, back to top">
-      <span class="brand__mark">USV B01</span>
-      <span class="brand__name">Unmanned Surface Vehicle</span>
+    <a class="brand" href="#home" data-i18n-aria="brand.aria" aria-label="USV B01, back to top">
+      <span class="brand__mark" lang="en">USV B01</span>
+      <span class="brand__name" data-i18n="brand.name">Unmanned Surface Vehicle</span>
     </a>
-    <nav class="site-nav" id="site-nav" aria-label="Main">
+    <nav class="site-nav" id="site-nav" data-i18n-aria="nav.aria" aria-label="Main">
       <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About USV B01</a></li>
-        <li><a href="#how">How It Works</a></li>
-        <li><a href="#design">B01 Design</a></li>
-        <li><a href="#demo">Interactive Demo</a></li>
-        <li><a href="#results">Results</a></li>
+        <li><a href="#home" data-i18n="nav.home">Home</a></li>
+        <li><a href="#about" data-i18n="nav.about">About USV B01</a></li>
+        <li><a href="#how" data-i18n="nav.how">How It Works</a></li>
+        <li><a href="#design" data-i18n="nav.design">B01 Design</a></li>
+        <li><a href="#demo" data-i18n="nav.demo">Interactive Demo</a></li>
+        <li><a href="#results" data-i18n="nav.results">Results</a></li>
       </ul>
     </nav>
-    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <button class="lang-btn" type="button" id="lang-btn" lang="ar">العربية</button>
+    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="site-nav" data-i18n="menu">Menu</button>
   </div>
 </header>
 
@@ -43,19 +45,19 @@
   <section class="hero" id="home" aria-labelledby="hero-title">
     <div class="container hero__grid">
       <div>
-        <h1 id="hero-title">USV B01</h1>
+        <h1 id="hero-title" lang="en">USV B01</h1>
         <p class="hero__sub">Autonomous Unmanned Surface Vehicle (USV)</p>
         <p class="hero__sub hero__sub--ar" lang="ar" dir="rtl">المركبة السطحية غير المأهولة B01</p>
         <p class="lead">B01 is an autonomous surface vehicle concept designed to survey maritime environments, detect underwater objects and near-surface hazards, assess potential risks, and provide explainable, risk-prioritized information to support maritime safety and inspection decisions. It surveys the area autonomously in a cross-hatch grid and is designed to support detection of underwater objects and hazards with multibeam and side-scan sonar, without putting crews in danger.</p>
         <p class="lead lead--ar" lang="ar" dir="rtl">B01 مركبة سطحية ذاتية التشغيل في مرحلة المفهوم، صُمِّمت لمسح البيئات البحرية، وكشف الأجسام تحت الماء والمخاطر القريبة من السطح، وتقييم المخاطر المحتملة، وتقديم معلومات قابلة للتفسير ومرتّبة حسب الخطورة لدعم قرارات السلامة البحرية والفحص. تمسح المنطقة ذاتيًا بمسحٍ شبكي متقاطع، وهي مصمَّمة لدعم كشف الأجسام والمخاطر تحت الماء بالسونار متعدد الحزم وسونار المسح الجانبي، دون تعريض الأرواح للخطر.</p>
-        <p class="hero__status"><strong>Implemented:</strong> the software simulation on this site. <strong>Proposed:</strong> the B01 vessel and its sensors, computing, links, power and propulsion, not yet built or tested.</p>
+        <p data-i18n="hero.status" class="hero__status"><strong>Implemented:</strong> the software simulation on this site. <strong>Proposed:</strong> the B01 vessel and its sensors, computing, links, power and propulsion, not yet built or tested.</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="#demo">Try the interactive demo</a>
-          <a class="btn" href="#about">About the project</a>
+          <a data-i18n="hero.btn1" class="btn btn--primary" href="#demo">Try the interactive demo</a>
+          <a data-i18n="hero.btn2" class="btn" href="#about">About the project</a>
         </div>
       </div>
       <figure class="hero__figure">
-        <img src="assets/images/b01-render.jpg" width="1408" height="768"
+        <img data-i18n-alt="img.render" src="assets/images/b01-render.jpg" width="1408" height="768"
              alt="USV B01, the team's design render: a dark blue, faceted, ultra-low-profile hull at the water surface with a short mast carrying sensors. A cutaway window shows the internal equipment bay; the hull carries the Saudi national emblem and the marking B01.">
       </figure>
     </div>
@@ -64,9 +66,9 @@
   <div class="facts-strip">
     <div class="container">
       <dl>
-        <div><dt>Survey depth band</dt><dd>Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</dd></div>
-        <div><dt>Sensing</dt><dd>Multibeam and side-scan sonar and water-column profiling, with SVP sound-speed correction, RTK GNSS, IMU, an EO/IR camera and radar + AIS (proposed)</dd></div>
-        <div><dt>Output</dt><dd>Risk-assessed targets with an explained decision and a recommended action</dd></div>
+        <div><dt data-i18n="facts.dt1">Survey depth band</dt><dd data-i18n="facts.dd1">Approximately 0–60 m (proposed). Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</dd></div>
+        <div><dt data-i18n="facts.dt2">Sensing</dt><dd data-i18n="facts.dd2">Multibeam and side-scan sonar and water-column profiling, with SVP sound-speed correction, RTK GNSS, IMU, an EO/IR camera and radar + AIS (proposed)</dd></div>
+        <div><dt data-i18n="facts.dt3">Output</dt><dd data-i18n="facts.dd3">Risk-assessed targets with an explained decision and a recommended action</dd></div>
       </dl>
     </div>
   </div>
@@ -75,38 +77,38 @@
   <section class="section" id="about" aria-labelledby="about-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="about-title">About USV B01</h2>
-        <p>B01 is an autonomous surface vehicle concept designed to survey maritime environments, detect underwater objects and near-surface hazards, assess potential risks, and provide explainable, risk-prioritized information to support maritime safety and inspection decisions. It is based on the team's own B01 hull design and works at the water surface: it surveys an area autonomously, explains each decision and tells the operator which targets to inspect first, without putting people in danger.</p>
+        <h2 data-i18n="about.h2" id="about-title">About USV B01</h2>
+        <p data-i18n="about.intro">B01 is an autonomous surface vehicle concept designed to survey maritime environments, detect underwater objects and near-surface hazards, assess potential risks, and provide explainable, risk-prioritized information to support maritime safety and inspection decisions. It is based on the team's own B01 hull design and works at the water surface: it surveys an area autonomously, explains each decision and tells the operator which targets to inspect first, without putting people in danger.</p>
       </div>
 
       <div class="about-grid">
         <div>
-          <h3>The problem</h3>
+          <h3 data-i18n="about.h3a">The problem</h3>
           <div class="prose">
-            <p>Traditional maritime surveys and mine-hunting operations rely on large, crewed vessels. They put personnel at risk and cost a great deal to run, and in shallow coastal waters they raise many false alarms: marine life, natural features, wrecks, debris and old ordnance lie side by side, and most of these objects are not hazards.</p>
-            <p>Different sensing methods provide different types of information about underwater targets. Acoustic sensing can remain useful in poor visibility, while target interpretation still requires analysis of multiple characteristics. No single sensing source answers the question “what is this object, and is it a hazard?” on its own.</p>
+            <p data-i18n="about.p1">Traditional maritime surveys and mine-hunting operations rely on large, crewed vessels. They put personnel at risk and cost a great deal to run, and in shallow coastal waters they raise many false alarms: marine life, natural features, wrecks, debris and old ordnance lie side by side, and most of these objects are not hazards.</p>
+            <p data-i18n="about.p2">Different sensing methods provide different types of information about underwater targets. Acoustic sensing can remain useful in poor visibility, while target interpretation still requires analysis of multiple characteristics. No single sensing source answers the question “what is this object, and is it a hazard?” on its own.</p>
           </div>
-          <h3>What the system does</h3>
+          <h3 data-i18n="about.h3b">What the system does</h3>
           <div class="prose">
-            <p>USV B01 surveys the area autonomously with a grid (cross-hatch) method: a complete set of parallel survey lines, then a second complete set at right angles over the same area. Hull-mounted multibeam and side-scan sonar and water-column profiling look for underwater targets, and a sound velocity profiler (SVP) measures the sound-speed profile used to correct the acoustic measurements; RTK GNSS and the IMU give each target its position, while the navigation radar, AIS and an EO/IR camera watch the surface. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
-            <p>Targets are marked on the survey map, and only encrypted, risk-prioritized alerts are sent to the operator over RF (UHF), 4G and satellite links (proposed).</p>
+            <p data-i18n="about.p3">USV B01 surveys the area autonomously with a grid (cross-hatch) method: a complete set of parallel survey lines, then a second complete set at right angles over the same area. Hull-mounted multibeam and side-scan sonar and water-column profiling look for underwater targets, and a sound velocity profiler (SVP) measures the sound-speed profile used to correct the acoustic measurements; RTK GNSS and the IMU give each target its position, while the navigation radar, AIS and an EO/IR camera watch the surface. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
+            <p data-i18n="about.p4">Targets are marked on the survey map, and only encrypted, risk-prioritized alerts are sent to the operator over RF (UHF), 4G and satellite links (proposed).</p>
           </div>
         </div>
         <figure class="figure">
-          <img src="assets/images/reference-wreck-propeller.jpg" width="1000" height="664" loading="lazy"
+          <img data-i18n-alt="img.wreck" src="assets/images/reference-wreck-propeller.jpg" width="1000" height="664" loading="lazy"
                alt="Underwater photograph of a large ship propeller and hull structure lying on the seabed.">
-          <figcaption>A wreck site on the seabed: the kind of object USV B01 is meant to find, assess and flag. Reference photograph.</figcaption>
+          <figcaption data-i18n="about.figcap">A wreck site on the seabed: the kind of object USV B01 is meant to find, assess and flag. Reference photograph.</figcaption>
         </figure>
       </div>
 
-      <h3 class="subhead">Survey environment</h3>
+      <h3 data-i18n="env.h3" class="subhead">Survey environment</h3>
       <div class="prose">
-        <p>B01 works at the water surface, and its sonar looks down through the water column to the seabed. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</p>
+        <p data-i18n="env.p">B01 works at the water surface, and its sonar looks down through the water column to the seabed. Proposed survey depth: approximately 0–60 m. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</p>
       </div>
       <figure class="figure depth mt-6">
         <svg viewBox="0 0 760 380" role="img" aria-labelledby="depth-title depth-desc">
-          <title id="depth-title">Conceptual target water depth (TBD)</title>
-          <desc id="depth-desc">A conceptual water column diagram, not to scale. B01 sits at the water surface above the water column and the seabed. The highlighted band is the conceptual target water depth, to be determined (TBD); it is not a sensor range or a tested rating.</desc>
+          <title data-i18n="dg.title" id="depth-title">Proposed survey depth, approximately 0–60 m (concept)</title>
+          <desc data-i18n="dg.desc" id="depth-desc">A water column diagram from the surface to 60 m. B01 sits at the water surface; the highlighted band is the proposed survey depth, approximately 0–60 m. It is a concept target, not a sensor range or a tested rating.</desc>
           <defs>
             <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#e8f4f8"/>
@@ -141,21 +143,26 @@
             <line x1="90" y1="50" x2="90" y2="330"/>
           </g>
           <g font-size="15" text-anchor="end">
-            <text x="72" y="55">0 m</text>
-            <text x="72" y="335">Seabed</text>
+            <text x="72" y="55" data-i18n="dg.t0">0 m</text>
+            <text x="72" y="101.7" data-i18n="dg.t10">10 m</text>
+            <text x="72" y="148.3" data-i18n="dg.t20">20 m</text>
+            <text x="72" y="195" data-i18n="dg.t30">30 m</text>
+            <text x="72" y="241.7" data-i18n="dg.t40">40 m</text>
+            <text x="72" y="288.3" data-i18n="dg.t50">50 m</text>
+            <text x="72" y="335" data-i18n="dg.t60">60 m</text>
           </g>
           <g font-size="14" font-weight="700" text-anchor="end" class="depth__range">
-            <text x="732" y="322">Not a sensor range or a tested rating</text>
+            <text x="732" y="322" data-i18n="dg.note">Not a sensor range or a tested rating</text>
           </g>
-          <text x="90" y="30" font-size="15" class="depth__muted">Water surface</text>
+          <text x="90" y="30" font-size="15" class="depth__muted" data-i18n="dg.surface">Water surface</text>
           <g aria-hidden="true">
             <line x1="671" y1="40" x2="671" y2="27" stroke="#0c2233" stroke-width="2"/>
             <polygon points="622,49 637,40 705,40 721,49 709,57 634,57" fill="#1d4a66" stroke="#0c2233" stroke-width="1.2"/>
             <text x="683" y="30" font-size="13" font-weight="700">B01</text>
           </g>
-          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual target water depth (TBD)</text>
+          <text x="415" y="198" data-i18n="dg.center" font-size="24" font-weight="700" text-anchor="middle">Proposed survey depth: approx. 0–60 m</text>
         </svg>
-        <figcaption>B01 works at the water surface; the highlighted band is a conceptual target water depth (TBD), not a sensor range or a tested rating. Illustration, not to scale.</figcaption>
+        <figcaption data-i18n="dg.cap">B01 works at the water surface; the highlighted band is the proposed survey depth, approximately 0–60 m. A concept target, not a sensor range or a tested rating.</figcaption>
       </figure>
     </div>
   </section>
@@ -164,70 +171,70 @@
   <section class="section section--white" id="how" aria-labelledby="how-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="how-title">How it works</h2>
-        <p>From the water to the operator: USV B01 senses the area below it, detects targets, classifies them, assesses their potential risk, explains each decision and recommends an action.</p>
+        <h2 data-i18n="how.h2" id="how-title">How it works</h2>
+        <p data-i18n="how.intro">From the water to the operator: USV B01 senses the area below it, detects targets, classifies them, assesses their potential risk, explains each decision and recommends an action.</p>
       </div>
 
       <ol class="flow flow--end">
-        <li><h3>Underwater Environment</h3><p>The water column and seabed below B01. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</p></li>
-        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam and side-scan sonar and water-column profiling, with SVP sound-speed correction, positioned with RTK GNSS and an IMU.</p></li>
-        <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
-        <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
-        <li><h3>Object Classification</h3><p>Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
-        <li><h3>Risk Assessment</h3><p>Likely non-hazardous, potential hazard, high potential hazard or unknown; every level except likely non-hazardous requires verification.</p></li>
-        <li><h3>Risk Type Identification</h3><p>For example navigation / obstruction risk or potential explosive hazard.</p></li>
-        <li><h3>Explainable Decision</h3><p>A decision together with the evidence and the rule that led to it.</p></li>
-        <li><h3>Target Marking</h3><p>The target is marked at its position on the survey map.</p></li>
-        <li><h3>Recommended Action</h3><p>Continue the survey, inspect the target, or verify it.</p></li>
-        <li><h3>Local Data Storage</h3><p>Target records and raw sensor data are stored on board, on SSD.</p></li>
-        <li><h3>Data Transfer / Operator System</h3><p>Encrypted, risk-prioritized alert packets reach the operator over RF (UHF), 4G and satellite links (proposed).</p></li>
+        <li><h3 data-i18n="f1.h">Underwater Environment</h3><p data-i18n="f1.p">The water column and seabed below B01. Proposed survey depth: approximately 0–60 m. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</p></li>
+        <li><h3 data-i18n="f2.h">Sensor / Acoustic Data</h3><p data-i18n="f2.p">Multibeam and side-scan sonar and water-column profiling, with SVP sound-speed correction, positioned with RTK GNSS and an IMU.</p></li>
+        <li><h3 data-i18n="f3.h">Target Detection</h3><p data-i18n="f3.p">Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
+        <li><h3 data-i18n="f4.h">Target Feature Analysis</h3><p data-i18n="f4.p">Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
+        <li><h3 data-i18n="f5.h">Object Classification</h3><p data-i18n="f5.p">Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
+        <li><h3 data-i18n="f6.h">Risk Assessment</h3><p data-i18n="f6.p">Likely non-hazardous, potential hazard, high potential hazard or unknown; every level except likely non-hazardous requires verification.</p></li>
+        <li><h3 data-i18n="f7.h">Risk Type Identification</h3><p data-i18n="f7.p">For example navigation / obstruction risk or potential explosive hazard.</p></li>
+        <li><h3 data-i18n="f8.h">Explainable Decision</h3><p data-i18n="f8.p">A decision together with the evidence and the rule that led to it.</p></li>
+        <li><h3 data-i18n="f9.h">Target Marking</h3><p data-i18n="f9.p">The target is marked at its position on the survey map.</p></li>
+        <li><h3 data-i18n="f10.h">Recommended Action</h3><p data-i18n="f10.p">Continue the survey, inspect the target, or verify it.</p></li>
+        <li><h3 data-i18n="f11.h">Local Data Storage</h3><p data-i18n="f11.p">Target records and raw sensor data are stored on board, on SSD.</p></li>
+        <li><h3 data-i18n="f12.h">Data Transfer / Operator System</h3><p data-i18n="f12.p">Encrypted, risk-prioritized alert packets reach the operator over RF (UHF), 4G and satellite links (proposed).</p></li>
       </ol>
 
-      <h3 class="subhead">Sensors, computing, communication and power <span class="tag tag--concept">Proposed</span></h3>
-      <h4 class="sensor-group">Underwater sensing</h4>
+      <h3 data-i18n="sens.h3" class="subhead">Sensors, computing, communication and power <span class="tag tag--concept">Proposed</span></h3>
+      <h4 data-i18n="sens.g1" class="sensor-group">Underwater sensing</h4>
       <div class="cards-4">
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 20M12 3l3.5 17M12 3l8 17M12 3 8.5 20M4 20h16"/></svg>
-          <h3>Multibeam Sonar (MBES)</h3>
-          <p>Hull-mounted multibeam transducers: seabed mapping, bathymetry and acoustic target detection.</p>
+          <h3 data-i18n="c.mbes.h">Multibeam Sonar (MBES)</h3>
+          <p data-i18n="c.mbes.p">Hull-mounted multibeam transducers: seabed mapping, bathymetry and acoustic target detection.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7h8M12 7v3M12 10 3 20M12 10l-4.5 10M12 10l9 10M12 10l4.5 10"/></svg>
-          <h3>Side-Scan Sonar (SSS)</h3>
-          <p>High-resolution images of the seafloor on both sides of the track, showing the shape and acoustic shadow of objects.</p>
+          <h3 data-i18n="c.sss.h">Side-Scan Sonar (SSS)</h3>
+          <p data-i18n="c.sss.p">High-resolution images of the seafloor on both sides of the track, showing the shape and acoustic shadow of objects.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9c4-3 12-3 16 0M4 14c4-3 12-3 16 0M4 19c4-3 12-3 16 0M12 3v0"/></svg>
-          <h3>Water-Column Profiling</h3>
-          <p>Acoustic returns between the surface and the seabed, used to detect potential targets in the water column.</p>
+          <h3 data-i18n="c.wc.h">Water-Column Profiling</h3>
+          <p data-i18n="c.wc.p">Acoustic returns between the surface and the seabed, used to detect potential targets in the water column.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v18M6 21h4M14 4c2.5 2.5-2.5 5 0 7.5s-2.5 5 0 7.5"/></svg>
-          <h3>Sound Velocity Profiler (SVP)</h3>
-          <p>Measures the sound-speed profile of the water column, used to correct the acoustic measurements (sonar ranges and depths). It does not detect targets itself.</p>
+          <h3 data-i18n="c.svp.h">Sound Velocity Profiler (SVP)</h3>
+          <p data-i18n="c.svp.p">Measures the sound-speed profile of the water column, used to correct the acoustic measurements (sonar ranges and depths). It does not detect targets itself.</p>
         </div>
       </div>
-      <h4 class="sensor-group">Navigation and surface awareness</h4>
+      <h4 data-i18n="sens.g2" class="sensor-group">Navigation and surface awareness</h4>
       <div class="cards-4">
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
-          <h3>RTK GNSS</h3>
-          <p>Precise position of the vessel, used to record the location of each target.</p>
+          <h3 data-i18n="c.gnss.h">RTK GNSS</h3>
+          <p data-i18n="c.gnss.p">Precise position of the vessel, used to record the location of each target.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13V4m0 0-2.5 2.5M12 4l2.5 2.5M12 13l7.5 4.5m0 0-3.4.4m3.4-.4-1.2-3.2M12 13l-7.5 4.5m0 0 3.4.4m-3.4-.4 1.2-3.2"/></svg>
-          <h3>IMU</h3>
-          <p>Roll, pitch, heave and heading of the vessel, used to correct the sonar data for the vessel's motion.</p>
+          <h3 data-i18n="c.imu.h">IMU</h3>
+          <p data-i18n="c.imu.p">Roll, pitch, heave and heading of the vessel, used to correct the sonar data for the vessel's motion.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10M12 4v3"/><circle cx="12" cy="13" r="6"/><circle cx="12" cy="13" r="2.5"/></svg>
-          <h3>EO/IR Thermal Gimbal Camera</h3>
-          <p>Electro-optical and infrared camera on a stabilised gimbal, for surface objects and thermal anomalies around the vessel.</p>
+          <h3 data-i18n="c.eo.h">EO/IR Thermal Gimbal Camera</h3>
+          <p data-i18n="c.eo.p">Electro-optical and infrared camera on a stabilised gimbal, for surface objects and thermal anomalies around the vessel.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 12l6-6"/><circle cx="16.5" cy="8.6" r="0.9"/></svg>
-          <h3>Navigation Radar + AIS</h3>
-          <p>Marine navigation radar shows surface traffic and obstacles, AIS identifies the ships that broadcast it, and navigation lights keep B01 visible to other vessels.</p>
+          <h3 data-i18n="c.radar.h">Navigation Radar + AIS</h3>
+          <p data-i18n="c.radar.p">Marine navigation radar shows surface traffic and obstacles, AIS identifies the ships that broadcast it, and navigation lights keep B01 visible to other vessels.</p>
         </div>
       </div>
       <div class="cards-3 mt-card">
@@ -235,10 +242,10 @@
           <div class="comm">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
             <div>
-              <h3>Communications: RF (UHF), 4G and satellite links (proposed)</h3>
-              <p>Radio links connect B01 with the operator and the ground control station: RF radio (UHF), 4G and satellite (SatCom). Only encrypted, risk-prioritized alert packets are sent; raw data stays on board.</p>
-              <p>Encryption: we will use the latest available encryption version.</p>
-              <p class="tbd">Link specifications: TBD.</p>
+              <h3 data-i18n="c.comm.h">Communications: RF (UHF), 4G and satellite links (proposed)</h3>
+              <p data-i18n="c.comm.p">Radio links connect B01 with the operator and the ground control station: RF radio (UHF), 4G and satellite (SatCom). Only encrypted, risk-prioritized alert packets are sent; raw data stays on board.</p>
+              <p data-i18n="c.comm.enc">Encryption: we will use the latest available encryption version.</p>
+              <p data-i18n="c.comm.tbd" class="tbd">Link specifications: TBD.</p>
             </div>
           </div>
         </div>
@@ -246,9 +253,9 @@
           <div class="comm">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
             <div>
-              <h3>Onboard Edge AI</h3>
-              <p>An Edge AI computer (GPU) processes the sensor data on board. A network switch links the sensors, and the raw data is stored on SSD.</p>
-              <p class="tbd">Computer and storage specifications: TBD.</p>
+              <h3 data-i18n="c.edge.h">Onboard Edge AI</h3>
+              <p data-i18n="c.edge.p">An Edge AI computer (GPU) processes the sensor data on board. A network switch links the sensors, and the raw data is stored on SSD.</p>
+              <p data-i18n="c.edge.tbd" class="tbd">Computer and storage specifications: TBD.</p>
             </div>
           </div>
         </div>
@@ -256,111 +263,111 @@
           <div class="comm">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3"/><path d="M11.5 9 9.5 12.3h3L10.5 15.5"/></svg>
             <div>
-              <h3>Power and propulsion</h3>
-              <p>A Li-ion battery pack, integrated solar cells and a generator, with hybrid propulsion that has a quieter electric survey mode (proposed; effect to be validated).</p>
-              <p class="tbd">Capacities, endurance and speed: TBD.</p>
+              <h3 data-i18n="c.pow.h">Power and propulsion</h3>
+              <p data-i18n="c.pow.p">A Li-ion battery pack, integrated solar cells and a generator, with hybrid propulsion that has a quieter electric survey mode (proposed; effect to be validated).</p>
+              <p data-i18n="c.pow.tbd" class="tbd">Capacities, endurance and speed: TBD.</p>
             </div>
           </div>
         </div>
       </div>
-      <p class="note-line">All sensors, computing, links, power and propulsion are proposed for B01. They are not yet integrated or tested, and their models and specifications are TBD.</p>
+      <p data-i18n="sens.note" class="note-line">All sensors, computing, links, power and propulsion are proposed for B01. They are not yet integrated or tested, and their models and specifications are TBD.</p>
 
-      <h3 class="subhead">Classification, risk and decision</h3>
+      <h3 data-i18n="cls.h3" class="subhead">Classification, risk and decision</h3>
       <div class="prose">
-        <p>Each target is analysed from its shape, geometry, structure, size category, movement where applicable, acoustic characteristics and difference from the surrounding background. The classification, the risk assessment and the recommended action are kept as three separate results. Risk uses four levels, a four-level threat classification: high potential hazard, potential hazard and unknown, each requiring verification, and likely non-hazardous.</p>
+        <p data-i18n="cls.p">Each target is analysed from its shape, geometry, structure, size category, movement where applicable, acoustic characteristics and difference from the surrounding background. The classification, the risk assessment and the recommended action are kept as three separate results. Risk uses four levels, a four-level threat classification: high potential hazard, potential hazard and unknown, each requiring verification, and likely non-hazardous.</p>
       </div>
       <div class="cards-3 mt-card risk-cards">
         <div class="card risk-card risk-card--safe">
-          <p class="risk risk--safe">Likely Non-Hazardous</p>
-          <p>Marine life, and objects that show no sign of an immediate hazard. Decision: continue survey / log observation.</p>
+          <p class="risk risk--safe" data-i18n="risk.safe">Likely Non-Hazardous</p>
+          <p data-i18n="risk.safe.p">Marine life, and objects that show no sign of an immediate hazard. Decision: continue survey / log observation.</p>
         </div>
         <div class="card risk-card risk-card--hazard">
-          <p class="risk risk--hazard">Potential Hazard — Requires Verification</p>
-          <p>Wrecks, obstructions and other man-made structures. Decision: requires inspection. A potential hazardous object is a <em>high</em> potential hazard; it always requires verification and is never reported as confirmed.</p>
+          <p class="risk risk--hazard" data-i18n="risk.haz">Potential Hazard — Requires Verification</p>
+          <p data-i18n="risk.haz.p">Wrecks, obstructions and other man-made structures. Decision: requires inspection. A potential hazardous object is a <em>high</em> potential hazard; it always requires verification and is never reported as confirmed.</p>
         </div>
         <div class="card risk-card risk-card--unknown">
-          <p class="risk risk--unknown">Unknown — Requires Verification</p>
-          <p>Objects without enough evidence for a reliable class. The system says “unknown” instead of guessing. Decision: requires verification.</p>
+          <p class="risk risk--unknown" data-i18n="risk.unk">Unknown — Requires Verification</p>
+          <p data-i18n="risk.unk.p">Objects without enough evidence for a reliable class. The system says “unknown” instead of guessing. Decision: requires verification.</p>
         </div>
       </div>
 
       <figure class="explain mt-card">
-        <figcaption><strong>How a decision is explained</strong> <span class="tag tag--sim">Simulation example</span></figcaption>
+        <figcaption data-i18n="ex.cap"><strong>How a decision is explained</strong> <span class="tag tag--sim">Simulation example</span></figcaption>
         <table class="explain__table">
-          <thead><tr><th scope="col">Feature</th><th scope="col">Evidence</th></tr></thead>
+          <thead><tr><th scope="col" data-i18n="ex.th1">Feature</th><th scope="col" data-i18n="ex.th2">Evidence</th></tr></thead>
           <tbody>
-            <tr><td>Rigid / geometric structure</td><td><span class="ev ev--yes">Detected</span></td></tr>
-            <tr><td>Non-biological appearance</td><td><span class="ev ev--yes">Detected</span></td></tr>
-            <tr><td>Biological morphology</td><td><span class="ev ev--no">Not detected</span></td></tr>
-            <tr><td>Size category</td><td><span class="ev ev--info">Large</span></td></tr>
-            <tr><td>Acoustic return differs from surrounding background</td><td><span class="ev ev--yes">Detected</span></td></tr>
+            <tr><td data-i18n="ex.r1">Rigid / geometric structure</td><td><span class="ev ev--yes" data-i18n="ev.yes">Detected</span></td></tr>
+            <tr><td data-i18n="ex.r2">Non-biological appearance</td><td><span class="ev ev--yes" data-i18n="ev.yes">Detected</span></td></tr>
+            <tr><td data-i18n="ex.r3">Biological morphology</td><td><span class="ev ev--no" data-i18n="ev.no">Not detected</span></td></tr>
+            <tr><td data-i18n="ex.r4">Size category</td><td><span class="ev ev--info" data-i18n="ev.large">Large</span></td></tr>
+            <tr><td data-i18n="ex.r5">Acoustic return differs from surrounding background</td><td><span class="ev ev--yes" data-i18n="ev.yes">Detected</span></td></tr>
           </tbody>
         </table>
         <dl class="explain__result">
-          <div><dt>Classification</dt><dd>Man-Made Structure</dd></div>
-          <div><dt>Risk</dt><dd>Potential Hazard — Requires Verification</dd></div>
-          <div><dt>Risk type</dt><dd>Navigation / Obstruction Risk</dd></div>
-          <div><dt>Decision</dt><dd>Requires Inspection</dd></div>
+          <div><dt data-i18n="ex.dt1">Classification</dt><dd data-i18n="ex.dd1">Man-Made Structure</dd></div>
+          <div><dt data-i18n="ex.dt2">Risk</dt><dd data-i18n="ex.dd2">Potential Hazard — Requires Verification</dd></div>
+          <div><dt data-i18n="ex.dt3">Risk type</dt><dd data-i18n="ex.dd3">Navigation / Obstruction Risk</dd></div>
+          <div><dt data-i18n="ex.dt4">Decision</dt><dd data-i18n="ex.dd4">Requires Inspection</dd></div>
         </dl>
       </figure>
-      <p class="note-line">Potential risk is expressed as a priority for the operator to review; the system does not determine danger with certainty. The decision engine in this prototype is rule-based and explainable. Trained recognition models are future development and are not part of it.</p>
+      <p data-i18n="cls.note" class="note-line">Potential risk is expressed as a priority for the operator to review; the system does not determine danger with certainty. The decision engine in this prototype is rule-based and explainable. Trained recognition models are future development and are not part of it.</p>
 
-      <h3 class="subhead">Four decision layers <span class="tag tag--concept">Conceptual</span></h3>
+      <h3 data-i18n="lay.h3" class="subhead">Four decision layers <span class="tag tag--concept">Conceptual</span></h3>
       <div class="prose">
-        <p>Every target is judged by four complementary layers. In the demo they are explainable rules over simulated evidence; a multi-stream AI model that combines them is future development.</p>
+        <p data-i18n="lay.p">Every target is judged by four complementary layers. In the demo they are explainable rules over simulated evidence; a multi-stream AI model that combines them is future development.</p>
       </div>
       <div class="cards-2 mt-card">
         <div class="card">
-          <h3>Temporal analysis</h3>
-          <p>How a target's echo changes over time, for example sway around a mooring point. Movement helps separate marine life from fixed or moored objects.</p>
+          <h3 data-i18n="lay1.h">Temporal analysis</h3>
+          <p data-i18n="lay1.p">How a target's echo changes over time, for example sway around a mooring point. Movement helps separate marine life from fixed or moored objects.</p>
         </div>
         <div class="card">
-          <h3>Environmental adaptation</h3>
-          <p>Each return is compared with the local seabed and water-column background, so the decision adapts to the area. A return that stands out from its background is stronger evidence that an object is present. In the demo this comparison is a simulated evidence item.</p>
+          <h3 data-i18n="lay2.h">Environmental adaptation</h3>
+          <p data-i18n="lay2.p">Each return is compared with the local seabed and water-column background, so the decision adapts to the area. A return that stands out from its background is stronger evidence that an object is present. In the demo this comparison is a simulated evidence item.</p>
         </div>
         <div class="card">
-          <h3>Multi-angle consensus</h3>
+          <h3 data-i18n="lay3.h">Multi-angle consensus</h3>
           <ol class="mini-flow">
-            <li>Primary pass (Pass A)</li>
-            <li>Target detected</li>
-            <li>Orthogonal pass (Pass B), perpendicular heading</li>
-            <li>Evidence comparison</li>
-            <li>Decision update</li>
+            <li data-i18n="lay3.li1">Primary pass (Pass A)</li>
+            <li data-i18n="lay3.li2">Target detected</li>
+            <li data-i18n="lay3.li3">Orthogonal pass (Pass B), perpendicular heading</li>
+            <li data-i18n="lay3.li4">Evidence comparison</li>
+            <li data-i18n="lay3.li5">Decision update</li>
           </ol>
-          <p>The grid is surveyed twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is observed from two survey headings about 90° apart, and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification.</p>
+          <p data-i18n="lay3.p">The grid is surveyed twice: a complete horizontal lawn-mower pass, then a complete perpendicular pass over the same area. Every target is observed from two survey headings about 90° apart, and the two observations are compared before the decision is updated. A second heading adds evidence; it does not guarantee a correct classification.</p>
         </div>
         <div class="card">
-          <h3>Explainable AI</h3>
-          <p>Every decision shows the evidence and the rule behind it (in the concept: shape, shadow, sway and background). When the evidence is not enough, the answer is “Unknown” instead of a forced class, which is intended to reduce false alarms.</p>
+          <h3 data-i18n="lay4.h">Explainable AI</h3>
+          <p data-i18n="lay4.p">Every decision shows the evidence and the rule behind it (in the concept: shape, shadow, sway and background). When the evidence is not enough, the answer is “Unknown” instead of a forced class, which is intended to reduce false alarms.</p>
         </div>
       </div>
 
-      <h3 class="subhead">Data transfer <span class="tag tag--concept">Conceptual</span></h3>
+      <h3 data-i18n="dt.h3" class="subhead">Data transfer <span class="tag tag--concept">Conceptual</span></h3>
       <div class="prose">
-        <p>On board, a network switch links the sensors to the Edge AI computer (GPU), which processes the data and keeps the raw data on SSD. Radio links carry limited data, especially over satellite, so only encrypted, risk-prioritized alert packets are sent, over RF (UHF), 4G and satellite links (proposed).</p>
+        <p data-i18n="dt.p">On board, a network switch links the sensors to the Edge AI computer (GPU), which processes the data and keeps the raw data on SSD. Radio links carry limited data, especially over satellite, so only encrypted, risk-prioritized alert packets are sent, over RF (UHF), 4G and satellite links (proposed).</p>
       </div>
       <ol class="pipeline mt-card">
-        <li>Sensors</li>
-        <li>Network Switch</li>
-        <li>Edge AI Processing (GPU)</li>
-        <li>Target Detection</li>
-        <li>Target Analysis</li>
-        <li>Target Record</li>
-        <li>Local Storage (SSD)</li>
-        <li>Data Prioritization / Compression</li>
-        <li>Encrypted Alert Packets: RF (UHF), 4G and satellite links (proposed)</li>
-        <li>Ground Control Station / Operator</li>
+        <li data-i18n="pipe1">Sensors</li>
+        <li data-i18n="pipe2">Network Switch</li>
+        <li data-i18n="pipe3">Edge AI Processing (GPU)</li>
+        <li data-i18n="pipe4">Target Detection</li>
+        <li data-i18n="pipe5">Target Analysis</li>
+        <li data-i18n="pipe6">Target Record</li>
+        <li data-i18n="pipe7">Local Storage (SSD)</li>
+        <li data-i18n="pipe8">Data Prioritization / Compression</li>
+        <li data-i18n="pipe9">Encrypted Alert Packets: RF (UHF), 4G and satellite links (proposed)</li>
+        <li data-i18n="pipe10">Ground Control Station / Operator</li>
       </ol>
       <div class="cards-2 mt-card">
         <div class="card">
-          <h3>Sent first: priority event data</h3>
-          <div class="chips" role="group" aria-label="Priority event data">
-            <span class="chip">Target ID</span><span class="chip">Classification</span><span class="chip">Risk</span><span class="chip">Risk type</span><span class="chip">Location</span><span class="chip">Depth</span><span class="chip">Detection time</span><span class="chip">Decision</span><span class="chip">Explanation</span><span class="chip">Alert</span>
+          <h3 data-i18n="dt.c1.h">Sent first: priority event data</h3>
+          <div class="chips" role="group" data-i18n-aria="dt.chips" aria-label="Priority event data">
+            <span class="chip" data-i18n="chip.id">Target ID</span><span class="chip" data-i18n="chip.class">Classification</span><span class="chip" data-i18n="chip.risk">Risk</span><span class="chip" data-i18n="chip.rtype">Risk type</span><span class="chip" data-i18n="chip.loc">Location</span><span class="chip" data-i18n="chip.depth">Depth</span><span class="chip" data-i18n="chip.time">Detection time</span><span class="chip" data-i18n="chip.dec">Decision</span><span class="chip" data-i18n="chip.expl">Explanation</span><span class="chip" data-i18n="chip.alert">Alert</span>
           </div>
         </div>
         <div class="card">
-          <h3>Kept on board</h3>
-          <p>Raw and large sensor datasets stay on the onboard SSD for later retrieval. Link specifications: TBD.</p>
+          <h3 data-i18n="dt.c2.h">Kept on board</h3>
+          <p data-i18n="dt.c2.p">Raw and large sensor datasets stay on the onboard SSD for later retrieval. Link specifications: TBD.</p>
         </div>
       </div>
     </div>
@@ -370,8 +377,8 @@
   <section class="section" id="design" aria-labelledby="design-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="design-title">B01 design</h2>
-        <p>USV B01 is built around the team's own hull design: a faceted, ultra-low-profile hull that works at the water surface. A short mast carries the EO/IR camera, the radar and the antennas, the sonar is mounted on the hull below, and the cutaway in the render shows the internal equipment bay. Move over the image to inspect the details.</p>
+        <h2 data-i18n="des.h2" id="design-title">B01 design</h2>
+        <p data-i18n="des.p">USV B01 is built around the team's own hull design: a faceted, ultra-low-profile hull that works at the water surface. A short mast carries the EO/IR camera, the radar and the antennas, the sonar is mounted on the hull below, and the cutaway in the render shows the internal equipment bay. Move over the image to inspect the details.</p>
       </div>
 
       <div class="design-grid" id="design-grid">
@@ -379,53 +386,53 @@
           <figure class="sheet" id="auv-sheet">
             <div class="sheet__frame">
               <div class="sheet__view" id="auv-view" tabindex="0" role="button" aria-describedby="sheet-hint"
-                   aria-label="B01 design. Open the full-size view.">
-                <img id="auv-img" src="assets/images/b01-render.jpg" width="1408" height="768" loading="lazy"
+                   data-i18n-aria="des.view" aria-label="B01 design. Open the full-size view.">
+                <img id="auv-img" data-i18n-alt="img.render" src="assets/images/b01-render.jpg" width="1408" height="768" loading="lazy"
                      alt="USV B01, the team's design render: a dark blue, faceted, ultra-low-profile hull at the water surface with a short mast carrying sensors. A cutaway window shows the internal equipment bay; the hull carries the Saudi national emblem and the marking B01.">
                 <div class="loupe" id="auv-loupe" aria-hidden="true"></div>
                 <div class="sheet__info" aria-hidden="true">
-                  <p class="sheet__info-title">USV B01</p>
-                  <p class="sheet__info-sub">Unmanned Surface Vehicle</p>
+                  <p class="sheet__info-title" lang="en">USV B01</p>
+                  <p data-i18n="des.info.sub" class="sheet__info-sub">Unmanned Surface Vehicle</p>
                   <dl>
-                    <div><dt>Survey depth</dt><dd>TBD (concept)</dd></div>
-                    <div><dt>Sonar</dt><dd>MBES + side-scan</dd></div>
+                    <div><dt data-i18n="des.info.dt1">Survey depth</dt><dd data-i18n="des.info.dd1">About 0–60 m (proposed)</dd></div>
+                    <div><dt data-i18n="des.info.dt2">Sonar</dt><dd data-i18n="des.info.dd2">MBES + side-scan</dd></div>
                   </dl>
                 </div>
               </div>
             </div>
-            <figcaption class="sheet__strip"><span>USV B01</span><span>Official Team Design</span></figcaption>
+            <figcaption class="sheet__strip"><span lang="en">USV B01</span><span data-i18n="des.strip">Official Team Design</span></figcaption>
           </figure>
         </div>
 
         <div class="design-side">
           <dl class="spec">
-            <div><dt>Platform</dt><dd>Unmanned Surface Vehicle (USV)</dd></div>
-            <div><dt>Hull</dt><dd>Faceted, ultra-low-profile — team design</dd></div>
-            <div><dt>Survey depth band</dt><dd>Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</dd></div>
-            <div><dt>Sonar</dt><dd>Multibeam (MBES) and side-scan sonar (SSS), water-column profiling; SVP for sound-speed correction — proposed</dd></div>
-            <div><dt>Positioning</dt><dd>RTK GNSS + IMU — proposed</dd></div>
-            <div><dt>Surface awareness</dt><dd>EO/IR thermal gimbal camera, navigation radar + AIS, navigation lights — proposed</dd></div>
-            <div><dt>Processing</dt><dd>Onboard Edge AI (GPU), network switch, SSD storage — concept</dd></div>
-            <div><dt>Communication</dt><dd>RF (UHF), 4G and satellite links (proposed), encrypted; specifications TBD</dd></div>
-            <div><dt>Power</dt><dd>Li-ion battery, solar, generator — proposed; capacities TBD</dd></div>
-            <div><dt>Propulsion</dt><dd>Hybrid, with a quieter electric survey mode (proposed; effect to be validated)</dd></div>
-            <div><dt>Detection</dt><dd>Underwater object detection</dd></div>
-            <div><dt>Decision</dt><dd>Explainable four-level risk assessment</dd></div>
-            <div><dt>Survey</dt><dd>Two-pass crosshatch grid survey — concept</dd></div>
+            <div><dt data-i18n="spec.dt1">Platform</dt><dd data-i18n="spec.dd1">Unmanned Surface Vehicle (USV)</dd></div>
+            <div><dt data-i18n="spec.dt2">Hull</dt><dd data-i18n="spec.dd2">Faceted, ultra-low-profile — team design</dd></div>
+            <div><dt data-i18n="spec.dt3">Survey depth band</dt><dd data-i18n="spec.dd3">Approximately 0–60 m (proposed). Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</dd></div>
+            <div><dt data-i18n="spec.dt4">Sonar</dt><dd data-i18n="spec.dd4">Multibeam (MBES) and side-scan sonar (SSS), water-column profiling; SVP for sound-speed correction — proposed</dd></div>
+            <div><dt data-i18n="spec.dt5">Positioning</dt><dd data-i18n="spec.dd5">RTK GNSS + IMU — proposed</dd></div>
+            <div><dt data-i18n="spec.dt6">Surface awareness</dt><dd data-i18n="spec.dd6">EO/IR thermal gimbal camera, navigation radar + AIS, navigation lights — proposed</dd></div>
+            <div><dt data-i18n="spec.dt7">Processing</dt><dd data-i18n="spec.dd7">Onboard Edge AI (GPU), network switch, SSD storage — concept</dd></div>
+            <div><dt data-i18n="spec.dt8">Communication</dt><dd data-i18n="spec.dd8">RF (UHF), 4G and satellite links (proposed), encrypted; specifications TBD</dd></div>
+            <div><dt data-i18n="spec.dt9">Power</dt><dd data-i18n="spec.dd9">Li-ion battery, solar, generator — proposed; capacities TBD</dd></div>
+            <div><dt data-i18n="spec.dt10">Propulsion</dt><dd data-i18n="spec.dd10">Hybrid, with a quieter electric survey mode (proposed; effect to be validated)</dd></div>
+            <div><dt data-i18n="spec.dt11">Detection</dt><dd data-i18n="spec.dd11">Underwater object detection</dd></div>
+            <div><dt data-i18n="spec.dt12">Decision</dt><dd data-i18n="spec.dd12">Explainable four-level risk assessment</dd></div>
+            <div><dt data-i18n="spec.dt13">Survey</dt><dd data-i18n="spec.dd13">Two-pass crosshatch grid survey — concept</dd></div>
           </dl>
           <aside class="inspect-tools" id="inspect-tools" aria-labelledby="inspect-title">
-            <h3 id="inspect-title">Inspect the design</h3>
-            <p class="pointer-only-fine" id="sheet-hint">Move the pointer over the vehicle to magnify it. Click, or press Enter, for the full-size view.</p>
-            <p class="pointer-only-touch">Tap the image to open the full-size view, then pinch to zoom.</p>
+            <h3 data-i18n="insp.h3" id="inspect-title">Inspect the design</h3>
+            <p data-i18n="insp.fine" class="pointer-only-fine" id="sheet-hint">Move the pointer over the vehicle to magnify it. Click, or press Enter, for the full-size view.</p>
+            <p data-i18n="insp.touch" class="pointer-only-touch">Tap the image to open the full-size view, then pinch to zoom.</p>
             <fieldset class="zoom-only">
-              <legend>Magnification</legend>
+              <legend data-i18n="insp.legend">Magnification</legend>
               <div class="segmented">
                 <label><input type="radio" name="zoom" value="2"><span>2×</span></label>
                 <label><input type="radio" name="zoom" value="3" checked><span>3×</span></label>
                 <label><input type="radio" name="zoom" value="4"><span>4×</span></label>
               </div>
             </fieldset>
-            <button class="btn btn--small" type="button" id="auv-open">Open full-size view</button>
+            <button data-i18n="insp.open" class="btn btn--small" type="button" id="auv-open">Open full-size view</button>
           </aside>
         </div>
       </div>
@@ -437,48 +444,48 @@
     <div class="container">
       <div class="demo__head">
         <div>
-          <h2 id="demo-title">Interactive demo</h2>
-          <p>Software simulation of the proposed USV B01 mission: a two-pass crosshatch survey (a horizontal lawn-mower pass, then a perpendicular pass over the same area) that detects underwater objects, assesses their potential risk, re-observes every target from a second heading and explains every decision.</p>
+          <h2 data-i18n="demo.h2" id="demo-title">Interactive demo</h2>
+          <p data-i18n="demo.p">Software simulation of the proposed USV B01 mission: a two-pass crosshatch survey (a horizontal lawn-mower pass, then a perpendicular pass over the same area) that detects underwater objects, assesses their potential risk, re-observes every target from a second heading and explains every decision.</p>
         </div>
         <div class="demo__controls">
           <span class="demo-status" id="demo-status" data-state="idle" role="status"><i></i><span id="demo-status-label">Ready</span></span>
-          <button class="btn btn--go" type="button" id="demo-start">Start mission</button>
+          <button data-i18n="demo.start" class="btn btn--go" type="button" id="demo-start">Start mission</button>
           <button class="btn" type="button" id="demo-pause" disabled>Pause</button>
-          <button class="btn" type="button" id="demo-reset">Reset</button>
+          <button data-i18n="demo.reset" class="btn" type="button" id="demo-reset">Reset</button>
           <button class="btn" type="button" id="demo-full" aria-pressed="false">Full-screen demo</button>
         </div>
       </div>
 
-      <ol class="demo-phases" id="demo-phases" aria-label="Survey phase">
-        <li data-phase="A">Primary Sweep — Pass A <span>horizontal</span></li>
-        <li data-phase="T">Transition <span>to orthogonal pass</span></li>
-        <li data-phase="B">Orthogonal Crosshatch Sweep — Pass B <span>vertical</span></li>
-        <li data-phase="review">Cross-Pass Verification</li>
-        <li data-phase="complete">Mission Complete</li>
+      <ol class="demo-phases" id="demo-phases" data-i18n-aria="ph.aria" aria-label="Survey phase">
+        <li data-phase="A" data-i18n="ph.A">Primary Sweep — Pass A <span>horizontal</span></li>
+        <li data-phase="T" data-i18n="ph.T">Transition <span>to orthogonal pass</span></li>
+        <li data-phase="B" data-i18n="ph.B">Orthogonal Crosshatch Sweep — Pass B <span>vertical</span></li>
+        <li data-phase="review" data-i18n="ph.review">Cross-Pass Verification</li>
+        <li data-phase="complete" data-i18n="ph.complete">Mission Complete</li>
       </ol>
 
       <ol class="demo-stages" id="demo-stages">
-        <li data-stage="scanning">Scanning</li>
-        <li data-stage="detection">Detection</li>
-        <li data-stage="analysis">Analysis</li>
-        <li data-stage="classification">Classification</li>
-        <li data-stage="risk">Risk assessment</li>
-        <li data-stage="decision">Decision</li>
-        <li data-stage="alert">Alert &amp; marking</li>
-        <li data-stage="verification">Verification</li>
+        <li data-stage="scanning" data-i18n="st.scanning">Scanning</li>
+        <li data-stage="detection" data-i18n="st.detection">Detection</li>
+        <li data-stage="analysis" data-i18n="st.analysis">Analysis</li>
+        <li data-stage="classification" data-i18n="st.classification">Classification</li>
+        <li data-stage="risk" data-i18n="st.risk">Risk assessment</li>
+        <li data-stage="decision" data-i18n="st.decision">Decision</li>
+        <li data-stage="alert" data-i18n="st.alert">Alert &amp; marking</li>
+        <li data-stage="verification" data-i18n="st.verification">Verification</li>
       </ol>
 
       <div class="demo-alert" id="demo-alert" data-kind="idle" aria-live="polite">
-        <div class="demo-alert__head"><strong id="demo-alert-title">No active alerts</strong><span class="tag tag--sim">Simulation alert</span></div>
+        <div class="demo-alert__head"><strong id="demo-alert-title">No active alerts</strong><span data-i18n="alert.tag" class="tag tag--sim">Simulation alert</span></div>
         <dl class="demo-alert__body" id="demo-alert-body"></dl>
       </div>
 
       <div class="demo__grid">
         <div class="demo__main">
           <div class="demo-card" id="card-map">
-            <div class="demo-card__head"><h3>Survey area — two-pass crosshatch</h3><span>Simulated navigation data</span></div>
+            <div class="demo-card__head"><h3 data-i18n="map.h3">Survey area — two-pass crosshatch</h3><span data-i18n="map.sub">Simulated navigation data</span></div>
             <div class="map-screen">
-              <svg id="demo-map" viewBox="0 0 560 400" role="img" aria-label="Survey map: horizontal Pass A lines, perpendicular Pass B lines, the B01 track and marked targets">
+              <svg id="demo-map" viewBox="0 0 560 400" role="img" data-i18n-aria="map.aria" aria-label="Survey map: horizontal Pass A lines, perpendicular Pass B lines, the B01 track and marked targets">
                 <defs><clipPath id="demo-clip"><rect id="demo-clip-rect"/></clipPath></defs>
                 <rect id="demo-bounds" fill="rgb(127 214 230 / 0.04)" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.5"/>
                 <g clip-path="url(#demo-clip)">
@@ -497,42 +504,42 @@
             </div>
             <div class="map-legend">
               <span><i class="k-auv"></i>B01</span>
-              <span><i class="k-plan-a"></i>Pass A planned (horizontal)</span>
-              <span><i class="k-plan-b"></i>Pass B planned (vertical)</span>
-              <span><i class="k-plan-t"></i>Transition leg</span>
-              <span><i class="k-track"></i>Completed track</span>
-              <span><i class="k-current"></i>Current leg</span>
-              <span><i class="k-cover"></i>Swath covered</span>
-              <span><i class="k-safe"></i>Likely non-hazardous</span>
-              <span><i class="k-hazard"></i>Potential hazard</span>
-              <span><i class="k-high"></i>High potential hazard</span>
-              <span><i class="k-unknown"></i>Unknown</span>
+              <span data-i18n="lg.plan-a"><i class="k-plan-a"></i>Pass A planned (horizontal)</span>
+              <span data-i18n="lg.plan-b"><i class="k-plan-b"></i>Pass B planned (vertical)</span>
+              <span data-i18n="lg.plan-t"><i class="k-plan-t"></i>Transition leg</span>
+              <span data-i18n="lg.track"><i class="k-track"></i>Completed track</span>
+              <span data-i18n="lg.current"><i class="k-current"></i>Current leg</span>
+              <span data-i18n="lg.cover"><i class="k-cover"></i>Swath covered</span>
+              <span data-i18n="lg.safe"><i class="k-safe"></i>Likely non-hazardous</span>
+              <span data-i18n="lg.hazard"><i class="k-hazard"></i>Potential hazard</span>
+              <span data-i18n="lg.high"><i class="k-high"></i>High potential hazard</span>
+              <span data-i18n="lg.unknown"><i class="k-unknown"></i>Unknown</span>
             </div>
             <p class="map-note" id="demo-map-note"></p>
           </div>
 
           <div class="demo-card" id="card-coverage">
-            <div class="demo-card__head"><h3>Survey coverage — two passes</h3><span>Simulation estimate</span></div>
+            <div class="demo-card__head"><h3 data-i18n="cov.h3">Survey coverage — two passes</h3><span data-i18n="cov.sub">Simulation estimate</span></div>
             <dl class="coverage__info" id="cov-info"></dl>
             <div class="coverage__live">
-              <div><span>Distance run</span><strong id="cov-distance">0 m</strong></div>
-              <div><span>Unique area coverage</span><strong id="cov-pct">0.0%</strong></div>
-              <div><span>Remaining area</span><strong id="cov-remaining">0 m²</strong></div>
-              <div><span>Targets seen on both headings</span><strong id="cov-xpass">0 / 0</strong></div>
+              <div><span data-i18n="cov.l1">Distance run</span><strong id="cov-distance">0 m</strong></div>
+              <div><span data-i18n="cov.l2">Unique area coverage</span><strong id="cov-pct">0.0%</strong></div>
+              <div><span data-i18n="cov.l3">Remaining area</span><strong id="cov-remaining">0 m²</strong></div>
+              <div><span data-i18n="cov.l4">Targets seen on both headings</span><strong id="cov-xpass">0 / 0</strong></div>
             </div>
             <div class="coverage__bars">
-              <div class="pbar"><span>Unique area coverage</span><b id="cov-pct-b">0%</b><em><i id="cov-bar"></i></em></div>
-              <div class="pbar pbar--a"><span>Pass A progress — primary, horizontal</span><b id="cov-a">0%</b><em><i id="cov-a-bar"></i></em></div>
-              <div class="pbar pbar--b"><span>Pass B progress — orthogonal, vertical</span><b id="cov-b">0%</b><em><i id="cov-b-bar"></i></em></div>
-              <div class="pbar pbar--both"><span>Area seen on both headings (overlap, not new area)</span><b id="cov-both">0%</b><em><i id="cov-both-bar"></i></em></div>
+              <div class="pbar"><span data-i18n="cov.b1">Unique area coverage</span><b id="cov-pct-b">0%</b><em><i id="cov-bar"></i></em></div>
+              <div class="pbar pbar--a"><span data-i18n="cov.b2">Pass A progress — primary, horizontal</span><b id="cov-a">0%</b><em><i id="cov-a-bar"></i></em></div>
+              <div class="pbar pbar--b"><span data-i18n="cov.b3">Pass B progress — orthogonal, vertical</span><b id="cov-b">0%</b><em><i id="cov-b-bar"></i></em></div>
+              <div class="pbar pbar--both"><span data-i18n="cov.b4">Area seen on both headings (overlap, not new area)</span><b id="cov-both">0%</b><em><i id="cov-both-bar"></i></em></div>
             </div>
-            <p class="trail__meta">Coverage values are simulated estimates and not validated physical performance. Unique coverage is counted on a 5 m plan-view grid: a cell counts once, however many swaths pass over it, so overlap between neighbouring lines and between the two passes is never added twice and coverage cannot exceed 100%. Turns and the transition add no coverage. Rounded end turns are drawn for visualisation only and are not a turning-radius claim. Demo time is compressed and does not represent vehicle speed.</p>
+            <p data-i18n="cov.note" class="trail__meta">Coverage values are simulated estimates and not validated physical performance. Unique coverage is counted on a 5 m plan-view grid: a cell counts once, however many swaths pass over it, so overlap between neighbouring lines and between the two passes is never added twice and coverage cannot exceed 100%. Turns and the transition add no coverage. Rounded end turns are drawn for visualisation only and are not a turning-radius claim. Demo time is compressed and does not represent vehicle speed.</p>
           </div>
         </div>
 
         <div class="demo__side">
           <div class="demo-card">
-            <div class="demo-card__head"><h3>Target Observation</h3><span>Reference image — not a live feed</span></div>
+            <div class="demo-card__head"><h3 data-i18n="cam.h3">Target Observation</h3><span data-i18n="cam.sub">Reference image — not a live feed</span></div>
             <div class="camera" id="camera"><div class="camera__stage" id="camera-stage">
               <div class="camera__scene is-visible" data-scene="idle">
                 <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -556,7 +563,7 @@
           </div>
 
           <div class="demo-card">
-            <div class="demo-card__head"><h3>Analysis</h3><span>Simulation / concept demonstration</span></div>
+            <div class="demo-card__head"><h3 data-i18n="ana.h3">Analysis</h3><span data-i18n="ana.sub">Simulation / concept demonstration</span></div>
             <div class="analysis" id="demo-analysis"></div>
           </div>
         </div>
@@ -564,13 +571,13 @@
 
       <div class="demo-card demo-log" id="card-log">
         <div class="demo-card__head">
-          <h3>Target log</h3>
-          <div class="demo-log__stats"><span>Demo values</span><span>Targets <strong id="demo-count">0</strong></span><span>Demo time <strong id="demo-time">00:00</strong></span></div>
+          <h3 data-i18n="log.h3">Target log</h3>
+          <div class="demo-log__stats"><span data-i18n="log.values">Demo values</span><span><span data-i18n="log.targets">Targets</span> <strong id="demo-count">0</strong></span><span><span data-i18n="log.time">Demo time</span> <strong id="demo-time">00:00</strong></span></div>
         </div>
-        <div class="timeline" id="demo-timeline" role="group" aria-label="Detection timeline"><i class="timeline__fill" id="demo-timeline-fill"></i></div>
+        <div class="timeline" id="demo-timeline" role="group" data-i18n-aria="log.tl" aria-label="Detection timeline"><i class="timeline__fill" id="demo-timeline-fill"></i></div>
         <div class="log-scroll">
           <table class="log-table">
-            <thead><tr><th>Target</th><th>Detected</th><th>Identification</th><th>Classification</th><th>Risk</th><th>Decision</th><th>Detected by</th><th>Observations — pass, line, heading (Sim.)</th><th>Cross-pass check</th><th>Position (Sim.)</th><th>Depth (Sim.)</th></tr></thead>
+            <thead><tr><th data-i18n="lt.1">Target</th><th data-i18n="lt.2">Detected</th><th data-i18n="lt.3">Identification</th><th data-i18n="lt.4">Classification</th><th data-i18n="lt.5">Risk</th><th data-i18n="lt.6">Decision</th><th data-i18n="lt.7">Detected by</th><th data-i18n="lt.8">Observations — pass, line, heading (Sim.)</th><th data-i18n="lt.9">Cross-pass check</th><th data-i18n="lt.10">Position (Sim.)</th><th data-i18n="lt.11">Depth (Sim.)</th></tr></thead>
             <tbody id="log-body"></tbody>
           </table>
         </div>
@@ -582,40 +589,40 @@
   <section class="section" id="results" aria-labelledby="results-title">
     <div class="container">
       <div class="section__head">
-        <h2 id="results-title">Results</h2>
-        <p>What the project has produced so far is software: the simulation on this page. It is kept apart from the field capabilities proposed for the B01 vessel.</p>
+        <h2 data-i18n="res.h2" id="results-title">Results</h2>
+        <p data-i18n="res.p">What the project has produced so far is software: the simulation on this page. It is kept apart from the field capabilities proposed for the B01 vessel.</p>
       </div>
       <div class="cards-2 results">
         <div class="card">
-          <h3>Software outcome <span class="tag tag--sim">Simulation — implemented</span></h3>
-          <p>Calculated by the interactive demo's survey model. These are software results, not field measurements.</p>
+          <h3 data-i18n="res.c1.h">Software outcome <span class="tag tag--sim">Simulation — implemented</span></h3>
+          <p data-i18n="res.c1.p">Calculated by the interactive demo's survey model. These are software results, not field measurements.</p>
           <dl class="spec results__sim" id="results-sim"></dl>
         </div>
         <div class="card">
-          <h3>Field capabilities <span class="tag tag--concept">Proposed / conceptual</span></h3>
-          <p>Proposed for B01. None of these has been built, integrated or tested at sea yet.</p>
+          <h3 data-i18n="res.c2.h">Field capabilities <span class="tag tag--concept">Proposed / conceptual</span></h3>
+          <p data-i18n="res.c2.p">Proposed for B01. None of these has been built, integrated or tested at sea yet.</p>
           <ul class="results__concept">
-            <li>The B01 vessel: faceted, ultra-low-profile hull (design stage)</li>
-            <li>Multibeam and side-scan sonar and water-column profiling at sea, with SVP sound-speed correction</li>
-            <li>Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</li>
-            <li>Target positions from RTK GNSS and the IMU</li>
-            <li>Surface picture from the EO/IR gimbal camera, navigation radar and AIS</li>
-            <li>Onboard Edge AI (GPU), network switch and SSD storage</li>
-            <li>Encrypted, risk-prioritized alerts over RF (UHF), 4G and satellite links (proposed)</li>
-            <li>Li-ion battery, solar and generator power, with hybrid propulsion and a quieter electric survey mode (proposed; effect to be validated)</li>
-            <li>A multi-stream AI model for the four decision layers (future development)</li>
+            <li data-i18n="res.li1">The B01 vessel: faceted, ultra-low-profile hull (design stage)</li>
+            <li data-i18n="res.li2">Multibeam and side-scan sonar and water-column profiling at sea, with SVP sound-speed correction</li>
+            <li data-i18n="res.li3">Proposed survey depth: approximately 0–60 m. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</li>
+            <li data-i18n="res.li4">Target positions from RTK GNSS and the IMU</li>
+            <li data-i18n="res.li5">Surface picture from the EO/IR gimbal camera, navigation radar and AIS</li>
+            <li data-i18n="res.li6">Onboard Edge AI (GPU), network switch and SSD storage</li>
+            <li data-i18n="res.li7">Encrypted, risk-prioritized alerts over RF (UHF), 4G and satellite links (proposed)</li>
+            <li data-i18n="res.li8">Li-ion battery, solar and generator power, with hybrid propulsion and a quieter electric survey mode (proposed; effect to be validated)</li>
+            <li data-i18n="res.li9">A multi-stream AI model for the four decision layers (future development)</li>
           </ul>
         </div>
       </div>
       <div class="card results__future">
-        <h3>Next stage and future work</h3>
-        <p>Next stage: prototype development and simulation-based validation of the multi-pass detection workflow.</p>
+        <h3 data-i18n="fut.h3">Next stage and future work</h3>
+        <p data-i18n="fut.p">Next stage: prototype development and simulation-based validation of the multi-pass detection workflow.</p>
         <ul class="results__concept">
-          <li>Develop explainable AI for evidence-based threat classification.</li>
-          <li>Automate seabed surveying, coverage and target detection.</li>
-          <li>Improve detection accuracy through multi-pass verification and false-alarm reduction.</li>
-          <li>Enhance secure data management with encrypted alerts and efficient transmission.</li>
-          <li>Integrate smart navigation with real-time hazard alerts and safe route planning.</li>
+          <li data-i18n="fut.li1">Develop explainable AI for evidence-based threat classification.</li>
+          <li data-i18n="fut.li2">Automate seabed surveying, coverage and target detection.</li>
+          <li data-i18n="fut.li3">Improve detection accuracy through multi-pass verification and false-alarm reduction.</li>
+          <li data-i18n="fut.li4">Enhance secure data management with encrypted alerts and efficient transmission.</li>
+          <li data-i18n="fut.li5">Integrate smart navigation with real-time hazard alerts and safe route planning.</li>
         </ul>
       </div>
     </div>
@@ -625,24 +632,25 @@
 
 <footer class="site-footer">
   <div class="container">
-    <div class="site-footer__brand"><span class="brand__mark">USV B01</span><span>Unmanned Surface Vehicle</span></div>
-    <p>Current demonstrations represent a software prototype of the proposed USV B01 workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
-    <p>Implemented: the software simulation on this site (survey planning, coverage calculation and the rule-based decision demo). Proposed / conceptual: the B01 vessel, its sensors, computing, communication links, power and propulsion, and any field performance; none of these has been built or tested yet.</p>
-    <p class="site-footer__small">Simulation values are not field measurements. The B01 render and the reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
+    <div class="site-footer__brand"><span class="brand__mark" lang="en">USV B01</span><span data-i18n="brand.name">Unmanned Surface Vehicle</span></div>
+    <p data-i18n="ft.p1">Current demonstrations represent a software prototype of the proposed USV B01 workflow. Physical vehicle integration and live sensor operation are outside the current software demonstration.</p>
+    <p data-i18n="ft.p2">Implemented: the software simulation on this site (survey planning, coverage calculation and the rule-based decision demo). Proposed / conceptual: the B01 vessel, its sensors, computing, communication links, power and propulsion, and any field performance; none of these has been built or tested yet.</p>
+    <p data-i18n="ft.p3" class="site-footer__small">Simulation values are not field measurements. The B01 render and the reference photographs were supplied by the team. Sonar reference image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research. <a href="#home">Back to top</a></p>
   </div>
 </footer>
 
 <dialog class="viewer" id="auv-viewer" aria-labelledby="viewer-title">
   <div class="viewer__bar">
-    <h2 id="viewer-title">B01 design, full size</h2>
-    <form method="dialog"><button class="btn btn--small">Close</button></form>
+    <h2 data-i18n="vw.h2" id="viewer-title">B01 design, full size</h2>
+    <form method="dialog"><button class="btn btn--small" data-i18n="vw.close">Close</button></form>
   </div>
   <div class="viewer__scroll" tabindex="0">
-    <img src="assets/images/b01-render.jpg" width="1408" height="768" loading="lazy"
+    <img data-i18n-alt="img.render" src="assets/images/b01-render.jpg" width="1408" height="768" loading="lazy"
          alt="USV B01, the team's design render: a dark blue, faceted, ultra-low-profile hull at the water surface with a short mast carrying sensors. A cutaway window shows the internal equipment bay; the hull carries the Saudi national emblem and the marking B01.">
   </div>
 </dialog>
 
+<script src="js/i18n.js?v=20261123" defer></script>
 <script src="js/main.js?v=20261118" defer></script>
 <script src="js/auv-viewer.js?v=20261118" defer></script>
 <script src="js/survey-model.js?v=20261118" defer></script>
