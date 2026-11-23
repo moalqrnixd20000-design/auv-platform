@@ -17,8 +17,8 @@
    The route, line counts, distances, coverage and observation times come
    from js/survey-model.js (window.SurveyModel) and the survey-area
    parameters; nothing is hard-coded. A second heading adds an observation;
-   it never turns a potential mine into a confirmed one or forces an unknown
-   object into a class.
+   it never turns a potential hazardous object into a confirmed one or forces
+   an unknown object into a class.
 
    Everything is driven by ONE mission clock. Pause stops the clock and the
    CSS/SVG animations (a transition already under way finishes), Reset throws
@@ -105,37 +105,37 @@
       test: function (e) { return e.bio === "Detected"; },
       text: "Biological morphology detected → Marine Life.",
       classification: "Marine Life", group: "life",
-      risk: "Non-Hazardous", level: "safe", riskType: "Biological / Marine Life",
+      risk: "Likely Non-Hazardous", level: "safe", riskType: "Biological / Marine Life",
       certainty: "High — all defining features detected"
     },
     {
       test: function (e) { return e.rigid === "Detected" && e.nonbio === "Detected" && e.size === "Large"; },
       text: "Rigid, non-biological and large → man-made structure.",
       classification: "Man-Made Structure", group: "structure",
-      risk: "Potential Hazard", level: "hazard", riskType: "Navigation / Obstruction Risk",
+      risk: "Potential Hazard — Requires Verification", level: "hazard", riskType: "Navigation / Obstruction Risk",
       certainty: "High — all defining features detected"
     },
     {
       test: function (e) { return e.rigid === "Detected" && e.nonbio === "Detected" && e.size === "Compact"; },
       text: "Rigid, non-biological and compact → potential hazardous object. The identity cannot be confirmed.",
       classification: "Potential Hazardous Object", group: "mine",
-      risk: "High Potential Hazard", level: "high", riskType: "Potential Explosive Hazard",
+      risk: "High Potential Hazard — Requires Verification", level: "high", riskType: "Potential Explosive Hazard",
       certainty: "Moderate — identity not confirmed"
     },
     {
       test: function () { return true; },
       text: "No rule is met with enough evidence → Unknown. The system does not force a class.",
       classification: "Unknown", group: "unknown",
-      risk: "Unknown", level: "unknown", riskType: "Unknown Risk",
+      risk: "Unknown — Requires Verification", level: "unknown", riskType: "Unknown Risk",
       certainty: "Low — insufficient evidence"
     }
   ];
 
   var ALERTS = {
-    safe: "STATUS — No Immediate Hazard Detected",
-    hazard: "ALERT — Potential Hazard Detected",
-    high: "ALERT — Potential High-Risk Object",
-    unknown: "NOTICE — Unknown Object Requires Verification"
+    safe: "STATUS — Likely Non-Hazardous",
+    hazard: "ALERT — Potential Hazard — Requires Verification",
+    high: "ALERT — High Potential Hazard — Requires Verification",
+    unknown: "NOTICE — Unknown — Requires Verification"
   };
 
   /* Target content. Positions come from the survey area (plan-view x, y);
@@ -153,7 +153,7 @@
       xpass: {
         compare: "The perpendicular heading also shows biological morphology and movement.",
         consensus: "Consistent across two orthogonal passes",
-        update: "No change: Marine Life — Non-Hazardous. Continue survey / log observation.",
+        update: "No change: Marine Life — Likely Non-Hazardous. Continue survey / log observation.",
         status: "Logged — observed on both headings"
       }
     },
@@ -167,12 +167,12 @@
       xpass: {
         compare: "The perpendicular heading also shows a large, rigid, non-biological structure.",
         consensus: "Consistent across two orthogonal passes",
-        update: "No change: Man-Made Structure — Potential Hazard — Requires Inspection. A second heading adds an observation; it does not identify the wreck.",
+        update: "No change: Man-Made Structure — Potential Hazard — Requires Verification. Decision: Requires Inspection. A second heading adds an observation; it does not identify the wreck.",
         status: "Marked for inspection — observed on both headings"
       }
     },
     {
-      key: "mine", name: "Potential Mine", objectType: "Compact object on the seafloor", depth: 21,
+      key: "mine", name: "Potential Hazardous Object", objectType: "Compact object on the seafloor", depth: 21,
       source: "Multibeam + Side-Scan Sonar", scene: "mine", box: [89, 53, 10.5, 11.5],
       evidence: { bio: "Not detected", motion: "Not detected", rigid: "Detected", nonbio: "Detected", size: "Compact", background: "Detected" },
       decision: "Requires Verification",
@@ -205,7 +205,7 @@
     idle: "Reference imagery appears here when a target is detected. It is not a live feed from B01.",
     fish: "Reference image: lionfish on a reef. Photograph supplied by the team.",
     wreck: "Reference image: synthetic aperture sonar image of an unknown shipwreck off of Nantucket. Image courtesy of ThayerMahan, Inc., Kraken Robotics, and the NOAA Office of Ocean Exploration and Research.",
-    mine: "Reference image: wreck site on the seabed. Photograph supplied by the team. The marked object is a simulated target, not a photographed mine.",
+    mine: "Reference image: wreck site on the seabed. Photograph supplied by the team. The marked object is a simulated target, not a photographed hazardous object.",
     unknown: "Reference image: coral-covered metal structure. Photograph supplied by the team. The marked object is a simulated target."
   };
 
@@ -456,7 +456,7 @@
     el.box.classList.toggle("is-flip", t.box[1] < 14);
     el.box.classList.toggle("is-right", t.box[0] + t.box[2] > 75);
     el.box.setAttribute("data-level", classified && (state.blocks >= 4 || state.status === "verifying") ? t.level : "");
-    el.boxLabel.textContent = t.group === "mine" ? "Potential Mine — unconfirmed" : t.name;
+    el.boxLabel.textContent = t.name;
   }
 
   function setCloseup(on, t, label) {
@@ -596,7 +596,7 @@
   function reviewHtml() {
     return '<section class="trail__block is-current is-new"><h4>Cross-pass verification — summary</h4>' +
       '<p class="trail__text">' + crossCount() + " of " + state.marked.length + " targets observed on both survey headings.</p>" + crossTable() +
-      '<p class="trail__meta">Simulation. Consistent observations keep each decision; they do not confirm an identity. The potential mine still requires verification and the unknown object remains unknown.</p></section>';
+      '<p class="trail__meta">Simulation. Consistent observations keep each decision; they do not confirm an identity. The potential hazardous object still requires verification and the unknown object remains unknown.</p></section>';
   }
 
   function summaryHtml() {
@@ -609,7 +609,7 @@
       ["Targets detected", m.length],
       ["Marine life", count(byGroup("life"))],
       ["Shipwreck / man-made", count(byGroup("structure"))],
-      ["Potential mine", count(byGroup("mine"))],
+      ["Potential hazardous object", count(byGroup("mine"))],
       ["Unknown", count(byGroup("unknown"))],
       ["Requires verification", pending]
     ].map(function (s) { return "<div><strong>" + s[1] + "</strong><span>" + s[0] + "</span></div>"; }).join("");
@@ -1129,7 +1129,7 @@
       ["Unique area coverage", cov.uniquePct.toFixed(1) + "% (" + fmtNum(cov.uniqueArea) + " m²)"],
       ["Area seen on both headings", cov.bothPct.toFixed(1) + "%"],
       ["Targets detected", TARGETS.length + " (" + count("life") + " marine life, " + count("structure") + " shipwreck, " +
-        count("mine") + " potential mine, " + count("unknown") + " unknown)"],
+        count("mine") + " potential hazardous object, " + count("unknown") + " unknown)"],
       ["Observed on both survey headings", both + " of " + TARGETS.length],
       ["Requires verification", String(verify)]
     ].map(function (row) { return "<div><dt>" + row[0] + "</dt><dd>" + row[1] + "</dd></div>"; }).join("");

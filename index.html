@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>USV B01 — Unmanned Surface Vehicle</title>
-<meta name="description" content="USV B01 is a low-signature unmanned surface vehicle concept for explainable underwater hazard detection and risk assessment: autonomous cross-hatch grid surveys with multibeam and side-scan sonar, multi-pass verification and an interactive software simulation.">
+<title>B01 — Autonomous Unmanned Surface Vehicle (USV)</title>
+<meta name="description" content="B01 is an autonomous surface vehicle concept designed to survey maritime environments, detect underwater objects and near-surface hazards, assess potential risks, and provide explainable, risk-prioritized information to support maritime safety and inspection decisions.">
 <meta name="theme-color" content="#0a2536">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/tokens.css?v=20261118">
@@ -44,10 +44,10 @@
     <div class="container hero__grid">
       <div>
         <h1 id="hero-title">USV B01</h1>
-        <p class="hero__sub">Low-Signature Autonomous Surface Vehicle</p>
+        <p class="hero__sub">Autonomous Unmanned Surface Vehicle (USV)</p>
         <p class="hero__sub hero__sub--ar" lang="ar" dir="rtl">المركبة السطحية غير المأهولة B01</p>
-        <p class="lead">B01 is a low-signature unmanned surface vehicle concept for explainable underwater hazard detection and risk assessment. It autonomously surveys complex marine environments in a cross-hatch grid, detects underwater objects such as naval mines with multibeam and side-scan sonar, and gives the operator risk-prioritized decision support, without putting crews in danger.</p>
-        <p class="lead lead--ar" lang="ar" dir="rtl">B01 مركبة سطحية غير مأهولة منخفضة البصمة لكشف الألغام البحرية وغيرها من الأجسام الخطرة تحت الماء وتقييم خطورتها. تمسح المنطقة ذاتيًا بمسحٍ شبكي متقاطع، وتفحص عمود الماء وقاع البحر بالسونار متعدد الحزم وسونار المسح الجانبي، ثم تعطي المشغّل لكل هدف قرارًا مُفسَّرًا مرتّبًا حسب الخطورة، دون تعريض الأرواح للخطر.</p>
+        <p class="lead">B01 is an autonomous surface vehicle concept designed to survey maritime environments, detect underwater objects and near-surface hazards, assess potential risks, and provide explainable, risk-prioritized information to support maritime safety and inspection decisions. It surveys the area autonomously in a cross-hatch grid and is designed to support detection of underwater objects and hazards with multibeam and side-scan sonar, without putting crews in danger.</p>
+        <p class="lead lead--ar" lang="ar" dir="rtl">B01 مركبة سطحية ذاتية التشغيل في مرحلة المفهوم، صُمِّمت لمسح البيئات البحرية، وكشف الأجسام تحت الماء والمخاطر القريبة من السطح، وتقييم المخاطر المحتملة، وتقديم معلومات قابلة للتفسير ومرتّبة حسب الخطورة لدعم قرارات السلامة البحرية والفحص. تمسح المنطقة ذاتيًا بمسحٍ شبكي متقاطع، وهي مصمَّمة لدعم كشف الأجسام والمخاطر تحت الماء بالسونار متعدد الحزم وسونار المسح الجانبي، دون تعريض الأرواح للخطر.</p>
         <p class="hero__status"><strong>Implemented:</strong> the software simulation on this site. <strong>Proposed:</strong> the B01 vessel and its sensors, computing, links, power and propulsion, not yet built or tested.</p>
         <div class="hero__actions">
           <a class="btn btn--primary" href="#demo">Try the interactive demo</a>
@@ -64,8 +64,8 @@
   <div class="facts-strip">
     <div class="container">
       <dl>
-        <div><dt>Survey depth band</dt><dd>0–60 m below the water surface, 60 m maximum (concept)</dd></div>
-        <div><dt>Sensing</dt><dd>Multibeam and side-scan sonar, water-column profiling and SVP, with RTK GNSS, IMU, an EO/IR camera and radar + AIS (proposed)</dd></div>
+        <div><dt>Survey depth band</dt><dd>Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</dd></div>
+        <div><dt>Sensing</dt><dd>Multibeam and side-scan sonar and water-column profiling, with SVP sound-speed correction, RTK GNSS, IMU, an EO/IR camera and radar + AIS (proposed)</dd></div>
         <div><dt>Output</dt><dd>Risk-assessed targets with an explained decision and a recommended action</dd></div>
       </dl>
     </div>
@@ -76,7 +76,7 @@
     <div class="container">
       <div class="section__head">
         <h2 id="about-title">About USV B01</h2>
-        <p>A low-signature unmanned surface vehicle built around the team's own B01 hull design. Working at the water surface, it surveys an area autonomously, detects underwater objects with sonar, assesses whether they may be hazardous, explains each decision and tells the operator which targets to inspect first, without putting people in danger.</p>
+        <p>B01 is an autonomous surface vehicle concept designed to survey maritime environments, detect underwater objects and near-surface hazards, assess potential risks, and provide explainable, risk-prioritized information to support maritime safety and inspection decisions. It is based on the team's own B01 hull design and works at the water surface: it surveys an area autonomously, explains each decision and tells the operator which targets to inspect first, without putting people in danger.</p>
       </div>
 
       <div class="about-grid">
@@ -88,8 +88,8 @@
           </div>
           <h3>What the system does</h3>
           <div class="prose">
-            <p>USV B01 surveys the area autonomously with a grid (cross-hatch) method: a complete set of parallel survey lines, then a second complete set at right angles over the same area. Hull-mounted multibeam and side-scan sonar, water-column profiling and a sound velocity profiler detect underwater targets; RTK GNSS and the IMU give each target its position, while the navigation radar, AIS and an EO/IR camera watch the surface. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
-            <p>Targets are marked on the survey map, and only encrypted, risk-prioritized alerts are sent to the operator over secure RF / SatCom links.</p>
+            <p>USV B01 surveys the area autonomously with a grid (cross-hatch) method: a complete set of parallel survey lines, then a second complete set at right angles over the same area. Hull-mounted multibeam and side-scan sonar and water-column profiling look for underwater targets, and a sound velocity profiler (SVP) measures the sound-speed profile used to correct the acoustic measurements; RTK GNSS and the IMU give each target its position, while the navigation radar, AIS and an EO/IR camera watch the surface. Each target is analysed, classified and given a risk level, a risk type and a decision with an explanation. When the evidence is not enough, the system reports the object as unknown and asks for verification instead of forcing a class.</p>
+            <p>Targets are marked on the survey map, and only encrypted, risk-prioritized alerts are sent to the operator over RF (UHF), 4G and satellite links (proposed).</p>
           </div>
         </div>
         <figure class="figure">
@@ -101,12 +101,12 @@
 
       <h3 class="subhead">Survey environment</h3>
       <div class="prose">
-        <p>B01 works at the water surface. Its sonar looks down through the water column to the seabed, and the concept targets a survey depth band from the surface down to 60 metres at most. This is a conceptual range; the vessel and its sensors have not been tested or certified across it.</p>
+        <p>B01 works at the water surface, and its sonar looks down through the water column to the seabed. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</p>
       </div>
       <figure class="figure depth mt-6">
         <svg viewBox="0 0 760 380" role="img" aria-labelledby="depth-title depth-desc">
-          <title id="depth-title">Conceptual survey depth band</title>
-          <desc id="depth-desc">A water column diagram from the surface to 60 m. B01 sits at the surface; the band from the surface down to 60 m, the maximum, is highlighted as the conceptual survey depth band of its sonar.</desc>
+          <title id="depth-title">Conceptual target water depth (TBD)</title>
+          <desc id="depth-desc">A conceptual water column diagram, not to scale. B01 sits at the water surface above the water column and the seabed. The highlighted band is the conceptual target water depth, to be determined (TBD); it is not a sensor range or a tested rating.</desc>
           <defs>
             <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stop-color="#e8f4f8"/>
@@ -142,15 +142,10 @@
           </g>
           <g font-size="15" text-anchor="end">
             <text x="72" y="55">0 m</text>
-            <text x="72" y="101.7">10 m</text>
-            <text x="72" y="148.3">20 m</text>
-            <text x="72" y="195">30 m</text>
-            <text x="72" y="241.7">40 m</text>
-            <text x="72" y="288.3">50 m</text>
-            <text x="72" y="335">60 m</text>
+            <text x="72" y="335">Seabed</text>
           </g>
           <g font-size="14" font-weight="700" text-anchor="end" class="depth__range">
-            <text x="732" y="322">60 m max</text>
+            <text x="732" y="322">Not a sensor range or a tested rating</text>
           </g>
           <text x="90" y="30" font-size="15" class="depth__muted">Water surface</text>
           <g aria-hidden="true">
@@ -158,9 +153,9 @@
             <polygon points="622,49 637,40 705,40 721,49 709,57 634,57" fill="#1d4a66" stroke="#0c2233" stroke-width="1.2"/>
             <text x="683" y="30" font-size="13" font-weight="700">B01</text>
           </g>
-          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual survey depth: 0–60 m</text>
+          <text x="415" y="198" font-size="24" font-weight="700" text-anchor="middle">Conceptual target water depth (TBD)</text>
         </svg>
-        <figcaption>B01 works at the water surface; the highlighted band is the conceptual survey depth of its sonar, down to 60 m at most. A target for the concept, not a tested rating.</figcaption>
+        <figcaption>B01 works at the water surface; the highlighted band is a conceptual target water depth (TBD), not a sensor range or a tested rating. Illustration, not to scale.</figcaption>
       </figure>
     </div>
   </section>
@@ -174,18 +169,18 @@
       </div>
 
       <ol class="flow flow--end">
-        <li><h3>Underwater Environment</h3><p>The water column and seabed below B01, 0–60 m deep, 60 m maximum (concept).</p></li>
-        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam and side-scan sonar, water-column profiling and SVP, positioned with RTK GNSS and an IMU.</p></li>
+        <li><h3>Underwater Environment</h3><p>The water column and seabed below B01. Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</p></li>
+        <li><h3>Sensor / Acoustic Data</h3><p>Multibeam and side-scan sonar and water-column profiling, with SVP sound-speed correction, positioned with RTK GNSS and an IMU.</p></li>
         <li><h3>Target Detection</h3><p>Candidate objects are found in the sensor data and given a target ID and a detection time.</p></li>
         <li><h3>Target Feature Analysis</h3><p>Shape, geometry, structure, size category, movement and difference from the background are examined.</p></li>
         <li><h3>Object Classification</h3><p>Marine life, man-made structure or potential hazardous object — or unknown when the evidence is not enough.</p></li>
-        <li><h3>Risk Assessment</h3><p>Non-hazardous, potential hazard (or high potential hazard), or unknown and requiring verification.</p></li>
+        <li><h3>Risk Assessment</h3><p>Likely non-hazardous, potential hazard, high potential hazard or unknown; every level except likely non-hazardous requires verification.</p></li>
         <li><h3>Risk Type Identification</h3><p>For example navigation / obstruction risk or potential explosive hazard.</p></li>
         <li><h3>Explainable Decision</h3><p>A decision together with the evidence and the rule that led to it.</p></li>
         <li><h3>Target Marking</h3><p>The target is marked at its position on the survey map.</p></li>
         <li><h3>Recommended Action</h3><p>Continue the survey, inspect the target, or verify it.</p></li>
         <li><h3>Local Data Storage</h3><p>Target records and raw sensor data are stored on board, on SSD.</p></li>
-        <li><h3>Data Transfer / Operator System</h3><p>Encrypted, risk-prioritized alert packets reach the operator over secure RF / SatCom links.</p></li>
+        <li><h3>Data Transfer / Operator System</h3><p>Encrypted, risk-prioritized alert packets reach the operator over RF (UHF), 4G and satellite links (proposed).</p></li>
       </ol>
 
       <h3 class="subhead">Sensors, computing, communication and power <span class="tag tag--concept">Proposed</span></h3>
@@ -209,7 +204,7 @@
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v18M6 21h4M14 4c2.5 2.5-2.5 5 0 7.5s-2.5 5 0 7.5"/></svg>
           <h3>Sound Velocity Profiler (SVP)</h3>
-          <p>Measures the speed of sound through the water column, so sonar ranges and depths are calculated correctly.</p>
+          <p>Measures the sound-speed profile of the water column, used to correct the acoustic measurements (sonar ranges and depths). It does not detect targets itself.</p>
         </div>
       </div>
       <h4 class="sensor-group">Navigation and surface awareness</h4>
@@ -217,7 +212,7 @@
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
           <h3>RTK GNSS</h3>
-          <p>Precise position of the vessel, so every target is recorded with an accurate location.</p>
+          <p>Precise position of the vessel, used to record the location of each target.</p>
         </div>
         <div class="card">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13V4m0 0-2.5 2.5M12 4l2.5 2.5M12 13l7.5 4.5m0 0-3.4.4m3.4-.4-1.2-3.2M12 13l-7.5 4.5m0 0 3.4.4m-3.4-.4 1.2-3.2"/></svg>
@@ -240,7 +235,7 @@
           <div class="comm">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="1.5"/><path d="M8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.5 5.5a9 9 0 0 0 0 13M18.5 5.5a9 9 0 0 1 0 13"/></svg>
             <div>
-              <h3>Communications: secure RF / SatCom</h3>
+              <h3>Communications: RF (UHF), 4G and satellite links (proposed)</h3>
               <p>Radio links connect B01 with the operator and the ground control station: RF radio (UHF), 4G and satellite (SatCom). Only encrypted, risk-prioritized alert packets are sent; raw data stays on board.</p>
               <p>Encryption: we will use the latest available encryption version.</p>
               <p class="tbd">Link specifications: TBD.</p>
@@ -262,7 +257,7 @@
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3"/><path d="M11.5 9 9.5 12.3h3L10.5 15.5"/></svg>
             <div>
               <h3>Power and propulsion</h3>
-              <p>A Li-ion battery pack, integrated solar cells and a generator, with hybrid propulsion that has a silent survey mode.</p>
+              <p>A Li-ion battery pack, integrated solar cells and a generator, with hybrid propulsion that has a quieter electric survey mode (proposed; effect to be validated).</p>
               <p class="tbd">Capacities, endurance and speed: TBD.</p>
             </div>
           </div>
@@ -272,16 +267,16 @@
 
       <h3 class="subhead">Classification, risk and decision</h3>
       <div class="prose">
-        <p>Each target is analysed from its shape, geometry, structure, size category, movement where applicable, acoustic characteristics and difference from the surrounding background. The classification, the risk assessment and the recommended action are kept as three separate results. Risk uses four levels, a four-level threat classification: non-hazardous, potential hazard, high potential hazard and unknown.</p>
+        <p>Each target is analysed from its shape, geometry, structure, size category, movement where applicable, acoustic characteristics and difference from the surrounding background. The classification, the risk assessment and the recommended action are kept as three separate results. Risk uses four levels, a four-level threat classification: high potential hazard, potential hazard and unknown, each requiring verification, and likely non-hazardous.</p>
       </div>
       <div class="cards-3 mt-card risk-cards">
         <div class="card risk-card risk-card--safe">
-          <p class="risk risk--safe">Non-Hazardous</p>
-          <p>Marine life, and objects with no immediate hazard. Decision: continue survey / log observation.</p>
+          <p class="risk risk--safe">Likely Non-Hazardous</p>
+          <p>Marine life, and objects that show no sign of an immediate hazard. Decision: continue survey / log observation.</p>
         </div>
         <div class="card risk-card risk-card--hazard">
-          <p class="risk risk--hazard">Potential Hazard</p>
-          <p>Wrecks, obstructions and other man-made structures. Decision: requires inspection. A potential mine is a <em>high</em> potential hazard; it always requires verification and is never reported as confirmed.</p>
+          <p class="risk risk--hazard">Potential Hazard — Requires Verification</p>
+          <p>Wrecks, obstructions and other man-made structures. Decision: requires inspection. A potential hazardous object is a <em>high</em> potential hazard; it always requires verification and is never reported as confirmed.</p>
         </div>
         <div class="card risk-card risk-card--unknown">
           <p class="risk risk--unknown">Unknown — Requires Verification</p>
@@ -303,7 +298,7 @@
         </table>
         <dl class="explain__result">
           <div><dt>Classification</dt><dd>Man-Made Structure</dd></div>
-          <div><dt>Risk</dt><dd>Potential Hazard</dd></div>
+          <div><dt>Risk</dt><dd>Potential Hazard — Requires Verification</dd></div>
           <div><dt>Risk type</dt><dd>Navigation / Obstruction Risk</dd></div>
           <div><dt>Decision</dt><dd>Requires Inspection</dd></div>
         </dl>
@@ -336,13 +331,13 @@
         </div>
         <div class="card">
           <h3>Explainable AI</h3>
-          <p>Every decision shows the evidence and the rule behind it (in the concept: shape, shadow, sway and background). When the evidence is not enough, the answer is “Unknown”, which prevents false alarms instead of forcing a class.</p>
+          <p>Every decision shows the evidence and the rule behind it (in the concept: shape, shadow, sway and background). When the evidence is not enough, the answer is “Unknown” instead of a forced class, which is intended to reduce false alarms.</p>
         </div>
       </div>
 
       <h3 class="subhead">Data transfer <span class="tag tag--concept">Conceptual</span></h3>
       <div class="prose">
-        <p>On board, a network switch links the sensors to the Edge AI computer (GPU), which processes the data and keeps the raw data on SSD. Radio links carry limited data, especially over satellite, so only encrypted, risk-prioritized alert packets are sent, over secure RF / SatCom.</p>
+        <p>On board, a network switch links the sensors to the Edge AI computer (GPU), which processes the data and keeps the raw data on SSD. Radio links carry limited data, especially over satellite, so only encrypted, risk-prioritized alert packets are sent, over RF (UHF), 4G and satellite links (proposed).</p>
       </div>
       <ol class="pipeline mt-card">
         <li>Sensors</li>
@@ -353,7 +348,7 @@
         <li>Target Record</li>
         <li>Local Storage (SSD)</li>
         <li>Data Prioritization / Compression</li>
-        <li>Encrypted Alert Packets: Secure RF / SatCom</li>
+        <li>Encrypted Alert Packets: RF (UHF), 4G and satellite links (proposed)</li>
         <li>Ground Control Station / Operator</li>
       </ol>
       <div class="cards-2 mt-card">
@@ -376,7 +371,7 @@
     <div class="container">
       <div class="section__head">
         <h2 id="design-title">B01 design</h2>
-        <p>USV B01 is built around the team's own hull design: a faceted, low-observable, ultra-low-profile hull that works at the water surface. A short mast carries the EO/IR camera, the radar and the antennas, the sonar is mounted on the hull below, and the cutaway in the render shows the internal equipment bay. Move over the image to inspect the details.</p>
+        <p>USV B01 is built around the team's own hull design: a faceted, ultra-low-profile hull that works at the water surface. A short mast carries the EO/IR camera, the radar and the antennas, the sonar is mounted on the hull below, and the cutaway in the render shows the internal equipment bay. Move over the image to inspect the details.</p>
       </div>
 
       <div class="design-grid" id="design-grid">
@@ -392,7 +387,7 @@
                   <p class="sheet__info-title">USV B01</p>
                   <p class="sheet__info-sub">Unmanned Surface Vehicle</p>
                   <dl>
-                    <div><dt>Survey depth</dt><dd>0–60 m (concept)</dd></div>
+                    <div><dt>Survey depth</dt><dd>TBD (concept)</dd></div>
                     <div><dt>Sonar</dt><dd>MBES + side-scan</dd></div>
                   </dl>
                 </div>
@@ -405,15 +400,15 @@
         <div class="design-side">
           <dl class="spec">
             <div><dt>Platform</dt><dd>Unmanned Surface Vehicle (USV)</dd></div>
-            <div><dt>Hull</dt><dd>Faceted, low-observable, ultra-low-profile — team design</dd></div>
-            <div><dt>Survey depth band</dt><dd>0–60 m, 60 m maximum — concept</dd></div>
-            <div><dt>Sonar</dt><dd>Multibeam (MBES) and side-scan sonar (SSS), water-column profiling, SVP — proposed</dd></div>
+            <div><dt>Hull</dt><dd>Faceted, ultra-low-profile — team design</dd></div>
+            <div><dt>Survey depth band</dt><dd>Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</dd></div>
+            <div><dt>Sonar</dt><dd>Multibeam (MBES) and side-scan sonar (SSS), water-column profiling; SVP for sound-speed correction — proposed</dd></div>
             <div><dt>Positioning</dt><dd>RTK GNSS + IMU — proposed</dd></div>
             <div><dt>Surface awareness</dt><dd>EO/IR thermal gimbal camera, navigation radar + AIS, navigation lights — proposed</dd></div>
             <div><dt>Processing</dt><dd>Onboard Edge AI (GPU), network switch, SSD storage — concept</dd></div>
-            <div><dt>Communication</dt><dd>Secure RF (UHF, 4G) / SatCom, encrypted — proposed; specifications TBD</dd></div>
+            <div><dt>Communication</dt><dd>RF (UHF), 4G and satellite links (proposed), encrypted; specifications TBD</dd></div>
             <div><dt>Power</dt><dd>Li-ion battery, solar, generator — proposed; capacities TBD</dd></div>
-            <div><dt>Propulsion</dt><dd>Hybrid, with a silent survey mode — proposed</dd></div>
+            <div><dt>Propulsion</dt><dd>Hybrid, with a quieter electric survey mode (proposed; effect to be validated)</dd></div>
             <div><dt>Detection</dt><dd>Underwater object detection</dd></div>
             <div><dt>Decision</dt><dd>Explainable four-level risk assessment</dd></div>
             <div><dt>Survey</dt><dd>Two-pass crosshatch grid survey — concept</dd></div>
@@ -508,7 +503,7 @@
               <span><i class="k-track"></i>Completed track</span>
               <span><i class="k-current"></i>Current leg</span>
               <span><i class="k-cover"></i>Swath covered</span>
-              <span><i class="k-safe"></i>Non-hazardous</span>
+              <span><i class="k-safe"></i>Likely non-hazardous</span>
               <span><i class="k-hazard"></i>Potential hazard</span>
               <span><i class="k-high"></i>High potential hazard</span>
               <span><i class="k-unknown"></i>Unknown</span>
@@ -600,14 +595,14 @@
           <h3>Field capabilities <span class="tag tag--concept">Proposed / conceptual</span></h3>
           <p>Proposed for B01. None of these has been built, integrated or tested at sea yet.</p>
           <ul class="results__concept">
-            <li>The B01 vessel: faceted, low-signature hull (design stage)</li>
-            <li>Multibeam and side-scan sonar, water-column profiling and SVP at sea</li>
-            <li>Survey depth band of 0–60 m below the surface (60 m maximum)</li>
+            <li>The B01 vessel: faceted, ultra-low-profile hull (design stage)</li>
+            <li>Multibeam and side-scan sonar and water-column profiling at sea, with SVP sound-speed correction</li>
+            <li>Designed to support surveys in shallow-water and deeper coastal environments. The achievable detection depth, minimum detection range, and effective coverage depend on the selected sensor models, installation geometry, water conditions, and field validation.</li>
             <li>Target positions from RTK GNSS and the IMU</li>
             <li>Surface picture from the EO/IR gimbal camera, navigation radar and AIS</li>
             <li>Onboard Edge AI (GPU), network switch and SSD storage</li>
-            <li>Encrypted, risk-prioritized alerts over secure RF / SatCom</li>
-            <li>Li-ion battery, solar and generator power, with hybrid silent-survey propulsion</li>
+            <li>Encrypted, risk-prioritized alerts over RF (UHF), 4G and satellite links (proposed)</li>
+            <li>Li-ion battery, solar and generator power, with hybrid propulsion and a quieter electric survey mode (proposed; effect to be validated)</li>
             <li>A multi-stream AI model for the four decision layers (future development)</li>
           </ul>
         </div>
@@ -651,6 +646,6 @@
 <script src="js/main.js?v=20261118" defer></script>
 <script src="js/auv-viewer.js?v=20261118" defer></script>
 <script src="js/survey-model.js?v=20261118" defer></script>
-<script src="js/demo.js?v=20261118" defer></script>
+<script src="js/demo.js?v=20261123" defer></script>
 </body>
 </html>
